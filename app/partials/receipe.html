@@ -10,7 +10,12 @@
       <h4 class='item-name pull-left'>{{receipe.name}}</h3> 
     </div>
 
+
       <receipe-options class="btn-group item-options"></receipe-options>
   </div>
+
+      <div class='list-group'>
+        <div class='list-group-item' ng-repeat="ingredient in receipe.ingredients">{{ingredient.name}}</div>
+      </div>
 
 </div>

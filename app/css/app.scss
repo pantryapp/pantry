@@ -2,6 +2,7 @@ body{
 	background:url('../img/pattern.jpg') repeat;
 	background-attachment: fixed;
 	padding-top:100px;
+	font-family:"Open sans";
 }
 
 .wrapper{
@@ -10,10 +11,39 @@ body{
 }
 
 .navbar{
-	position:fixed;
-	top:0;left:0;
-	width:100%;
-	z-index:1000;
+
+	.navbar-nav a{
+		-webkit-transition: all 0.1s ease;
+		   -moz-transition: all 0.1s ease;
+		    -ms-transition: all 0.1s ease;
+		     -o-transition: all 0.1s ease;
+		        transition: all 0.1s ease;
+	}
+
+	.navbar-nav .active a, .navbar-nav .active a:hover, .navbar-nav a:hover{ 
+		color:#8cc158;
+		background-color:transparent;
+	}
+	.navbar-brand{
+		height:50px;
+		padding:10px 0;
+		margin:0 10px 0 15px;
+		img{
+			height:100%;
+		}
+
+	}
+	.filter-group{
+		.input-group{ 
+			width:200px; 
+			margin:0 10px 0 0;
+		}
+		// width:300px; 
+	}
+}
+
+.new-item-form{
+	border-left:4px solid lightblue;
 }
 
 .items-list{
@@ -26,17 +56,21 @@ body{
 			}
 		} 
 	}
-	
 
 	.list-group-item{
 		position:relative;
 		padding:0;
 		background-color:transparent;
 
-		&:hover{ cursor:pointer; }
+		&:hover{ 
+			cursor:pointer; 
 
-		&.new-item-form{
-			border-left:4px solid #5bc0de;
+			.pantry-item{
+				.item{
+					background-color:rgba(255,255,255,1);
+					padding-left:8px;
+				}
+			}
 		}
 
 		.pantry-item{
@@ -64,10 +98,16 @@ body{
 			}
 
 			.item{
-				background-color:rgba(255,255,255, 0.8);
+				background-color:rgba(255,255,255, 0.5);
 				position:relative;
 				z-index:10;
 				width:100%;
+
+				-webkit-transition: all 0.15s ease-in-out;
+				   -moz-transition: all 0.15s ease-in-out;
+				    -ms-transition: all 0.15s ease-in-out;
+				     -o-transition: all 0.15s ease-in-out;
+				        transition: all 0.15s ease-in-out;
 
 				&.outofstock .item-name{ text-decoration:line-through; opacity:0.2;}
 

@@ -1,7 +1,5 @@
-<div class='list-group items-list'>
-
-
-
-  <pantry-item class='list-group-item' ng-controller="PantryItemController" ng-repeat="item in pantryItems | orderBy:'name' | filter:{name:search.txt}" ></pantry-item>
+<div class='list-group items-list stroll-me'>
+	
+  <pantry-item class='list-group-item' ng-controller="PantryItemController" ng-repeat="item in pantryItems | orderBy:'name' | filter:{name:search.name, category:search.category}" ></pantry-item>
 
 </div>

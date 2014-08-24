@@ -385,8 +385,8 @@ angular.module('app.controllers', [])
 			}
 		});
 
-		PantryItemEvents.registerObserverForEvent('SEARCH', function(term){
-			$scope.search.txt = term;
+		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
+			$scope.search[search.prop] = search.value;
 		});
 
 	}])
@@ -542,8 +542,8 @@ angular.module('app.controllers', [])
 			addGrocery(item);
 		});
 
-		PantryItemEvents.registerObserverForEvent('SEARCH', function(term){
-			$scope.search.txt = term;
+		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
+			$scope.search[search.prop] = search.value;
 		});
 
 	}])
@@ -578,6 +578,7 @@ angular.module('app.controllers', [])
 		$scope.pantryItems = PantryStorage.getPantryItems();
 		$scope.receipes = PantryStorage.getReceipes();
 		$scope.search   = {};
+		console.log($scope.pantryItems);
 
 		$scope.saveReceipes = function(){return saveReceipes();};
 
@@ -589,18 +590,17 @@ angular.module('app.controllers', [])
 			PantryStorage.saveReceipes($scope.receipes);
 		}
 
-
 		/*
 		 * Event listener
 		 */
 
-		 $scope.$watch('receipes.length', function(){
-		 	PantryStorage.saveReceipes($scope.receipes);
-		 });
+		$scope.$watch('receipes.length', function(){
+	 		PantryStorage.saveReceipes($scope.receipes);
+		});
 
-		 PantryItemEvents.registerObserverForEvent('SEARCH', function(term){
-		 	$scope.search.txt = term;
-		 });
+		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
+			$scope.search[search.prop] = search.value;
+		});
 
 
 	}])
@@ -611,7 +611,7 @@ angular.module('app.controllers', [])
 		 */
 
 		$scope.toggled 		  = false;
-		$scope.editingReceipe = {};
+		$scope.editingReceipe = {};		
 
 
 		$scope.create = function(){
@@ -619,6 +619,7 @@ angular.module('app.controllers', [])
 			$scope.receipe.name = $scope.newReceipe.name;
 			$scope.receipe.slug = Slug.slugify($scope.newReceipe.name);
 			$scope.receipe.id 	= guid.new();
+			$scope.receipe.ingredients = $scope.newReceipe.ingredients;
 			$scope.receipes.push($scope.receipe);
 			$scope.newReceipe = {};
 			$scope.receipeForm.$setPristine();
@@ -680,8 +681,12 @@ angular.module('app.controllers', [])
 	.controller('SearchController', ['$scope', 'PantryItemEvents', function($scope, PantryItemEvents){
 		$scope.search = {};
 
-		$scope.$watch('search.txt', function(value){
-			PantryItemEvents.notifyObservers('SEARCH', value);
+		$scope.$watch('search.name', function(value){
+			PantryItemEvents.notifyObservers('SEARCH', {prop:'name', value:value});
+		});
+
+		$scope.$watch('search.category', function(value){
+			PantryItemEvents.notifyObservers('SEARCH', {prop:'category', value:value});
 		});
 
 		$scope.reset = function(){
@@ -690,6 +695,12 @@ angular.module('app.controllers', [])
 	}])
 	.controller('HeaderController', ['$scope', '$location', 'PantryItemEvents', function($scope, $location, PantryItemEvents){
 
+		$scope.isCollapsed = true;
+
+		$scope.toggleCollapse = function(){
+			console.log('Fds');
+			$scope.isCollapsed = !$scope.isCollapsed;
+		}
 		$scope.isActive = function(path){
 			return path == $location.path();
 		}

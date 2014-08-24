@@ -18,24 +18,32 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <nav class="navbar navbar-default" ng-controller="HeaderController" role="navigation">
-      <!-- Collect the nav links, forms, and other content for toggling -->
-        <ul class="nav navbar-nav">
-          <li ng-class="{'active':isActive('/pantry')}"><a href='#/pantry'>Garde-manger</a></li>
-          <li ng-class="{'active':isActive('/groceries')}"><a href='#/groceries'>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a></li>
-          <li ng-class="{'active':isActive('/receipes')}"><a href='#/receipes'>Recettes</a></li>
-        </ul>
-        <item-filter></item-filter>
+  <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" ng-controller="HeaderController" role="navigation">
+    <div class='container-fluid'>
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#/pantry"><img src="img/logo.png" /></a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" ng-click="toggleCollapse()">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class='collapse navbar-collapse' collapse="isCollapsed">
+          <ul class="nav navbar-nav" >
+            <li ng-class="{'active':isActive('/pantry')}"><a href='#/pantry'>Garde-manger</a></li>
+            <li ng-class="{'active':isActive('/groceries')}"><a href='#/groceries'>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a></li>
+            <li ng-class="{'active':isActive('/receipes')}"><a href='#/receipes'>Recettes</a></li>
+          </ul>
+          <item-filter></item-filter>
+        </div>
+    </div>
   </nav>
 
-<div class='wrapper'>
-  <div ng-view></div>
-</div>
-
-
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
+  <div class='wrapper'>
+    <div ng-view></div>
+  </div>
   
   <script src="bower_components/fastclick/lib/fastclick.js"></script>
   <script src="bower_components/angular/angular.js"></script>

@@ -7,11 +7,16 @@
           <label for="item" class='sr-only'>Nom de la recette</label>
           <input type="text" class="form-control" placeholder="Nom de la recette" ng-model="newReceipe.name" required />
         </div>
+        <div class='col-xs-6'>
+          <select multiple ng-model="newReceipe.ingredients" ng-options="item.name for item in pantryItems">
+          </select>
+        </div>
       </fieldset>
+      <button type='submit'>+</button>
+
     </form>
   </div>
 
 <receipe-list></receipe-list>
 
-
-<!-- <groceries ng-controller="GroceryController"></groceries> -->
+<grocery-list ng-hide="true"></grocery-list>

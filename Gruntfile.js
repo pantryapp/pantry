@@ -12,6 +12,7 @@ module.exports = function(grunt) {
                 dest: 'app/js/build/pantry.js'
             }
         },
+        
         bower_concat: {
             all:{
                 dest: 'app/js/build/_bower.js'
