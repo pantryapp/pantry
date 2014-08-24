@@ -1,0 +1,144 @@
+.items-list{
+
+	&.groceries {
+		.list-group-item{
+			.pantry-item{
+				.item-options button{ width:50%;}
+				.item.outofstock .item-name{text-decoration: none; opacity:1;}
+			}
+		} 
+	}
+	
+
+	.list-group-item{
+		position:relative;
+		padding:0;
+
+		&:hover{ cursor:pointer; }
+
+		&.new-item-form{
+			border-left:4px solid #5bc0de;
+		}
+
+		.pantry-item{
+
+			.item-wrapper{ 
+				height:65px;
+				display:table;
+				transition:margin 0.15s ease-in-out;
+
+				&.active{ 
+					margin-left:325px; 
+					.item-options{margin-left:0;}
+				}
+			} // .item-wrapper
+
+			&.edited{
+				.item .checkmark{ 
+					opacity:1;
+				}
+			}
+
+			.item, .item-options{
+				display:table-cell;
+				vertical-align: middle;
+			}
+
+			.item{
+				background-color:#fff;
+				position:relative;
+				z-index:10;
+				width:100%;
+
+				&.outofstock .item-name{ text-decoration:line-through; opacity:0.2;}
+
+				&.edit-mode{
+					padding:15px;
+					position:relative;
+
+					input{
+						font-size:18px;
+						font-weight:500;
+						color:#333;
+						border:1px solid #eee;
+						width:100%;
+						margin:0;padding:0 0 0 5px;
+					}
+
+					button{
+						position:absolute;
+						top:50%;right:15px;
+						margin-top:-17px;
+						width:160px;
+					}
+				} // &.edit-mode
+
+				.item-name{ 
+					/*margin:0 0 0 10px; padding:20px 0 0 0; */
+					margin:0 0 0 10px;padding:0;
+				}
+
+				.checkmark{ 
+					/*margin:23px 0 0 10px;*/
+					margin:0 0 0 10px; 
+					color:green;
+					opacity:0;
+
+					-webkit-transition: opacity 0.4s ease-in-out;
+					   -moz-transition: opacity 0.4s ease-in-out;
+					    -ms-transition: opacity 0.4s ease-in-out;
+					     -o-transition: opacity 0.4s ease-in-out;
+					        transition: opacity 0.4s ease-in-out;
+
+				}
+			} // .item
+ 
+			.item-options{
+				position:absolute;
+				top:0%;left:0%;
+				width:325px;height:100%;
+				margin-left:-325px;
+				z-index:0;
+				-webkit-transition: all 0.15s ease-in-out;
+				   -moz-transition: all 0.15s ease-in-out;
+				    -ms-transition: all 0.15s ease-in-out;
+				     -o-transition: all 0.15s ease-in-out;
+				        transition: all 0.15s ease-in-out;
+
+				button{ 
+					height:100%;width:33%; 
+
+					&:last-child{
+						border-top-right-radius: 0!important;
+						border-bottom-right-radius: 0!important;
+					}
+				} // button 
+			} // .item-options
+		} // .pantry-item
+	} // .list-group-item
+} // .items-list
+
+.ng-dirty.ng-invalid{
+	border-color:red;
+}
+
+/* Angular Bootstrap fix for empty href */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+/* Bootstrap twitch for fastest modals */
+ .fade {
+   opacity: 0;
+   -webkit-transition: opacity 0.1s linear;
+      -moz-transition: opacity 0.1s linear;
+       -ms-transition: opacity 0.1s linear;
+        -o-transition: opacity 0.1s linear;
+           transition: opacity 0.1s linear;
+ }
+
+ .modal.fade .modal-dialog{
+	-webkit-transition: -webkit-transform 0.1s ease-out;
+	-moz-transition: -moz-transform 0.1s ease-out;
+	-o-transition: -o-transform 0.1s ease-out;
+	transition: transform 0.1s ease-out; 
+ }
+

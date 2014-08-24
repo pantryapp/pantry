@@ -1,0 +1,19 @@
+<button class='btn btn-info' ng-click="clearGroceries()">Clear list</button>
+
+<div class='list-group items-list groceries'>
+
+<!--   <div class='list-group-item new-item-form'>
+    <form role="form" name="pantryItemForm"  ng-controller="PantryItemController" ng-submit="pantryItemForm.$valid && createItem($parent)" novalidate>
+      <fieldset class="form-group row">
+        <div class='col-xs-6'>
+          <label for="item" class='sr-only'>Ingrédient</label>
+          <input type="text" class="form-control" placeholder="Ingrédient" ng-model="newPantryItem.name" required />
+        </div>
+      </fieldset>
+    </form>
+  </div>
+ -->
+
+  <grocery-item class='list-group-item' ng-controller="GroceryItemController" ng-repeat="item in groceryItems | orderBy:'name'" ></pantry-item>
+
+</div>

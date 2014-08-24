@@ -1,0 +1,18 @@
+{
+  "name": "Pantry",
+  "description": "Small food management app",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-resource": "~1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.x",
+    "html5-boilerplate": "~4.3.0",
+    "jquery": "1.10.2",
+    "bootstrap": "~3.1.1",
+    "fastclick":"1.0.3"
+  }
+}

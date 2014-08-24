@@ -1,0 +1,16 @@
+<div class='pantry-item' ng-class="{'edited':edited}">
+  <div class='item-wrapper' ng-class="{'active':toggled}">
+
+    <div class='item edit-mode' ng-show="toggled">
+      <input type='text' quick-edit="toggled" on-edit="update()" ng-model="editingPantryItem.name" />
+      <button type="button" class="btn btn-info"  ng-click="update();">OK</button>
+    </div>
+    <div class='item' ng-hide="toggled" ng-click="openItem();" ng-class="{'outofstock':item.outOfStock}" >
+      <span class="glyphicon glyphicon-ok checkmark pull-left"></span>
+      <h4 class='item-name pull-left'>{{item.name}}</h3> 
+    </div>
+
+      <pantry-item-options class="btn-group item-options"></pantry-item-options>
+  </div>
+
+</div>
