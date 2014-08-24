@@ -11,7 +11,7 @@
     </form>
   </div>
 
-  <pantry-item class='list-group-item' ng-controller="PantryItemController" ng-repeat="item in pantryItems | orderBy:'name'" ></pantry-item>
+  <pantry-item class='list-group-item' ng-controller="PantryItemController" ng-repeat="item in pantryItems | orderBy:'name' | filter:{name:search.txt}" ></pantry-item>
 
 </div>
 

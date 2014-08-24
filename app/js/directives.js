@@ -59,6 +59,13 @@ angular.module('app.directives', [])
 			restrict: 'E',
 			templateUrl: 'partials/grocery-item-options.html'
 		}
+	}).
+	directive('itemFilter', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/item-filter.html',
+			controller: 'SearchController'
+		}
 	});
 	
 

@@ -8,6 +8,7 @@ angular.module('app.controllers', [])
 			$log.info(value);
 		}
 
+
 	}])
 	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, PantryStorage, PantryItemEvents, PantryItemFactory){
 
@@ -16,6 +17,8 @@ angular.module('app.controllers', [])
 		 */
 
 		$scope.pantryItems = PantryStorage.getPantryItems();
+		$scope.search 	   = {};
+
 		$scope.savePantryItems = function(){return savePantryItems();};
 
 		/*
@@ -48,6 +51,10 @@ angular.module('app.controllers', [])
 				pantryItem = PantryItemFactory.duplicate(groceryItem);
 				$scope.pantryItems.push(pantryItem);
 			}
+		});
+
+		PantryItemEvents.registerObserverForEvent('SEARCH', function(term){
+			$scope.search.txt = term;
 		});
 
 	}])
@@ -162,6 +169,7 @@ angular.module('app.controllers', [])
 		 */
 
 		$scope.groceryItems = PantryStorage.getGroceries();
+		$scope.search 		= {};
 
 
 		$scope.clearGroceries = function(){
@@ -200,6 +208,10 @@ angular.module('app.controllers', [])
 			addGrocery(item);
 		});
 
+		PantryItemEvents.registerObserverForEvent('SEARCH', function(term){
+			$scope.search.txt = term;
+		});
+
 	}])
 	.controller('GroceryItemController', ['$scope', 'PantryItemEvents', function($scope, PantryItemEvents){
 
@@ -224,7 +236,15 @@ angular.module('app.controllers', [])
 
 
 	}])
+	.controller('SearchController', ['$scope', 'PantryItemEvents', function($scope, PantryItemEvents){
+		$scope.search = {};
+
+		$scope.$watch('search.txt', function(value){
+			PantryItemEvents.notifyObservers('SEARCH', value);
+		});
+	}])
 	.controller('HeaderController', ['$scope', '$location', function($scope, $location){
+		console.log('HeaderController')
 		$scope.isActive = function(path){
 			return path == $location.path();
 		}
