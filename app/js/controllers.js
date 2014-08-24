@@ -2,12 +2,11 @@
 
 /* Controllers */
 angular.module('app.controllers', [])
-	.controller('PantryController', ['$scope', '$log', 'PantryStorage', function($scope, $log, PantryStorage){
+	.controller('PantryController', ['$scope', '$log', function($scope, $log){
 
 		$scope.debug = function(value){
 			$log.info(value);
 		}
-
 
 	}])
 	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, PantryStorage, PantryItemEvents, PantryItemFactory){
@@ -202,6 +201,7 @@ angular.module('app.controllers', [])
 		 */ 
 
 		$scope.$watch('groceryItems.length', function(){
+			PantryItemEvents.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
 			save();
 		});
 
@@ -355,11 +355,15 @@ angular.module('app.controllers', [])
 			$scope.search = {};
 		}
 	}])
-	.controller('HeaderController', ['$scope', '$location', function($scope, $location){
-		console.log('HeaderController')
+	.controller('HeaderController', ['$scope', '$location', 'PantryItemEvents', function($scope, $location, PantryItemEvents){
+
 		$scope.isActive = function(path){
 			return path == $location.path();
 		}
+
+		PantryItemEvents.registerObserverForEvent('GROCERY_CHANGE', function(groceries){
+			$scope.n_groceries = groceries.length > 0 ? groceries.length : null;
+		})
 	}])
 	.controller('DeleteModalInstanceController', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
 		$scope.item = args.item;
