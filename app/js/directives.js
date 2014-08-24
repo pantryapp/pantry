@@ -2,20 +2,9 @@
 
 /* Directives */
 angular.module('app.directives', [])
-	.directive('pantryItem', function(){
-		return{
-			restrict: 'E',
-			templateUrl: 'partials/pantry-item.html'
-		}
-	})
-	.directive('groceryItem', function(){
-		return{
-			restrict: 'E',
-			templateUrl: 'partials/grocery-item.html'
-		}
-	})
 	.directive('quickEdit', function($timeout){
 		return{
+			restrict: 'A',
 			link: function($scope, element, attributes){
 
 				element.on('keydown', function(event){
@@ -36,16 +25,17 @@ angular.module('app.directives', [])
 			}
 		}
 	})
-	.directive('groceries', function(){
-		return {
+	.directive('pantry', function(){
+		return{
 			restrict: 'E',
-			templateUrl: 'partials/groceries.html'
+			templateUrl: 'partials/pantry-list.html',
+			controller: 'PantryItemsController'
 		}
 	})
-	.directive('groceryList', function(){
-		return {
+	.directive('pantryItem', function(){
+		return{
 			restrict: 'E',
-			templateUrl: 'partials/grocery-list.html'
+			templateUrl: 'partials/pantry-item.html'
 		}
 	})
 	.directive('pantryItemOptions', function(){
@@ -54,13 +44,46 @@ angular.module('app.directives', [])
 			templateUrl: 'partials/pantry-item-options.html'
 		}
 	})
+	.directive('groceryList', function(){
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/grocery-list.html',
+			controller: 'GroceryController'
+		}
+	})
+	.directive('groceryItem', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/grocery-item.html'
+		}
+	})
 	.directive('groceryItemOptions', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/grocery-item-options.html'
 		}
-	}).
-	directive('itemFilter', function(){
+	})
+	.directive('receipeList', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/receipe-list.html',
+			controller:'ReceipesController'
+		}
+	})
+	.directive('receipe', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/receipe.html',
+			controller: 'ReceipeController'
+		}
+	})
+	.directive('receipeOptions', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/receipe-options.html'
+		}
+	})
+	.directive('itemFilter', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/item-filter.html',

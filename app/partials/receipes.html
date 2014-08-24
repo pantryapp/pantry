@@ -1,0 +1,17 @@
+<h2>Recettes</h2>
+
+  <div class='list-group-item new-item-form'>
+    <form role="form" name="receipeForm"  ng-controller="ReceipeController" ng-submit="receipeForm.$valid && create()" novalidate>
+      <fieldset class="form-group row">
+        <div class='col-xs-6'>
+          <label for="item" class='sr-only'>Nom de la recette</label>
+          <input type="text" class="form-control" placeholder="Nom de la recette" ng-model="newReceipe.name" required />
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+<receipe-list></receipe-list>
+
+
+<!-- <groceries ng-controller="GroceryController"></groceries> -->

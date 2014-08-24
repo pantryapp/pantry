@@ -1,5 +1,3 @@
-<div class='list-group items-list'>
-
   <div class='list-group-item new-item-form'>
     <form role="form" name="pantryItemForm"  ng-controller="PantryItemController" ng-submit="pantryItemForm.$valid && createItem($parent)" novalidate>
       <fieldset class="form-group row">
@@ -11,8 +9,6 @@
     </form>
   </div>
 
-  <pantry-item class='list-group-item' ng-controller="PantryItemController" ng-repeat="item in pantryItems | orderBy:'name' | filter:{name:search.txt}" ></pantry-item>
+<pantry></pantry>
 
-</div>
-
-<groceries ng-controller="GroceryController"></groceries>
+<grocery-list ng-hide="true"></grocery-list>

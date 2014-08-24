@@ -108,7 +108,8 @@ angular.module('app.controllers', [])
 				resolve: {
 					args: function(){
 						return {
-							item: $scope.item
+							item: $scope.item,
+							from: 'votre garde-manger'
 						}
 					}
 				}
@@ -116,7 +117,7 @@ angular.module('app.controllers', [])
 			.result.then(function(value){
 				if( value === true ) $scope.deleteItem();
 			}, function () {
-				$log.info('Modal dismissed at: ' + new Date());
+				//dismiss
 			});
 		};
 
@@ -236,12 +237,123 @@ angular.module('app.controllers', [])
 
 
 	}])
+	.controller('ReceipesController', ['$scope', 'PantryStorage', 'PantryItemEvents', function($scope, PantryStorage, PantryItemEvents){
+
+		/*
+		 * Public
+		 */
+		$scope.pantryItems = PantryStorage.getPantryItems();
+		$scope.receipes = PantryStorage.getReceipes();
+		$scope.search   = {};
+
+		$scope.saveReceipes = function(){return saveReceipes();};
+
+		/*
+		 * Private
+		 */
+
+		var saveReceipes = function(){
+			PantryStorage.saveReceipes($scope.receipes);
+		}
+
+
+		/*
+		 * Event listener
+		 */
+
+		 $scope.$watch('receipes.length', function(){
+		 	PantryStorage.saveReceipes($scope.receipes);
+		 });
+
+		 PantryItemEvents.registerObserverForEvent('SEARCH', function(term){
+		 	$scope.search.txt = term;
+		 });
+
+
+	}])
+	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', function($scope, $modal, Slug, guid){
+
+		/*
+		 * Public
+		 */
+
+		$scope.toggled 		  = false;
+		$scope.editingReceipe = {};
+
+
+		$scope.create = function(){
+			$scope.receipe = {};
+			$scope.receipe.name = $scope.newReceipe.name;
+			$scope.receipe.slug = Slug.slugify($scope.newReceipe.name);
+			$scope.receipe.id 	= guid.new();
+			$scope.receipes.push($scope.receipe);
+			$scope.newReceipe = {};
+			$scope.receipeForm.$setPristine();
+		}
+
+		$scope.update = function(){
+			$scope.receipe.name = $scope.editingReceipe.name;
+			$scope.receipe.slug = Slug.slugify($scope.receipe.name);
+			$scope.toggled 		= false;
+		}
+
+		$scope.openItem = function(){
+			$scope.toggled = true;
+			$scope.editingReceipe.name = $scope.receipe.name;
+		}
+
+		$scope.confirmDelete = function(){
+			$modal.open({
+				templateUrl: 'partials/modals/confirm.html',
+				controller: 'DeleteModalInstanceController',
+				size: 'sm',
+				resolve: {
+					args: function(){
+						return {
+							item: $scope.receipe,
+							from: 'vos recettes'
+						}
+					}
+				}
+			})
+			.result.then(function(value){
+				if( value === true ) deleteItem();
+			}, function () {
+				//dismiss
+			});
+		};
+
+		/*
+		 * Private
+		 */
+
+		var deleteItem = function(){
+			$scope.receipes.splice($scope.receipes.indexOf($scope.receipe), 1);
+		}
+
+		/*
+		 * Event listeners
+		 */
+
+		$scope.$watch('receipe.name', function(newValue, oldValue){
+			if( newValue != oldValue && oldValue != undefined ){
+				$scope.saveReceipes();
+			}
+		});
+
+
+
+	}])
 	.controller('SearchController', ['$scope', 'PantryItemEvents', function($scope, PantryItemEvents){
 		$scope.search = {};
 
 		$scope.$watch('search.txt', function(value){
 			PantryItemEvents.notifyObservers('SEARCH', value);
 		});
+
+		$scope.reset = function(){
+			$scope.search = {};
+		}
 	}])
 	.controller('HeaderController', ['$scope', '$location', function($scope, $location){
 		console.log('HeaderController')
@@ -251,6 +363,7 @@ angular.module('app.controllers', [])
 	}])
 	.controller('DeleteModalInstanceController', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
 		$scope.item = args.item;
+		$scope.from = args.from;
 
   		$scope.ok = function () {
     		$modalInstance.close(true);

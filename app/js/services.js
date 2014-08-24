@@ -16,6 +16,12 @@ angular.module('app.services', [])
 			saveGroceries: function(groceries){
 				localStorageService.set('pantry.groceries', groceries);
 			},
+			getReceipes: function(){
+				return localStorageService.get('pantry.receipes') || [];
+			},
+			saveReceipes: function(receipes){
+				localStorageService.set('pantry.receipes', receipes);
+			},
 			itemAlreadyInCollection: function(item, collection){
 				for(var i=0, in_array=false;i<collection.length;i++){
 					if( collection[i].id == item.id ){
