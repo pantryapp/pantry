@@ -11,8 +11,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/app.css"/>
-  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
-  <script src="bower_components/fastclick/lib/fastclick.js"></script>
 </head>
 <body ng-controller="PantryController">
 
@@ -30,24 +28,34 @@
         <item-filter></item-filter>
   </nav>
 
+<div class='wrapper'>
   <div ng-view></div>
+</div>
 
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+  
+  <script src="bower_components/fastclick/lib/fastclick.js"></script>
   <script src="bower_components/angular/angular.js"></script>
-  <script src="js/libs/angular-local-storage.min.js"></script>
-  <script src="js/libs/slugify.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="js/libs/angular-local-storage.min.js"></script>
+  <script src="js/libs/slugify.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+
+  <!-- 
+  <script src="js/build/_bower.min.js"></script>
+  <script src="js/build/pantry.min.js"></script>
+   -->
+
   
 
   <script type="text/javascript">

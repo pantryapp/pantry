@@ -29,3 +29,5 @@ var app = angular.module('app', [
   		redirectTo: '/pantry'
   	});
 }]);
+
+console.log('app');
