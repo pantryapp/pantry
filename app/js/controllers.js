@@ -82,10 +82,15 @@ angular.module('app.controllers', [])
 		};
 
 		$scope.toggleOutOfStock = function(){
-			if( !$scope.item.outOfStocK) PantryItemEvents.notifyObservers('OUTOFSTOCK', $scope.item);	
+
 			$scope.item.outOfStock = !$scope.item.outOfStock;
+			if( !$scope.item.outOfStock){
+				animate();
+			}else {
+				PantryItemEvents.notifyObservers('OUTOFSTOCK', $scope.item);	
+			}
+
 			closeItem();
-			if( !$scope.item.outOfStock ) animate();
 		};
 
 		$scope.confirmDelete = function(){
