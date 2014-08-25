@@ -317,20 +317,16 @@ var app = angular.module('app', [
   		  templateUrl: 'partials/pantry.html',
   	});
   $routeProvider.when('/groceries',{
-    templateUrl: 'partials/groceries.html',
-    controller: 'GroceryController'
+    templateUrl: 'partials/groceries.html'
   });
   $routeProvider.when('/receipes', {
-    templateUrl: 'partials/receipes.html',
-    controller: 'ReceipesController'
+    templateUrl: 'partials/receipes.html'
   });
   $routeProvider.otherwise(
   	{
   		redirectTo: '/pantry'
   	});
 }]);
-
-console.log('app');
 'use strict';
 
 /* Controllers */
@@ -343,7 +339,6 @@ angular.module('app.controllers', [])
 
 	}])
 	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, PantryStorage, PantryItemEvents, PantryItemFactory){
-
 		/*
 		 * Public
 		 */
@@ -388,6 +383,16 @@ angular.module('app.controllers', [])
 		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
 			$scope.search[search.prop] = search.value;
 		});
+
+		PantryItemEvents.registerObserverForEvent('CREATE_NEW_PANTRYITEM', function(pantryItemName){
+			var pantryItem = PantryItemFactory.new({
+				name:pantryItemName,
+				outOfStock:true
+			});
+
+			PantryItemEvents.notifyObservers('OUTOFSTOCK', pantryItem);
+			$scope.pantryItems.push(pantryItem);
+		});		
 
 	}])
 	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemEvents, PantryItemFactory){
@@ -496,7 +501,6 @@ angular.module('app.controllers', [])
 
 	}])
 	.controller('GroceryController', ['$scope', 'PantryStorage', 'PantryItemEvents', function($scope, PantryStorage, PantryItemEvents){
-
 		/*
 		 * Public
 		 */
@@ -504,6 +508,7 @@ angular.module('app.controllers', [])
 		$scope.groceryItems = PantryStorage.getGroceries();
 		$scope.search 		= {};
 
+		$scope.hasGroceries = $scope.groceryItems.length > 0 
 
 		$scope.clearGroceries = function(){
 			$scope.groceryItems = [];
@@ -535,9 +540,15 @@ angular.module('app.controllers', [])
 
 		$scope.$watch('groceryItems.length', function(){
 			PantryItemEvents.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
+			$scope.hasGroceries = $scope.groceryItems.length > 0 
 			save();
 		});
 
+		PantryItemEvents.registerObserverForEvent('NEW_GROCERY', function(item){
+			console.log(item);
+			if(item != undefined) 
+				addGrocery(item);
+		});
 		PantryItemEvents.registerObserverForEvent('OUTOFSTOCK', function(item){
 			addGrocery(item);
 		});
@@ -553,7 +564,8 @@ angular.module('app.controllers', [])
 		 * Public
 		 */
 
-		$scope.toggled = false;
+		$scope.toggled 		   = false;
+		$scope.groceryItemForm = {};
 
 		$scope.toggleOptions = function(){
 			$scope.toggled = !$scope.toggled;
@@ -566,6 +578,25 @@ angular.module('app.controllers', [])
 
 		$scope.delete = function(){
 			$scope.removeGrocery($scope.item);
+		};
+
+		$scope.createNew = function(){
+			PantryItemEvents.notifyObservers('CREATE_NEW_PANTRYITEM', $scope.newGroceryItem);
+			resetNewGroceryForm();
+		}
+
+		$scope.create = function(){
+			PantryItemEvents.notifyObservers('NEW_GROCERY', $scope.newGroceryItem);
+			resetNewGroceryForm();
+		}
+
+		/*
+		 * Private
+		 */
+
+		var resetNewGroceryForm = function(){
+			$scope.newGroceryItem = null;
+			$scope.groceryItemForm.$setPristine();
 		}
 
 
@@ -699,7 +730,6 @@ angular.module('app.controllers', [])
 
 		$scope.toggleDropdown = function(){
 			$scope.dropdownIsOpen = !$scope.dropdownIsOpen;
-			console.log($scope.dropdownIsOpen);
 		}
 
 		$scope.toggleCollapse = function(){
@@ -754,7 +784,7 @@ angular.module('app.directives', [])
 			}
 		}
 	})
-	.directive('pantry', function(){
+	.directive('pantryItems', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/pantry-list.html',
@@ -885,25 +915,31 @@ angular.module('app.services', [])
 			},
 			notifyObservers: function(event, args){
 				angular.forEach(obsCallbacks, function(obj){
-					if( obj.event == event ) obj.callback(args);
+					if( obj.event == event )
+						obj.callback(args);
 				});
 			}
 		}
 	}])
-	.factory('PantryItemFactory', ['guid', function(guid){
+	.factory('PantryItemFactory', ['guid', 'Slug', function(guid, Slug){
+		var item_model = {
+			slug:function(name){return Slug.slugify(name);},
+			outOfStock:false
+		};
+
 		return{
 			new:function(model){
 				return {
 					name:model.name,
-					slug:model.slug,
-					outOfStock:false,
+					slug:model.slug != undefined ? model.slug : item_model.slug(model.name),
+					outOfStock:model.outOfStock != undefined ? model.outOfStock : item_model.outOfStock,
 					id:guid.new()
 				}
 			},
 			duplicate:function(model){
 				return{
 					name:model.name,
-					slug:model.slug,
+					slug:Slug.slugify(model.name),
 					outOfStock:model.outOfStock,
 					id:model.id
 				}

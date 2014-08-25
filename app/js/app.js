@@ -17,17 +17,13 @@ var app = angular.module('app', [
   		  templateUrl: 'partials/pantry.html',
   	});
   $routeProvider.when('/groceries',{
-    templateUrl: 'partials/groceries.html',
-    controller: 'GroceryController'
+    templateUrl: 'partials/groceries.html'
   });
   $routeProvider.when('/receipes', {
-    templateUrl: 'partials/receipes.html',
-    controller: 'ReceipesController'
+    templateUrl: 'partials/receipes.html'
   });
   $routeProvider.otherwise(
   	{
   		redirectTo: '/pantry'
   	});
 }]);
-
-console.log('app');

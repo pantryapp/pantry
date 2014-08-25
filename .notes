@@ -1,3 +1,9 @@
 Sections idées
 	- Proposition de recette basée sur les ingredients disponible
 	- Sortir des recettes à partir d'un ingrédient.
+
+Liste d'épicerie
+	* Ajouter des éléments sans les mettre outOfStock
+	- Créer un pantryItem à l'ajout d'un groceryItem si le pantryItem n'existe pas
+
+Directive pour les message de confirmation

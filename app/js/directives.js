@@ -25,7 +25,7 @@ angular.module('app.directives', [])
 			}
 		}
 	})
-	.directive('pantry', function(){
+	.directive('pantryItems', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/pantry-list.html',

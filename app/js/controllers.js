@@ -10,7 +10,6 @@ angular.module('app.controllers', [])
 
 	}])
 	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, PantryStorage, PantryItemEvents, PantryItemFactory){
-
 		/*
 		 * Public
 		 */
@@ -55,6 +54,16 @@ angular.module('app.controllers', [])
 		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
 			$scope.search[search.prop] = search.value;
 		});
+
+		PantryItemEvents.registerObserverForEvent('CREATE_NEW_PANTRYITEM', function(pantryItemName){
+			var pantryItem = PantryItemFactory.new({
+				name:pantryItemName,
+				outOfStock:true
+			});
+
+			PantryItemEvents.notifyObservers('OUTOFSTOCK', pantryItem);
+			$scope.pantryItems.push(pantryItem);
+		});		
 
 	}])
 	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemEvents, PantryItemFactory){
@@ -163,7 +172,6 @@ angular.module('app.controllers', [])
 
 	}])
 	.controller('GroceryController', ['$scope', 'PantryStorage', 'PantryItemEvents', function($scope, PantryStorage, PantryItemEvents){
-
 		/*
 		 * Public
 		 */
@@ -171,6 +179,7 @@ angular.module('app.controllers', [])
 		$scope.groceryItems = PantryStorage.getGroceries();
 		$scope.search 		= {};
 
+		$scope.hasGroceries = $scope.groceryItems.length > 0 
 
 		$scope.clearGroceries = function(){
 			$scope.groceryItems = [];
@@ -202,9 +211,15 @@ angular.module('app.controllers', [])
 
 		$scope.$watch('groceryItems.length', function(){
 			PantryItemEvents.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
+			$scope.hasGroceries = $scope.groceryItems.length > 0 
 			save();
 		});
 
+		PantryItemEvents.registerObserverForEvent('NEW_GROCERY', function(item){
+			console.log(item);
+			if(item != undefined) 
+				addGrocery(item);
+		});
 		PantryItemEvents.registerObserverForEvent('OUTOFSTOCK', function(item){
 			addGrocery(item);
 		});
@@ -220,7 +235,8 @@ angular.module('app.controllers', [])
 		 * Public
 		 */
 
-		$scope.toggled = false;
+		$scope.toggled 		   = false;
+		$scope.groceryItemForm = {};
 
 		$scope.toggleOptions = function(){
 			$scope.toggled = !$scope.toggled;
@@ -233,6 +249,25 @@ angular.module('app.controllers', [])
 
 		$scope.delete = function(){
 			$scope.removeGrocery($scope.item);
+		};
+
+		$scope.createNew = function(){
+			PantryItemEvents.notifyObservers('CREATE_NEW_PANTRYITEM', $scope.newGroceryItem);
+			resetNewGroceryForm();
+		}
+
+		$scope.create = function(){
+			PantryItemEvents.notifyObservers('NEW_GROCERY', $scope.newGroceryItem);
+			resetNewGroceryForm();
+		}
+
+		/*
+		 * Private
+		 */
+
+		var resetNewGroceryForm = function(){
+			$scope.newGroceryItem = null;
+			$scope.groceryItemForm.$setPristine();
 		}
 
 
@@ -366,7 +401,6 @@ angular.module('app.controllers', [])
 
 		$scope.toggleDropdown = function(){
 			$scope.dropdownIsOpen = !$scope.dropdownIsOpen;
-			console.log($scope.dropdownIsOpen);
 		}
 
 		$scope.toggleCollapse = function(){

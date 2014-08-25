@@ -1,5 +1,22 @@
-<h3>Liste d'épicerie</h3>
+<h3>
+Liste d'épicerie
+<button class='btn btn-info' ng-show="hasGroceries" ng-click="clearGroceries()">Vider</button>
+</h3>
+
+<div class='list-group-item new-item-form'>
+	<form role="form" name="groceryItemForm" ng-controller="GroceryItemController" ng-submit="groceryItemForm.$valid && createNew();" novalidate>
+	  <fieldset class="form-group row">
+	    <div class='col-xs-6'>
+
+			<input type="text" placeholder="Nouvel ingrédient" ng-model="newGroceryItem" typeahead="item as item.name for item in pantryItems | filter:$viewValue | limitTo:8" typeahead-on-select="create()" class="form-control" required>
+
+			<!-- <button type="submit" class='btn btn-success'>Ajouter</button> -->
+	    </div>
+	  </fieldset>
+	</form>
+
+</div>
 
 <grocery-list></grocery-list>
 
-<pantry ng-hide="true"></pantry>
+<pantry-items ng-hide="true"></pantry-items>

@@ -54,25 +54,31 @@ angular.module('app.services', [])
 			},
 			notifyObservers: function(event, args){
 				angular.forEach(obsCallbacks, function(obj){
-					if( obj.event == event ) obj.callback(args);
+					if( obj.event == event )
+						obj.callback(args);
 				});
 			}
 		}
 	}])
-	.factory('PantryItemFactory', ['guid', function(guid){
+	.factory('PantryItemFactory', ['guid', 'Slug', function(guid, Slug){
+		var item_model = {
+			slug:function(name){return Slug.slugify(name);},
+			outOfStock:false
+		};
+
 		return{
 			new:function(model){
 				return {
 					name:model.name,
-					slug:model.slug,
-					outOfStock:false,
+					slug:model.slug != undefined ? model.slug : item_model.slug(model.name),
+					outOfStock:model.outOfStock != undefined ? model.outOfStock : item_model.outOfStock,
 					id:guid.new()
 				}
 			},
 			duplicate:function(model){
 				return{
 					name:model.name,
-					slug:model.slug,
+					slug:Slug.slugify(model.name),
 					outOfStock:model.outOfStock,
 					id:model.id
 				}

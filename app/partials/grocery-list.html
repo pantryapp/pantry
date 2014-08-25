@@ -1,7 +1,4 @@
-<button class='btn btn-info' ng-click="clearGroceries()">Clear list</button>
-
 <div class='list-group items-list groceries'>
-
-  <grocery-item class='list-group-item' ng-controller="GroceryItemController" ng-repeat="item in groceryItems | orderBy:'name' | filter:{name : search.txt}" ></pantry-item>
+  <grocery-item class='list-group-item' ng-controller="GroceryItemController" ng-repeat="item in groceryItems | orderBy:'name' | filter:{name : search.name}" ></pantry-item>
 
 </div>
