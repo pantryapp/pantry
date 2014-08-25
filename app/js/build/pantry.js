@@ -578,7 +578,6 @@ angular.module('app.controllers', [])
 		$scope.pantryItems = PantryStorage.getPantryItems();
 		$scope.receipes = PantryStorage.getReceipes();
 		$scope.search   = {};
-		console.log($scope.pantryItems);
 
 		$scope.saveReceipes = function(){return saveReceipes();};
 
@@ -695,10 +694,15 @@ angular.module('app.controllers', [])
 	}])
 	.controller('HeaderController', ['$scope', '$location', 'PantryItemEvents', function($scope, $location, PantryItemEvents){
 
-		$scope.isCollapsed = true;
+		$scope.isCollapsed    = true;
+		$scope.dropdownIsOpen = false;
+
+		$scope.toggleDropdown = function(){
+			$scope.dropdownIsOpen = !$scope.dropdownIsOpen;
+			console.log($scope.dropdownIsOpen);
+		}
 
 		$scope.toggleCollapse = function(){
-			console.log('Fds');
 			$scope.isCollapsed = !$scope.isCollapsed;
 		}
 		$scope.isActive = function(path){
