@@ -331,14 +331,18 @@ var app = angular.module('app', [
 
 /* Controllers */
 angular.module('app.controllers', [])
-	.controller('PantryController', ['$scope', '$log', function($scope, $log){
+	.controller('PantryController', ['$scope', '$route', '$log', 'EventDispatcher', function($scope, $route, $log, EventDispatcher){
 
 		$scope.debug = function(value){
 			$log.info(value);
 		}
 
+		$scope.$on("$routeChangeSuccess", function(){
+			// console.log(' ---- VIEW CHANGE ----');
+			EventDispatcher.clear();
+		});
 	}])
-	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, PantryStorage, PantryItemEvents, PantryItemFactory){
+	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', 'lookup', function($scope, PantryStorage, EventDispatcher, PantryItemFactory, lookup){
 		/*
 		 * Public
 		 */
@@ -346,15 +350,41 @@ angular.module('app.controllers', [])
 		$scope.pantryItems = PantryStorage.getPantryItems();
 		$scope.search 	   = {};
 
-		$scope.savePantryItems = function(){return savePantryItems();};
 
+		$scope.savePantryItems = function(){return savePantryItems();};
 		/*
 		 * Private
 		 */
 
-		 var savePantryItems = function(){
-		 	PantryStorage.savePantryItems($scope.pantryItems);
-		 }
+		var events = {
+			RESTOCK: function(groceryItem){
+				var pantryItem = lookup.lookupFor($scope.pantryItems, groceryItem, 'id');
+
+				// pantryItem will be undefined if it has been deleted whilst the item was in the grocery list.
+				if( pantryItem != undefined ){
+					pantryItem.outOfStock = false;
+				}else{
+					// Create new item if it has been deleted
+					pantryItem = PantryItemFactory.duplicate(groceryItem);
+					$scope.pantryItems.push(pantryItem);
+				}
+			},
+			SEARCH: function(search){
+				$scope.search[search.prop] = search.value;
+			},
+			CREATE_NEW_PANTRYITEM: function(pantryItemName){
+				var pantryItem = PantryItemFactory.new({
+					name:pantryItemName,
+					outOfStock:true
+				});
+
+				EventDispatcher.notifyObservers('OUTOFSTOCK', pantryItem);
+				$scope.pantryItems.push(pantryItem);
+			}
+		};
+
+		var savePantryItems = function(){PantryStorage.savePantryItems($scope.pantryItems);}
+
 
 		/*
 		 * Event listeners
@@ -364,38 +394,14 @@ angular.module('app.controllers', [])
 		$scope.$watchCollection('pantryItems.length', function(){
 			savePantryItems();
 		});
-
-		// Controller catch the call from GroceryItem
-		PantryItemEvents.registerObserverForEvent('RESTOCK', function(groceryItem){
-
-			var pantryItem = PantryStorage.lookupFor($scope.pantryItems, groceryItem);
-
-			// pantryItem will be undefined if it has been deleted whilst the item was in the grocery list.
-			if( pantryItem != undefined ){
-				pantryItem.outOfStock = false;
-			}else{
-				// Create new item if it has been deleted
-				pantryItem = PantryItemFactory.duplicate(groceryItem);
-				$scope.pantryItems.push(pantryItem);
-			}
-		});
-
-		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
-			$scope.search[search.prop] = search.value;
-		});
-
-		PantryItemEvents.registerObserverForEvent('CREATE_NEW_PANTRYITEM', function(pantryItemName){
-			var pantryItem = PantryItemFactory.new({
-				name:pantryItemName,
-				outOfStock:true
-			});
-
-			PantryItemEvents.notifyObservers('OUTOFSTOCK', pantryItem);
-			$scope.pantryItems.push(pantryItem);
-		});		
+	
+		// Controller event listeners
+		EventDispatcher.registerObserverForEvents(events);		
+		// console.log('pantry items');
+		// EventDispatcher.debug();
 
 	}])
-	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'PantryItemEvents', 'PantryItemFactory', function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemEvents, PantryItemFactory){
+	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', function($scope, $modal, $log, Slug, $timeout, PantryStorage, EventDispatcher, PantryItemFactory){
 
 		/*
 		 * Public
@@ -422,7 +428,7 @@ angular.module('app.controllers', [])
 			closeItem();
 			animate();
 
-			PantryItemEvents.notifyObservers('UPDATE', $scope.item);
+			EventDispatcher.notifyObservers('UPDATE', $scope.item);
 		};
 
 		$scope.toggleOutOfStock = function(){
@@ -431,7 +437,7 @@ angular.module('app.controllers', [])
 			if( !$scope.item.outOfStock){
 				animate();
 			}else {
-				PantryItemEvents.notifyObservers('OUTOFSTOCK', $scope.item);	
+				EventDispatcher.notifyObservers('OUTOFSTOCK', $scope.item);	
 			}
 
 			closeItem();
@@ -472,6 +478,7 @@ angular.module('app.controllers', [])
 		 * Private
 		 */
 
+
 		var animate = function(){
 			$timeout(function(){$scope.edited = true;}, 100);
 			$timeout(function(){$scope.edited = false;}, 800);
@@ -500,7 +507,7 @@ angular.module('app.controllers', [])
 		});
 
 	}])
-	.controller('GroceryController', ['$scope', 'PantryStorage', 'PantryItemEvents', function($scope, PantryStorage, PantryItemEvents){
+	.controller('GroceryController', ['$scope', 'PantryStorage', 'EventDispatcher', function($scope, PantryStorage, EventDispatcher){
 		/*
 		 * Public
 		 */
@@ -520,6 +527,19 @@ angular.module('app.controllers', [])
 		 * Private
 		 */
 
+		var events = {
+			ADD_GROCERY: function(item){
+				if(item != undefined) 
+					addGrocery(item);
+			},
+			OUTOFSTOCK: function(item){
+				addGrocery(item);
+			},
+			SEARCH: function(search){
+				$scope.search[search.prop] = search.value;
+			}
+		}
+
 		var addGrocery = function(item){
 			if( !PantryStorage.itemAlreadyInCollection(item, $scope.groceryItems) ){
 				$scope.groceryItems.push({name:item.name, id:item.id});
@@ -538,27 +558,21 @@ angular.module('app.controllers', [])
 		 * Event listeners
 		 */ 
 
+
 		$scope.$watch('groceryItems.length', function(){
-			PantryItemEvents.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
+			console.log('grocery length changed')
+			EventDispatcher.debug();
+			EventDispatcher.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
 			$scope.hasGroceries = $scope.groceryItems.length > 0 
 			save();
 		});
 
-		PantryItemEvents.registerObserverForEvent('NEW_GROCERY', function(item){
-			console.log(item);
-			if(item != undefined) 
-				addGrocery(item);
-		});
-		PantryItemEvents.registerObserverForEvent('OUTOFSTOCK', function(item){
-			addGrocery(item);
-		});
-
-		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
-			$scope.search[search.prop] = search.value;
-		});
+		EventDispatcher.registerObserverForEvents(events);
+		// console.log('groceries');
+		// EventDispatcher.debug();
 
 	}])
-	.controller('GroceryItemController', ['$scope', 'PantryItemEvents', function($scope, PantryItemEvents){
+	.controller('GroceryItemController', ['$scope', 'EventDispatcher', function($scope, EventDispatcher){
 
 		/*
 		 * Public
@@ -572,7 +586,8 @@ angular.module('app.controllers', [])
 		};
 
 		$scope.buy = function(){
-			PantryItemEvents.notifyObservers('RESTOCK', $scope.item);
+			// EventDispatcher.debug();
+			EventDispatcher.notifyObservers('RESTOCK', $scope.item);
 			$scope.removeGrocery($scope.item);
 		};
 
@@ -580,13 +595,13 @@ angular.module('app.controllers', [])
 			$scope.removeGrocery($scope.item);
 		};
 
-		$scope.createNew = function(){
-			PantryItemEvents.notifyObservers('CREATE_NEW_PANTRYITEM', $scope.newGroceryItem);
+		$scope.createNew = function(from){
+			EventDispatcher.notifyObservers('CREATE_NEW_PANTRYITEM', $scope.newGroceryItem);
 			resetNewGroceryForm();
 		}
 
 		$scope.create = function(){
-			PantryItemEvents.notifyObservers('NEW_GROCERY', $scope.newGroceryItem);
+			EventDispatcher.notifyObservers('ADD_GROCERY', $scope.newGroceryItem);
 			resetNewGroceryForm();
 		}
 
@@ -601,23 +616,56 @@ angular.module('app.controllers', [])
 
 
 	}])
-	.controller('ReceipesController', ['$scope', 'PantryStorage', 'PantryItemEvents', function($scope, PantryStorage, PantryItemEvents){
+	.controller('ReceipesController', ['$scope', '$modal', 'PantryStorage', 'EventDispatcher', function($scope, $modal, PantryStorage, EventDispatcher){
 
 		/*
 		 * Public
 		 */
-		$scope.pantryItems = PantryStorage.getPantryItems();
-		$scope.receipes = PantryStorage.getReceipes();
-		$scope.search   = {};
+		$scope.receipes    = PantryStorage.getReceipes();
+		$scope.search      = {};
 
 		$scope.saveReceipes = function(){return saveReceipes();};
+		$scope.openForm = function(){return openForm();};
 
 		/*
 		 * Private
 		 */
 
+		var modalForm;
+
+		var events = {
+			NEW_RECEIPE: function(receipe){
+				$scope.receipes.push(receipe);
+				modalForm.close();
+			},
+			RECEIPE_EDITED: function(){
+				PantryStorage.saveReceipes($scope.receipes);
+			},
+			SEARCH: function(search){
+				$scope.search[search.prop] = search.value;
+			}
+		}
+
 		var saveReceipes = function(){
 			PantryStorage.saveReceipes($scope.receipes);
+		}
+
+		var openForm = function(){
+			modalForm = $modal.open({
+				templateUrl: 'partials/modals/receipe-form.html',
+				controller: 'ReceipeModalInstance',
+				size: 'lg',
+				resolve: {
+					args: function(){
+						return {
+							panelTitle:"Nouvelle recette",
+							pantryItems:$scope.pantryItems,
+							mode:'create',
+							receipe:{name:null,ingredients:[]}
+						}
+					}
+				}
+			});
 		}
 
 		/*
@@ -628,37 +676,62 @@ angular.module('app.controllers', [])
 	 		PantryStorage.saveReceipes($scope.receipes);
 		});
 
-		PantryItemEvents.registerObserverForEvent('SEARCH', function(search){
-			$scope.search[search.prop] = search.value;
-		});
+		EventDispatcher.registerObserverForEvents(events);
+
+	}])
+	.controller('ReceipeModalInstance', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
+		$scope.formReceipe  = {
+			name:null,
+			ingredients:[]
+		};
+
+		$scope.panelTitle  	   = args.panelTitle;
+		$scope.pantryItems     = args.pantryItems;
+		$scope.mode 	       = args.mode != undefined ? args.mode : 'edit';
+
+		if( args.receipe != undefined )
+			$scope.formReceipe.name		    = args.receipe.name;
+			$scope.formReceipe.ingredients  = args.receipe.ingredients;
 
 
 	}])
-	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', function($scope, $modal, Slug, guid){
+	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', 'EventDispatcher', function($scope, $modal, Slug, guid, EventDispatcher){
 
 		/*
 		 * Public
 		 */
-
+		 
 		$scope.toggled 		  = false;
-		$scope.editingReceipe = {};		
+		$scope.editingReceipe = {
+			name:null,
+			ingredients:[]
+		};		
+		$scope.modalForm;
 
+		$scope.create  		= function(){return create();};
+		$scope.updateInline = function(){return updateInline();}
+		$scope.openForm 	= function(){return openForm();};
 
-		$scope.create = function(){
-			$scope.receipe = {};
-			$scope.receipe.name = $scope.newReceipe.name;
-			$scope.receipe.slug = Slug.slugify($scope.newReceipe.name);
-			$scope.receipe.id 	= guid.new();
-			$scope.receipe.ingredients = $scope.newReceipe.ingredients;
-			$scope.receipes.push($scope.receipe);
-			$scope.newReceipe = {};
-			$scope.receipeForm.$setPristine();
+		$scope.save = function(){
+			switch($scope.mode){
+				case 'create':
+					create();
+				break;
+				case 'edit':
+					update();
+				break;
+			}
 		}
 
-		$scope.update = function(){
-			$scope.receipe.name = $scope.editingReceipe.name;
-			$scope.receipe.slug = Slug.slugify($scope.receipe.name);
-			$scope.toggled 		= false;
+		$scope.addIngredient = function(){
+			console.log('add ingredient');
+			$scope.formReceipe.ingredients.push($scope.ingredient);
+			$scope.ingredient = null;
+		}	
+
+		$scope.removeIngredient = function(ingredient){
+			console.log('remove ingredient');
+			$scope.formReceipe.ingredients.splice($scope.formReceipe.ingredients.indexOf(ingredient), 1);
 		}
 
 		$scope.openItem = function(){
@@ -691,8 +764,56 @@ angular.module('app.controllers', [])
 		 * Private
 		 */
 
+
+		var create = function(){
+			console.log('create');
+			EventDispatcher.notifyObservers('NEW_RECEIPE', {
+				name 	    : $scope.formReceipe.name,
+				slug 	    : Slug.slugify($scope.formReceipe.name),
+				id 		    : guid.new(),
+				ingredients : $scope.formReceipe.ingredients
+			});
+		};
+
+		var update = function(){
+			console.log('update');
+			$scope.receipe.name 	   = $scope.formReceipe.name;
+			$scope.receipe.slug  	   = Slug.slugify($scope.formReceipe.name);
+			$scope.receipe.ingredients = $scope.formReceipe.ingredients;
+			EventDispatcher.notifyObservers('RECEIPE_EDITED');
+
+			$scope.modalForm.close();
+
+		};
+
+		var updateInline = function(){
+			console.log('update inline');
+			$scope.receipe.name = $scope.editingReceipe.name;
+			$scope.receipe.slug = Slug.slugify($scope.editingReceipe.name);
+			$scope.toggled 		= false;
+		}
+
 		var deleteItem = function(){
 			$scope.receipes.splice($scope.receipes.indexOf($scope.receipe), 1);
+		}
+
+		var openForm = function(){
+			$scope.toggled = false;
+			$scope.modalForm = $modal.open({
+					templateUrl: 'partials/modals/receipe-form.html',
+					controller: 'ReceipeModalInstance',
+					size: 'lg',
+					scope:$scope,
+					resolve: {
+						args: function(){
+							return {
+								panelTitle:"Modifier " + $scope.receipe.name,
+								pantryItems:$scope.pantryItems,
+								receipe: $scope.receipe
+							}
+						}
+					}
+				});
 		}
 
 		/*
@@ -701,29 +822,28 @@ angular.module('app.controllers', [])
 
 		$scope.$watch('receipe.name', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined ){
+				console.log('receipe name change');
 				$scope.saveReceipes();
 			}
 		});
 
-
-
 	}])
-	.controller('SearchController', ['$scope', 'PantryItemEvents', function($scope, PantryItemEvents){
+	.controller('SearchController', ['$scope', 'EventDispatcher', function($scope, EventDispatcher){
 		$scope.search = {};
 
 		$scope.$watch('search.name', function(value){
-			PantryItemEvents.notifyObservers('SEARCH', {prop:'name', value:value});
+			EventDispatcher.notifyObservers('SEARCH', {prop:'name', value:value});
 		});
 
 		$scope.$watch('search.category', function(value){
-			PantryItemEvents.notifyObservers('SEARCH', {prop:'category', value:value});
+			EventDispatcher.notifyObservers('SEARCH', {prop:'category', value:value});
 		});
 
 		$scope.reset = function(){
 			$scope.search = {};
 		}
 	}])
-	.controller('HeaderController', ['$scope', '$location', 'PantryItemEvents', function($scope, $location, PantryItemEvents){
+	.controller('HeaderController', ['$scope', '$location', 'EventDispatcher', function($scope, $location, EventDispatcher){
 
 		$scope.isCollapsed    = true;
 		$scope.dropdownIsOpen = false;
@@ -739,9 +859,11 @@ angular.module('app.controllers', [])
 			return path == $location.path();
 		}
 
-		PantryItemEvents.registerObserverForEvent('GROCERY_CHANGE', function(groceries){
+		console.log('register header');
+		EventDispatcher.registerObserverForEvent('GROCERY_CHANGE', function(groceries){
+			console.log('catched groceries length change : '  + groceries.length);
 			$scope.n_groceries = groceries.length > 0 ? groceries.length : null;
-		})
+		}, true)
 	}])
 	.controller('DeleteModalInstanceController', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
 		$scope.item = args.item;
@@ -756,7 +878,7 @@ angular.module('app.controllers', [])
   		};
 	}]);
 
-// localStorage.clear();
+localStorage.clear();
 'use strict';
 
 /* Directives */
@@ -863,7 +985,7 @@ angular.module('app.filters', []);
 
 /* Services */
 angular.module('app.services', [])
-	.factory('PantryStorage', ['localStorageService', 'PantryItemEvents', function(localStorageService, PantryItemEvents){
+	.factory('PantryStorage', ['localStorageService', 'EventDispatcher', function(localStorageService, EventDispatcher){
 		return {
 			getPantryItems: function(){
 				return localStorageService.get('pantry.items') || [];
@@ -890,34 +1012,58 @@ angular.module('app.services', [])
 					}
 				}
 				return in_array;
-			}, 
-			lookup:function(items){
-				var lookup = {};
-				for(var i=0, len=items.length;i<len;i++){
-					lookup[items[i].id] = items[i];
-				}
-				return lookup;
-			},
-			lookupFor:function(hay, stack){
-				var hay = this.lookup(hay);
-				return hay[stack.id];
 			}
 		}
 	}])
-	.service('PantryItemEvents', [function(){
+	.service('lookup', function(){
+		var sort = function(hay, key){
+			var lookup = {};
+			for(var i=0, len=hay.length;i<len;i++){
+				lookup[hay[i][key]] = hay[i];
+			}
+			return lookup;
+		}
+		return{
+			lookupFor:function(hay, needle, key){
+				var hay = sort(hay, key);
+				return hay[needle[key]];
+			}
+		}
+	})
+	.service('EventDispatcher', ['$log', function($log){
 		var	obsCallbacks = [];
 		return {
-			registerObserver: function(callback){
-				obsCallbacks.push(callback);
+			registerObserverForEvents: function(events){
+				var dispatch = this;
+				angular.forEach(events, function(callback, event){
+					dispatch.registerObserverForEvent(event, callback);
+				});
 			},
-			registerObserverForEvent: function(event, callback){
-				obsCallbacks.push({event:event, callback:callback});
+			registerObserverForEvent: function(event, callback, persistant){
+				obsCallbacks.push({
+					event:event, 
+					callback:callback, 
+					persistant: persistant != undefined ? persistant : false
+				});
 			},
 			notifyObservers: function(event, args){
 				angular.forEach(obsCallbacks, function(obj){
 					if( obj.event == event )
 						obj.callback(args);
 				});
+			},
+			// Clear all non persistant events
+			clear: function(){
+				var persistants = [];
+				for(var i=0;i<obsCallbacks.length;i++){
+					if( obsCallbacks[i].persistant )
+						persistants.push(obsCallbacks[i]);
+				}
+				obsCallbacks = persistants;
+			},
+			debug:function(){
+				$log.info(obsCallbacks.length + " events");
+				$log.debug(obsCallbacks);
 			}
 		}
 	}])

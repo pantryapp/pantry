@@ -42,12 +42,15 @@ angular.module('app.services', [])
 		}
 		return{
 			lookupFor:function(hay, needle, key){
+				// console.log(needle);
+				// console.log(hay);
 				var hay = sort(hay, key);
-				return hay[needle[key]];
+				console.log(hay);
+				return hay[needle];
 			}
 		}
 	})
-	.service('EventDispatcher', ['$log', function($log){
+	.service('EventDispatcher', ['lookup', function(lookup){
 		var	obsCallbacks = [];
 		return {
 			registerObserverForEvents: function(events){
@@ -56,12 +59,8 @@ angular.module('app.services', [])
 					dispatch.registerObserverForEvent(event, callback);
 				});
 			},
-			registerObserverForEvent: function(event, callback, persistant){
-				obsCallbacks.push({
-					event:event, 
-					callback:callback, 
-					persistant: persistant != undefined ? persistant : false
-				});
+			registerObserverForEvent: function(event, callback){
+				obsCallbacks.push({event:event, callback:callback});
 			},
 			notifyObservers: function(event, args){
 				angular.forEach(obsCallbacks, function(obj){
@@ -69,19 +68,7 @@ angular.module('app.services', [])
 						obj.callback(args);
 				});
 			},
-			// Clear all non persistant events
-			clear: function(){
-				var persistants = [];
-				for(var i=0;i<obsCallbacks.length;i++){
-					if( obsCallbacks[i].persistant )
-						persistants.push(obsCallbacks[i]);
-				}
-				obsCallbacks = persistants;
-			},
-			debug:function(){
-				$log.info(obsCallbacks.length + " events");
-				$log.debug(obsCallbacks);
-			}
+			clear: function(){obsCallbacks = [];}
 		}
 	}])
 	.factory('PantryItemFactory', ['guid', 'Slug', function(guid, Slug){

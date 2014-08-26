@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">{{panelTitle}}</div>
+  <div class="panel-body">
+    
+		<form role="form" name="receipeForm" ng-controller="ReceipeController" ng-submit="receipeForm.$valid && save()" novalidate>
+
+			<div class="form-group">
+		    	<label for="receipeName">Nom de la recette</label>
+		    	<input type="text" class="form-control" id="receipeName" ng-model="formReceipe.name" required />
+
+		  	</div>	
+
+		  	<div class='form-group'>
+				<input type="text" placeholder="Ajouter ingrédient" ng-model="ingredient" typeahead="ingredient as ingredient.name for ingredient in pantryItems | filter:$viewValue | limitTo:8" typeahead-on-select="addIngredient()" class="form-control" />
+			</div>
+
+			<div class='form-group ingredient-list'>
+				<a href="" class="label-info" ng-repeat="ingredient in formReceipe.ingredients" ng-click="removeIngredient(ingredient)">{{ingredient.name}} <span>[x]</span></a>
+			</div>
+
+		  	<button type="submit" class="btn btn-default">Sauvegarder</button>
+		  	<intput type="hidden" ng-model="mode" value="{{mode}}" />
+		</form>
+  
+
+
+
+  </div>
+</div>

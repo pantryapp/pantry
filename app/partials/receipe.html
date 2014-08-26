@@ -2,8 +2,8 @@
   <div class='item-wrapper' ng-class="{'active':toggled}">
 
     <div class='item edit-mode' ng-show="toggled">
-      <input type='text' quick-edit="toggled" on-edit="update()" ng-model="editingReceipe.name" />
-      <button type="button" class="btn btn-info"  ng-click="update();">OK</button>
+      <input type='text' quick-edit="toggled" on-edit="updateInline()" ng-model="editingReceipe.name" />
+      <button type="button" class="btn btn-info"  ng-click="updateInline();">OK</button>
     </div>
     <div class='item' ng-hide="toggled" ng-click="openItem();">
       <span class="glyphicon glyphicon-ok checkmark pull-left"></span>
@@ -13,9 +13,9 @@
 
       <receipe-options class="btn-group item-options"></receipe-options>
   </div>
-
+<!-- 
       <div class='list-group'>
         <div class='list-group-item' ng-repeat="ingredient in receipe.ingredients">{{ingredient.name}}</div>
-      </div>
+      </div> -->
 
 </div>

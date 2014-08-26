@@ -7,3 +7,10 @@ Liste d'épicerie
 	- Créer un pantryItem à l'ajout d'un groceryItem si le pantryItem n'existe pas
 
 Directive pour les message de confirmation
+
+Garde-manger
+
+	- un item peut avoir plusieurs tags (ex.: sucré, salé, légume, fruit, etc.)
+		- tags sont créer par l'utilisateur
+	- un item peut avoir une catégorie (ex.: Herbes et épices séchées, Pâtisserie, Huiles, etc.)
+		- catégories sont hardcoder

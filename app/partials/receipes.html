@@ -1,6 +1,10 @@
 <h2>Recettes</h2>
 
-  <div class='list-group-item new-item-form'>
+<button class='btn btn-success' ng-click="openForm();">Nouvelle recette</button>
+<br /><br />
+<!-- <p>Créer une <button class='btn btn-success'>nouvelle</button> recette</p> -->
+
+<!--   <div class='list-group-item new-item-form'>
     <form role="form" name="receipeForm"  ng-controller="ReceipeController" ng-submit="receipeForm.$valid && create()" novalidate>
       <fieldset class="form-group row">
         <div class='col-xs-6'>
@@ -16,7 +20,7 @@
 
     </form>
   </div>
-
+ -->
 <receipe-list></receipe-list>
 
-<grocery-list ng-hide="true"></grocery-list>
+<pantry-items ng-hide="true"><pantry-items>

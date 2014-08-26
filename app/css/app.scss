@@ -239,6 +239,25 @@ body{
 	} // .list-group-item
 } // .items-list
 
+.ingredient-list{
+	a{
+		margin:2px;
+		padding:5px 10px;
+		color:#fff;
+		display:inline-block;
+		font-size:12px;
+		-webkit-transition: all 0.15s ease-in-out;
+		   -moz-transition: all 0.15s ease-in-out;
+		    -ms-transition: all 0.15s ease-in-out;
+		     -o-transition: all 0.15s ease-in-out;
+		        transition: all 0.15s ease-in-out;
+
+		&:hover{
+			text-decoration: none;
+		}
+	}
+}
+
 .ng-dirty.ng-invalid{
 	border-color:red;
 }
