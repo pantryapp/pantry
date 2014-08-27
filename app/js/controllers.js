@@ -12,6 +12,11 @@ angular.module('app.controllers', [])
 			// console.log(' ---- VIEW CHANGE ----');
 			EventDispatcher.clear();
 		});
+
+		//Hardcoded categories
+		$scope.categories = categories;
+		console.log($scope.categories);
+
 	}])
 	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', 'lookup', function($scope, PantryStorage, EventDispatcher, PantryItemFactory, lookup){
 		/*
@@ -21,7 +26,10 @@ angular.module('app.controllers', [])
 		$scope.pantryItems = PantryStorage.getPantryItems();
 		$scope.search 	   = {};
 
-
+		$scope.clearPantry = function(){
+			$scope.pantryItems = [];
+			savePantryItems();
+		}
 		$scope.savePantryItems = function(){return savePantryItems();};
 		/*
 		 * Private
@@ -80,10 +88,10 @@ angular.module('app.controllers', [])
 
 		$scope.toggled = false;
 		$scope.edited  = false;
+		$scope.focus   = true;
 		$scope.editingPantryItem = {};
 
-		$scope.createItem = function(){
-
+		$scope.createItem = function(){			
 			$scope.item = PantryItemFactory.new($scope.newPantryItem);
 
 			$scope.pantryItems.push($scope.item);
@@ -91,6 +99,8 @@ angular.module('app.controllers', [])
 			// Reset form. Todo : put that away. Directive?
 			$scope.pantryItemForm.$setPristine();
 			$scope.newPantryItem.name = "";
+
+			$scope.focus = true;
 		};
 
 		$scope.update = function(){
@@ -231,8 +241,8 @@ angular.module('app.controllers', [])
 
 
 		$scope.$watch('groceryItems.length', function(){
-			console.log('grocery length changed')
-			EventDispatcher.debug();
+			// console.log('grocery length changed')
+			// EventDispatcher.debug();
 			EventDispatcher.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
 			$scope.hasGroceries = $scope.groceryItems.length > 0 
 			save();
@@ -266,7 +276,7 @@ angular.module('app.controllers', [])
 			$scope.removeGrocery($scope.item);
 		};
 
-		$scope.createNew = function(from){
+		$scope.createNew = function(){
 			EventDispatcher.notifyObservers('CREATE_NEW_PANTRYITEM', $scope.newGroceryItem);
 			resetNewGroceryForm();
 		}
@@ -323,7 +333,7 @@ angular.module('app.controllers', [])
 
 		var openForm = function(){
 			modalForm = $modal.open({
-				templateUrl: 'partials/modals/receipe-form.html',
+				templateUrl: 'partials/receipe-form.html',
 				controller: 'ReceipeModalInstance',
 				size: 'lg',
 				resolve: {
@@ -382,6 +392,9 @@ angular.module('app.controllers', [])
 		$scope.create  		= function(){return create();};
 		$scope.updateInline = function(){return updateInline();}
 		$scope.openForm 	= function(){return openForm();};
+		$scope.createItem 	= function(){
+			// console.log('create item');
+		}
 
 		$scope.save = function(){
 			switch($scope.mode){
@@ -395,13 +408,13 @@ angular.module('app.controllers', [])
 		}
 
 		$scope.addIngredient = function(){
-			console.log('add ingredient');
+			// console.log('add ingredient');
 			$scope.formReceipe.ingredients.push($scope.ingredient);
 			$scope.ingredient = null;
 		}	
 
 		$scope.removeIngredient = function(ingredient){
-			console.log('remove ingredient');
+			// console.log('remove ingredient');
 			$scope.formReceipe.ingredients.splice($scope.formReceipe.ingredients.indexOf(ingredient), 1);
 		}
 
@@ -437,7 +450,7 @@ angular.module('app.controllers', [])
 
 
 		var create = function(){
-			console.log('create');
+			// console.log('create');
 			EventDispatcher.notifyObservers('NEW_RECEIPE', {
 				name 	    : $scope.formReceipe.name,
 				slug 	    : Slug.slugify($scope.formReceipe.name),
@@ -447,7 +460,7 @@ angular.module('app.controllers', [])
 		};
 
 		var update = function(){
-			console.log('update');
+			// console.log('update');
 			$scope.receipe.name 	   = $scope.formReceipe.name;
 			$scope.receipe.slug  	   = Slug.slugify($scope.formReceipe.name);
 			$scope.receipe.ingredients = $scope.formReceipe.ingredients;
@@ -458,7 +471,7 @@ angular.module('app.controllers', [])
 		};
 
 		var updateInline = function(){
-			console.log('update inline');
+			// console.log('update inline');
 			$scope.receipe.name = $scope.editingReceipe.name;
 			$scope.receipe.slug = Slug.slugify($scope.editingReceipe.name);
 			$scope.toggled 		= false;
@@ -471,7 +484,7 @@ angular.module('app.controllers', [])
 		var openForm = function(){
 			$scope.toggled = false;
 			$scope.modalForm = $modal.open({
-					templateUrl: 'partials/modals/receipe-form.html',
+					templateUrl: 'partials/receipe-form.html',
 					controller: 'ReceipeModalInstance',
 					size: 'lg',
 					scope:$scope,
@@ -493,7 +506,7 @@ angular.module('app.controllers', [])
 
 		$scope.$watch('receipe.name', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined ){
-				console.log('receipe name change');
+				// console.log('receipe name change');
 				$scope.saveReceipes();
 			}
 		});
@@ -530,9 +543,9 @@ angular.module('app.controllers', [])
 			return path == $location.path();
 		}
 
-		console.log('register header');
+		// console.log('register header');
 		EventDispatcher.registerObserverForEvent('GROCERY_CHANGE', function(groceries){
-			console.log('catched groceries length change : '  + groceries.length);
+			// console.log('catched groceries length change : '  + groceries.length);
 			$scope.n_groceries = groceries.length > 0 ? groceries.length : null;
 		}, true)
 	}])
@@ -550,3 +563,19 @@ angular.module('app.controllers', [])
 	}]);
 
 // localStorage.clear();
+var categories = [
+  "Pâtisserie",
+  "Herbes et épices",
+  "Nouilles",
+  "Confitures",
+  "Aliments en pot",
+  "Moutardes",
+  "Noix & graines",
+  "Huiles",
+  "Pâtes",
+  "Légumes marinés",
+  "Riz, céréales & légumineuses",
+  "Sauces",
+  "Conserves",
+  "Vinaigres",
+];

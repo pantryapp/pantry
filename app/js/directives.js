@@ -25,6 +25,38 @@ angular.module('app.directives', [])
 			}
 		}
 	})
+	.directive('focusMe', function($timeout){
+		return{
+			restrict: 'A',
+			link: function($scope, element, attributes){
+
+				var focusInput = function(){
+					$timeout(function(){element[0].focus();});
+				}
+				
+				if( $scope.focus )
+					focusInput();
+
+				element.on('blur', function(){
+					$scope.focus = false;
+				})
+
+				
+				$scope.$watch(function(){
+					return $scope.focus
+				}, function(value){
+					if( value ) 
+						focusInput();
+				})
+			}
+		}
+	})
+	.directive('categoryList', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/category-list.html'
+		}
+	})
 	.directive('pantryItems', function(){
 		return{
 			restrict: 'E',
