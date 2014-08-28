@@ -257,6 +257,66 @@ angular.module('app.services', [])
 
 		return $messageStack;
 	}])
+	.factory('$eventStack', [function(){
+		return{
+			createNew: function(){
+				var obsCallbacks = [];
+
+				return{
+					add: function(events, persistant){
+						angular.forEach(events, function(callback, event){
+							obsCallbacks.push({
+								event:event, 
+								callback:callback,
+								persistant: persistant != undefined ? persistant : false
+							})
+						});
+					},
+					clear:function(){
+						var persistants = [];
+						for(var i=0;i<obsCallbacks.length;i++){
+							if( obsCallbacks[i].persistant )
+								persistants.push(obsCallbacks[i]);
+						}
+						obsCallbacks = persistants;
+					},
+					getAll: function(){
+						return obsCallbacks;
+					}
+				}
+			}
+		}
+	}])
+	.provider('$event', [function(){
+		var $eventProvider = {
+			$get: ['$eventStack', function($eventStack){
+				var $event 			 = {},
+					registeredEvents = $eventStack.createNew(),
+					eventInstance 	 = {};
+
+				$event.registerFor = function(events, persistant){
+					// angular.forEach(events, function(value, key){
+						registeredEvents.add(events, persistant);
+						console.log(registeredEvents.getAll());
+					// });
+				}
+
+				$event.trigger = function(event, args){
+					console.log(event);
+				}
+
+				$event.clear = function(){
+					registeredEvents.clear();
+				}
+
+
+
+				return $event;
+			}]
+
+		}
+		return $eventProvider;
+	}])
 	.provider('$message', [function(){
 		var $messageProvider = {
 		 
@@ -266,8 +326,7 @@ angular.module('app.services', [])
 
 				function getTemplatePromise(options) {
 					return options.template ? $q.when(options.template) :
-					  // $http.get(options.templateUrl, {cache: $templateCache}).then(function (result) {
-						$http.get(options.templateUrl,{}).then(function (result) {
+					  $http.get(options.templateUrl, {cache: $templateCache}).then(function (result) {
 					    return result.data;
 				  	});
 				}
