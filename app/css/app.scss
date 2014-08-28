@@ -262,6 +262,32 @@ body{
 	border-color:red;
 }
 
+/* Messages */
+.message{
+	position:fixed;
+	right:10px;
+	width:200px;height:66px;
+	overflow:hidden;
+	opacity:0;
+	margin-top:-10px;
+
+	p{
+		font-size:12px;
+		margin:0;
+	}
+
+   -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+       -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+           transition: all 0.3s ease;
+
+    &.animate{
+    	opacity:1;
+    	margin-top:0;
+    }
+}
+
 /* Angular Bootstrap fix for empty href */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 

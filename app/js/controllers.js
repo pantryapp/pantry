@@ -2,7 +2,7 @@
 
 /* Controllers */
 angular.module('app.controllers', [])
-	.controller('PantryController', ['$scope', '$route', '$log', 'EventDispatcher', function($scope, $route, $log, EventDispatcher){
+	.controller('PantryController', ['$scope', '$route', '$log', '$message', 'EventDispatcher', function($scope, $route, $log, $message, EventDispatcher){
 
 		$scope.debug = function(value){
 			$log.info(value);
@@ -15,10 +15,38 @@ angular.module('app.controllers', [])
 
 		//Hardcoded categories
 		$scope.categories = categories;
-		console.log($scope.categories);
+
+		$scope.openAMessage = function(type){
+
+			var messages = {
+				success:{
+					template:'new_pantryitem',
+					type:'success'
+				},
+				error:{
+					template:'delete_pantryitem',
+					type:'danger'
+				}
+			}
+			$message.open({
+				templateUrl: 'partials/messages/'+messages[type].template+'.html',
+				scope:$scope,
+				resolve:{
+					args: function(){
+						return {
+							item: {
+								name:"Lorem ipsum",
+								outOfStock:false
+							},
+							type:messages[type].type
+						}
+					}
+				}
+			})
+		}
 
 	}])
-	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', 'lookup', function($scope, PantryStorage, EventDispatcher, PantryItemFactory, lookup){
+	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', 'lookup', '$message', function($scope, PantryStorage, EventDispatcher, PantryItemFactory, lookup, $message){
 		/*
 		 * Public
 		 */
@@ -31,6 +59,7 @@ angular.module('app.controllers', [])
 			savePantryItems();
 		}
 		$scope.savePantryItems = function(){return savePantryItems();};
+
 		/*
 		 * Private
 		 */
@@ -71,6 +100,7 @@ angular.module('app.controllers', [])
 
 		// Catch create and delete pantry item
 		$scope.$watchCollection('pantryItems.length', function(){
+			
 			savePantryItems();
 		});
 	
@@ -548,6 +578,10 @@ angular.module('app.controllers', [])
 			// console.log('catched groceries length change : '  + groceries.length);
 			$scope.n_groceries = groceries.length > 0 ? groceries.length : null;
 		}, true)
+	}])
+	.controller('MessageController', ['$scope', '$messageInstance', 'args', function($scope, $messageInstance, args){
+		$scope.item = args.item;
+		$scope.type = args.type;
 	}])
 	.controller('DeleteModalInstanceController', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
 		$scope.item = args.item;

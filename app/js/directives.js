@@ -33,7 +33,7 @@ angular.module('app.directives', [])
 				var focusInput = function(){
 					$timeout(function(){element[0].focus();});
 				}
-				
+
 				if( $scope.focus )
 					focusInput();
 
@@ -48,6 +48,18 @@ angular.module('app.directives', [])
 					if( value ) 
 						focusInput();
 				})
+			}
+		}
+	})
+	.directive('messageWindow', function($timeout){
+		return{
+			restrict: 'EA',
+			templateUrl: 'partials/message.html',
+			transclude:true,
+			link: function($scope, element, attributes){
+				$timeout(function(){
+					$scope.animate = true;
+				});
 			}
 		}
 	})
