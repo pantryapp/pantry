@@ -2,7 +2,7 @@
 
 /* Services */
 angular.module('app.services', [])
-	.factory('PantryStorage', ['localStorageService', 'EventDispatcher', function(localStorageService, EventDispatcher){
+	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){
 				return localStorageService.get('pantry.items') || [];
@@ -47,43 +47,6 @@ angular.module('app.services', [])
 			}
 		}
 	})
-	.service('EventDispatcher', ['$log', function($log){
-		var	obsCallbacks = [];
-		return {
-			registerObserverForEvents: function(events){
-				var dispatch = this;
-				angular.forEach(events, function(callback, event){
-					dispatch.registerObserverForEvent(event, callback);
-				});
-			},
-			registerObserverForEvent: function(event, callback, persistant){
-				obsCallbacks.push({
-					event:event, 
-					callback:callback, 
-					persistant: persistant != undefined ? persistant : false
-				});
-			},
-			notifyObservers: function(event, args){
-				angular.forEach(obsCallbacks, function(obj){
-					if( obj.event == event )
-						obj.callback(args);
-				});
-			},
-			// Clear all non persistant events
-			clear: function(){
-				var persistants = [];
-				for(var i=0;i<obsCallbacks.length;i++){
-					if( obsCallbacks[i].persistant )
-						persistants.push(obsCallbacks[i]);
-				}
-				obsCallbacks = persistants;
-			},
-			debug:function(){
-				$log.info(obsCallbacks.length + " events");
-				$log.debug(obsCallbacks);
-			}
-		}
-	}])
 	.factory('PantryItemFactory', ['guid', 'Slug', function(guid, Slug){
 		var item_model = {
 			slug:function(name){return Slug.slugify(name);},
@@ -204,7 +167,6 @@ angular.module('app.services', [])
 			var message_height = 66,
 				message_margin = 10,
 				default_height = 60;
-
 			for(var x=active_messages.length - 1,y=0;x>=0;x--,y++){
 				active_messages[x].value.messageScope.pos = default_height + ( message_height * y ) + ( message_margin * y );
 			}
@@ -257,7 +219,7 @@ angular.module('app.services', [])
 
 		return $messageStack;
 	}])
-	.factory('$eventStack', [function(){
+	.factory('$eventStack', ['$log', function($log){
 		return{
 			createNew: function(){
 				var obsCallbacks = [];
@@ -271,6 +233,20 @@ angular.module('app.services', [])
 								persistant: persistant != undefined ? persistant : false
 							})
 						});
+					},
+					trigger: function(event, args, caller, debug){
+						var is_event = false;
+						angular.forEach(obsCallbacks, function(obj){
+							if( obj.event == event ){
+								obj.callback(args);
+								is_event = true;
+								if( debug )
+									$log.info('Catched by : ' + obj.callback);
+							}
+						});
+						if( !is_event )
+							$log.warn ('There is no observer for event ' + event + " from " + caller);
+
 					},
 					clear:function(){
 						var persistants = [];
@@ -289,26 +265,37 @@ angular.module('app.services', [])
 	}])
 	.provider('$event', [function(){
 		var $eventProvider = {
-			$get: ['$eventStack', function($eventStack){
+			$get: ['$eventStack', '$log', function($eventStack, $log){
 				var $event 			 = {},
 					registeredEvents = $eventStack.createNew(),
-					eventInstance 	 = {};
+					eventInstance 	 = {},
+					debug 			 = false;
 
 				$event.registerFor = function(events, persistant){
-					// angular.forEach(events, function(value, key){
 						registeredEvents.add(events, persistant);
-						console.log(registeredEvents.getAll());
-					// });
 				}
 
-				$event.trigger = function(event, args){
-					console.log(event);
+				$event.trigger = function(event, args, caller){
+					if( debug ){
+						$log.warn('trigger event - ' + Date.now());
+						$log.info('Event : ' + event);
+						$log.info('Triggered by : ' + caller);
+
+					}
+					registeredEvents.trigger(event, args, caller, debug);
 				}
 
 				$event.clear = function(){
 					registeredEvents.clear();
 				}
 
+				$event.debug = function(){
+					debug = true;
+					$log.info('$eventStack debug ' + Date.now());
+					angular.forEach(registeredEvents.getAll(), function(value, key){
+						$log.info(value);
+					});
+				}
 
 
 				return $event;
@@ -344,6 +331,7 @@ angular.module('app.services', [])
 				$message.open = function(messageOptions){
 					var messageInstance = {
 					}
+
 
             		messageOptions.resolve = messageOptions.resolve || {};
 

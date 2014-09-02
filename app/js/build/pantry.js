@@ -332,7 +332,7 @@ var app = angular.module('app', [
 
 /* Controllers */
 angular.module('app.controllers', [])
-	.controller('PantryController', ['$scope', '$route', '$log', 'EventDispatcher', function($scope, $route, $log, EventDispatcher){
+	.controller('PantryController', ['$scope', '$route', '$log', '$message', '$event', function($scope, $route, $log, $message, $event){
 
 		$scope.debug = function(value){
 			$log.info(value);
@@ -340,15 +340,48 @@ angular.module('app.controllers', [])
 
 		$scope.$on("$routeChangeSuccess", function(){
 			// console.log(' ---- VIEW CHANGE ----');
-			EventDispatcher.clear();
+			$event.clear();
 		});
+
+		$scope.showEvents = function(){
+			$event.debug();
+		}
 
 		//Hardcoded categories
 		$scope.categories = categories;
-		console.log($scope.categories);
+
+		$scope.openAMessage = function(type){
+
+			var messages = {
+				success:{
+					template:'new_pantryitem',
+					type:'success'
+				},
+				error:{
+					template:'delete_pantryitem',
+					type:'danger'
+				}
+			}
+
+			$message.open({
+				templateUrl: 'partials/messages/'+messages[type].template+'.html',
+				scope:$scope,
+				resolve:{
+					args: function(){
+						return {
+							item: {
+								name:"Lorem ipsum",
+								outOfStock:false
+							},
+							type:messages[type].type
+						}
+					}
+				}
+			})
+		}
 
 	}])
-	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', 'lookup', function($scope, PantryStorage, EventDispatcher, PantryItemFactory, lookup){
+	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemFactory', 'lookup', '$message', '$event', function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event){
 		/*
 		 * Public
 		 */
@@ -356,17 +389,8 @@ angular.module('app.controllers', [])
 		$scope.pantryItems = PantryStorage.getPantryItems();
 		$scope.search 	   = {};
 
-		$scope.clearPantry = function(){
-			$scope.pantryItems = [];
-			savePantryItems();
-		}
-		$scope.savePantryItems = function(){return savePantryItems();};
-		/*
-		 * Private
-		 */
-
-		var events = {
-			RESTOCK: function(groceryItem){
+		$event.registerFor({
+			restock: function(groceryItem){
 				var pantryItem = lookup.lookupFor($scope.pantryItems, groceryItem, 'id');
 
 				// pantryItem will be undefined if it has been deleted whilst the item was in the grocery list.
@@ -378,19 +402,30 @@ angular.module('app.controllers', [])
 					$scope.pantryItems.push(pantryItem);
 				}
 			},
-			SEARCH: function(search){
+			search: function(search){
 				$scope.search[search.prop] = search.value;
 			},
-			CREATE_NEW_PANTRYITEM: function(pantryItemName){
+			create_new_pantryitem: function(pantryItemName){
 				var pantryItem = PantryItemFactory.new({
 					name:pantryItemName,
 					outOfStock:true
 				});
 
-				EventDispatcher.notifyObservers('OUTOFSTOCK', pantryItem);
+				$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
 				$scope.pantryItems.push(pantryItem);
 			}
-		};
+		});
+
+		$scope.clearPantry = function(){
+			$scope.pantryItems = [];
+			savePantryItems();
+		}
+
+		$scope.savePantryItems = function(){return savePantryItems();};
+
+		/*
+		 * Private
+		 */
 
 		var savePantryItems = function(){PantryStorage.savePantryItems($scope.pantryItems);}
 
@@ -400,17 +435,14 @@ angular.module('app.controllers', [])
 		 */
 
 		// Catch create and delete pantry item
-		$scope.$watchCollection('pantryItems.length', function(){
+		$scope.$watchCollection('pantryItems.length', function(){			
 			savePantryItems();
 		});
-	
-		// Controller event listeners
-		EventDispatcher.registerObserverForEvents(events);		
-		// console.log('pantry items');
-		// EventDispatcher.debug();
+
+
 
 	}])
-	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'EventDispatcher', 'PantryItemFactory', function($scope, $modal, $log, Slug, $timeout, PantryStorage, EventDispatcher, PantryItemFactory){
+	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'PantryItemFactory', '$event', '$message', function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message){
 
 		/*
 		 * Public
@@ -439,17 +471,27 @@ angular.module('app.controllers', [])
 			closeItem();
 			animate();
 
-			EventDispatcher.notifyObservers('UPDATE', $scope.item);
+			$message.open({
+				templateUrl: 'partials/messages/pantryitem-edit.html', scope:$scope,
+				resolve:{
+					args: function(){
+						return {
+							item: {
+								name:$scope.item.name
+							},
+							type:'success'
+						}
+					}
+				}
+			});
 		};
 
 		$scope.toggleOutOfStock = function(){
-
 			$scope.item.outOfStock = !$scope.item.outOfStock;
-			if( !$scope.item.outOfStock){
+			if( !$scope.item.outOfStock)
 				animate();
-			}else {
-				EventDispatcher.notifyObservers('OUTOFSTOCK', $scope.item);	
-			}
+			else
+				$event.trigger('outofstock', $scope.item, 'pantry item set out of stock');
 
 			closeItem();
 		};
@@ -469,7 +511,8 @@ angular.module('app.controllers', [])
 				}
 			})
 			.result.then(function(value){
-				if( value === true ) $scope.deleteItem();
+				if( value === true )
+					$scope.deleteItem();
 			}, function () {
 				//dismiss
 			});
@@ -506,6 +549,7 @@ angular.module('app.controllers', [])
 
 		$scope.$watchCollection('item.name', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined ){
+				$event.trigger('pantryitem_edited', {}, 'pantry item edited');
 				$scope.savePantryItems();
 			}
 		});
@@ -518,7 +562,7 @@ angular.module('app.controllers', [])
 		});
 
 	}])
-	.controller('GroceryController', ['$scope', 'PantryStorage', 'EventDispatcher', function($scope, PantryStorage, EventDispatcher){
+	.controller('GroceryController', ['$scope', 'PantryStorage', '$event', function($scope, PantryStorage, $event){
 		/*
 		 * Public
 		 */
@@ -532,24 +576,24 @@ angular.module('app.controllers', [])
 			$scope.groceryItems = [];
 		}
 
+		$event.registerFor({
+			add_grocery:function(item){
+				if(item != undefined) 
+					addGrocery(item);
+			},
+			outofstock: function(item){
+				addGrocery(item);
+			},
+			search: function(search){
+				$scope.search[search.prop] = search.value;	
+			}
+		});
+
 		$scope.removeGrocery = function(item){return removeGrocery(item);};
 
 		/*
 		 * Private
 		 */
-
-		var events = {
-			ADD_GROCERY: function(item){
-				if(item != undefined) 
-					addGrocery(item);
-			},
-			OUTOFSTOCK: function(item){
-				addGrocery(item);
-			},
-			SEARCH: function(search){
-				$scope.search[search.prop] = search.value;
-			}
-		}
 
 		var addGrocery = function(item){
 			if( !PantryStorage.itemAlreadyInCollection(item, $scope.groceryItems) ){
@@ -569,21 +613,14 @@ angular.module('app.controllers', [])
 		 * Event listeners
 		 */ 
 
-
 		$scope.$watch('groceryItems.length', function(){
-			// console.log('grocery length changed')
-			// EventDispatcher.debug();
-			EventDispatcher.notifyObservers('GROCERY_CHANGE', $scope.groceryItems);
+			$event.trigger('grocery_change', $scope.groceryItems, 'Grocery controllerƒ');
 			$scope.hasGroceries = $scope.groceryItems.length > 0 
 			save();
 		});
 
-		EventDispatcher.registerObserverForEvents(events);
-		// console.log('groceries');
-		// EventDispatcher.debug();
-
 	}])
-	.controller('GroceryItemController', ['$scope', 'EventDispatcher', function($scope, EventDispatcher){
+	.controller('GroceryItemController', ['$scope', '$event', function($scope, $event){
 
 		/*
 		 * Public
@@ -597,8 +634,7 @@ angular.module('app.controllers', [])
 		};
 
 		$scope.buy = function(){
-			// EventDispatcher.debug();
-			EventDispatcher.notifyObservers('RESTOCK', $scope.item);
+			$event.trigger('restock', $scope.item, 'grocery item bought');
 			$scope.removeGrocery($scope.item);
 		};
 
@@ -607,12 +643,12 @@ angular.module('app.controllers', [])
 		};
 
 		$scope.createNew = function(){
-			EventDispatcher.notifyObservers('CREATE_NEW_PANTRYITEM', $scope.newGroceryItem);
+			$event.trigger('create_new_pantryitem', $scope.newGroceryItem, 'new item created from grocery');
 			resetNewGroceryForm();
 		}
 
 		$scope.create = function(){
-			EventDispatcher.notifyObservers('ADD_GROCERY', $scope.newGroceryItem);
+			$event.trigger('add_grocery', $scope.newGroceryItem, 'Grocery controller');
 			resetNewGroceryForm();
 		}
 
@@ -627,7 +663,7 @@ angular.module('app.controllers', [])
 
 
 	}])
-	.controller('ReceipesController', ['$scope', '$modal', 'PantryStorage', 'EventDispatcher', function($scope, $modal, PantryStorage, EventDispatcher){
+	.controller('ReceipesController', ['$scope', '$modal', 'PantryStorage', '$event', function($scope, $modal, PantryStorage, $event){
 
 		/*
 		 * Public
@@ -644,18 +680,18 @@ angular.module('app.controllers', [])
 
 		var modalForm;
 
-		var events = {
-			NEW_RECEIPE: function(receipe){
+		$event.registerFor({
+			new_receipe: function(receipe){
 				$scope.receipes.push(receipe);
 				modalForm.close();
 			},
-			RECEIPE_EDITED: function(){
+			receipe_edited: function(){
 				PantryStorage.saveReceipes($scope.receipes);
 			},
-			SEARCH: function(search){
+			search: function(search){
 				$scope.search[search.prop] = search.value;
 			}
-		}
+		});
 
 		var saveReceipes = function(){
 			PantryStorage.saveReceipes($scope.receipes);
@@ -687,8 +723,6 @@ angular.module('app.controllers', [])
 	 		PantryStorage.saveReceipes($scope.receipes);
 		});
 
-		EventDispatcher.registerObserverForEvents(events);
-
 	}])
 	.controller('ReceipeModalInstance', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
 		$scope.formReceipe  = {
@@ -706,7 +740,7 @@ angular.module('app.controllers', [])
 
 
 	}])
-	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', 'EventDispatcher', function($scope, $modal, Slug, guid, EventDispatcher){
+	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', '$event', function($scope, $modal, Slug, guid, $event){
 
 		/*
 		 * Public
@@ -781,20 +815,20 @@ angular.module('app.controllers', [])
 
 		var create = function(){
 			// console.log('create');
-			EventDispatcher.notifyObservers('NEW_RECEIPE', {
+			$event.trigger('new_receipe', {
 				name 	    : $scope.formReceipe.name,
 				slug 	    : Slug.slugify($scope.formReceipe.name),
 				id 		    : guid.new(),
 				ingredients : $scope.formReceipe.ingredients
-			});
+			}, 'receipe created in receipe form');
 		};
 
 		var update = function(){
-			// console.log('update');
+			console.log('update');
 			$scope.receipe.name 	   = $scope.formReceipe.name;
 			$scope.receipe.slug  	   = Slug.slugify($scope.formReceipe.name);
 			$scope.receipe.ingredients = $scope.formReceipe.ingredients;
-			EventDispatcher.notifyObservers('RECEIPE_EDITED');
+			$event.trigger('receipe_edited', {}, 'recipe edited by receipe form');
 
 			$scope.modalForm.close();
 
@@ -842,22 +876,22 @@ angular.module('app.controllers', [])
 		});
 
 	}])
-	.controller('SearchController', ['$scope', 'EventDispatcher', function($scope, EventDispatcher){
+	.controller('SearchController', ['$scope', '$event', function($scope, $event){
 		$scope.search = {};
 
 		$scope.$watch('search.name', function(value){
-			EventDispatcher.notifyObservers('SEARCH', {prop:'name', value:value});
+			$event.trigger('search', {prop:'name', value:value}, 'name search from search controller');
 		});
 
 		$scope.$watch('search.category', function(value){
-			EventDispatcher.notifyObservers('SEARCH', {prop:'category', value:value});
+			$event.trigger('search', {prop:'category', value:value}, 'category search from search controller');
 		});
 
 		$scope.reset = function(){
 			$scope.search = {};
 		}
 	}])
-	.controller('HeaderController', ['$scope', '$location', 'EventDispatcher', function($scope, $location, EventDispatcher){
+	.controller('HeaderController', ['$scope', '$location', '$event', function($scope, $location, $event){
 
 		$scope.isCollapsed    = true;
 		$scope.dropdownIsOpen = false;
@@ -873,11 +907,15 @@ angular.module('app.controllers', [])
 			return path == $location.path();
 		}
 
-		// console.log('register header');
-		EventDispatcher.registerObserverForEvent('GROCERY_CHANGE', function(groceries){
-			// console.log('catched groceries length change : '  + groceries.length);
-			$scope.n_groceries = groceries.length > 0 ? groceries.length : null;
-		}, true)
+		$event.registerFor({
+			grocery_change:function(groceries){
+				$scope.n_groceries = groceries.length > 0 ? groceries.length : null;
+			}
+		},true)
+	}])
+	.controller('MessageController', ['$scope', '$messageInstance', 'args', function($scope, $messageInstance, args){
+		$scope.item = args.item;
+		$scope.type = args.type;
 	}])
 	.controller('DeleteModalInstanceController', ['$scope', '$modalInstance', 'args', function($scope, $modalInstance, args){
 		$scope.item = args.item;
@@ -944,7 +982,7 @@ angular.module('app.directives', [])
 				var focusInput = function(){
 					$timeout(function(){element[0].focus();});
 				}
-				
+
 				if( $scope.focus )
 					focusInput();
 
@@ -959,6 +997,18 @@ angular.module('app.directives', [])
 					if( value ) 
 						focusInput();
 				})
+			}
+		}
+	})
+	.directive('messageWindow', function($timeout){
+		return{
+			restrict: 'EA',
+			templateUrl: 'partials/message.html',
+			transclude:true,
+			link: function($scope, element, attributes){
+				$timeout(function(){
+					$scope.animate = true;
+				});
 			}
 		}
 	})
@@ -1047,7 +1097,7 @@ angular.module('app.filters', []);
 
 /* Services */
 angular.module('app.services', [])
-	.factory('PantryStorage', ['localStorageService', 'EventDispatcher', function(localStorageService, EventDispatcher){
+	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){
 				return localStorageService.get('pantry.items') || [];
@@ -1092,43 +1142,6 @@ angular.module('app.services', [])
 			}
 		}
 	})
-	.service('EventDispatcher', ['$log', function($log){
-		var	obsCallbacks = [];
-		return {
-			registerObserverForEvents: function(events){
-				var dispatch = this;
-				angular.forEach(events, function(callback, event){
-					dispatch.registerObserverForEvent(event, callback);
-				});
-			},
-			registerObserverForEvent: function(event, callback, persistant){
-				obsCallbacks.push({
-					event:event, 
-					callback:callback, 
-					persistant: persistant != undefined ? persistant : false
-				});
-			},
-			notifyObservers: function(event, args){
-				angular.forEach(obsCallbacks, function(obj){
-					if( obj.event == event )
-						obj.callback(args);
-				});
-			},
-			// Clear all non persistant events
-			clear: function(){
-				var persistants = [];
-				for(var i=0;i<obsCallbacks.length;i++){
-					if( obsCallbacks[i].persistant )
-						persistants.push(obsCallbacks[i]);
-				}
-				obsCallbacks = persistants;
-			},
-			debug:function(){
-				$log.info(obsCallbacks.length + " events");
-				$log.debug(obsCallbacks);
-			}
-		}
-	}])
 	.factory('PantryItemFactory', ['guid', 'Slug', function(guid, Slug){
 		var item_model = {
 			slug:function(name){return Slug.slugify(name);},
@@ -1165,4 +1178,290 @@ angular.module('app.services', [])
 	        }
 	    };
 	    return svc;
+	}])
+	.factory('$$stackedMessages', [function(){
+	    return {
+	      createNew: function () {
+	        var stack = [];
+
+	        return {
+	          add: function (key, value) {
+	            stack.push({
+	              key: key,
+	              value: value
+	            });
+	          },
+	          get: function (key) {
+	            for (var i = 0; i < stack.length; i++) {
+	              if (key == stack[i].key) {
+	                return stack[i];
+	              }
+	            }
+	          },
+	          getAll:function(){
+	          	return stack;
+	          },
+	          keys: function() {
+	            var keys = [];
+	            for (var i = 0; i < stack.length; i++) {
+	              keys.push(stack[i].key);
+	            }
+	            return keys;
+	          },
+	          top: function () {
+	            return stack[stack.length - 1];
+	          },
+	          remove: function (key) {
+	            var idx = -1;
+	            for (var i = 0; i < stack.length; i++) {
+	              if (key == stack[i].key) {
+	                idx = i;
+	                break;
+	              }
+	            }
+	            return stack.splice(idx, 1)[0];
+	          },
+	          removeBottom: function () {
+	            return stack.splice(0, 1)[0];
+	          },
+	          length: function () {
+	            return stack.length;
+	          }
+	        };
+	      }
+	    };
+	}])
+	.factory('$messageStack', ['$document', '$compile', '$timeout', '$transition', '$$stackedMessages', function($document, $compile, $timeout, $transition, $$stackedMessages){
+		var $messageStack = {};
+		var openedWindows  = $$stackedMessages.createNew();
+
+		$messageStack.open = function(messageInstance, message){
+
+	        openedWindows.add(messageInstance, {
+				messageScope: message.scope
+	        });
+
+			var open_messages = openedWindows.length();	        
+
+	        updateMessagesPositions(openedWindows.getAll());
+	        
+			var body 	     = $document.find('body').eq(0),
+				angularDomEL = angular.element("<message-window >"+message.content+"</message-window"),
+				messageDomEl = $compile(angularDomEL)(message.scope);
+
+			openedWindows.top().value.messageDomEl = messageDomEl;
+	       	body.append(messageDomEl);
+
+			$timeout(function(){
+				removeMessage(messageInstance);
+	       	}, 3000);
+
+		}
+
+		function updateMessagesPositions(active_messages){
+			var message_height = 66,
+				message_margin = 10,
+				default_height = 60;
+			for(var x=active_messages.length - 1,y=0;x>=0;x--,y++){
+				active_messages[x].value.messageScope.pos = default_height + ( message_height * y ) + ( message_margin * y );
+			}
+			
+		}
+
+		function removeMessage(messageInstance) {
+			var body = $document.find('body').eq(0);
+			var messageWindow = openedWindows.get(messageInstance).value;
+
+			//clean up the stack
+			openedWindows.remove(messageInstance);
+
+			//remove window DOM element
+			removeAfterAnimate(messageWindow.messageDomEl, messageWindow.messageScope, 300, function() {
+				messageWindow.messageScope.$destroy();
+			});
+		}
+
+		function removeAfterAnimate(domEl, scope, emulateTime, done) {
+			// Closing animation
+			scope.animate = false;
+			var transitionEndEventName = $transition.transitionEndEventName;
+			if (transitionEndEventName) {
+		  		// transition out
+		  		var timeout = $timeout(afterAnimating, emulateTime);
+
+		  		domEl.bind(transitionEndEventName, function () {
+		    		$timeout.cancel(timeout);
+		    		afterAnimating();
+		    		scope.$apply();
+		  		});
+			} else {
+		  		// Ensure this call is async
+		  		$timeout(afterAnimating, 0);
+			}
+
+			function afterAnimating() {
+		  		if (afterAnimating.done) {
+		    		return;
+		  		}
+		  		afterAnimating.done = true;
+
+		  		domEl.remove();
+		  		if (done) {
+		    		done();
+		  		}
+			}
+		}
+
+		return $messageStack;
+	}])
+	.factory('$eventStack', ['$log', function($log){
+		return{
+			createNew: function(){
+				var obsCallbacks = [];
+
+				return{
+					add: function(events, persistant){
+						angular.forEach(events, function(callback, event){
+							obsCallbacks.push({
+								event:event, 
+								callback:callback,
+								persistant: persistant != undefined ? persistant : false
+							})
+						});
+					},
+					trigger: function(event, args, caller, debug){
+						var is_event = false;
+						angular.forEach(obsCallbacks, function(obj){
+							if( obj.event == event ){
+								obj.callback(args);
+								is_event = true;
+								if( debug )
+									$log.info('Catched by : ' + obj.callback);
+							}
+						});
+						if( !is_event )
+							$log.warn ('There is no observer for event ' + event + " from " + caller);
+
+					},
+					clear:function(){
+						var persistants = [];
+						for(var i=0;i<obsCallbacks.length;i++){
+							if( obsCallbacks[i].persistant )
+								persistants.push(obsCallbacks[i]);
+						}
+						obsCallbacks = persistants;
+					},
+					getAll: function(){
+						return obsCallbacks;
+					}
+				}
+			}
+		}
+	}])
+	.provider('$event', [function(){
+		var $eventProvider = {
+			$get: ['$eventStack', '$log', function($eventStack, $log){
+				var $event 			 = {},
+					registeredEvents = $eventStack.createNew(),
+					eventInstance 	 = {},
+					debug 			 = false;
+
+				$event.registerFor = function(events, persistant){
+						registeredEvents.add(events, persistant);
+				}
+
+				$event.trigger = function(event, args, caller){
+					if( debug ){
+						$log.warn('trigger event - ' + Date.now());
+						$log.info('Event : ' + event);
+						$log.info('Triggered by : ' + caller);
+
+					}
+					registeredEvents.trigger(event, args, caller, debug);
+				}
+
+				$event.clear = function(){
+					registeredEvents.clear();
+				}
+
+				$event.debug = function(){
+					debug = true;
+					$log.info('$eventStack debug ' + Date.now());
+					angular.forEach(registeredEvents.getAll(), function(value, key){
+						$log.info(value);
+					});
+				}
+
+
+				return $event;
+			}]
+
+		}
+		return $eventProvider;
+	}])
+	.provider('$message', [function(){
+		var $messageProvider = {
+		 
+			$get: ['$messageStack', '$rootScope', '$http', '$q', '$templateCache', '$injector', '$controller', function($messageStack, $rootScope, $http, $q, $templateCache, $injector, $controller){
+				var $message = {};
+				var controller = 'MessageController';
+
+				function getTemplatePromise(options) {
+					return options.template ? $q.when(options.template) :
+					  $http.get(options.templateUrl, {cache: $templateCache}).then(function (result) {
+					    return result.data;
+				  	});
+				}
+
+				function getResolvePromises(resolves) {
+					var promisesArr = [];
+					angular.forEach(resolves, function (value, key) {
+					  if (angular.isFunction(value) || angular.isArray(value)) {
+					    promisesArr.push($q.when($injector.invoke(value)));
+					  }
+					});
+					return promisesArr;
+				}
+
+				$message.open = function(messageOptions){
+					var messageInstance = {
+					}
+
+
+            		messageOptions.resolve = messageOptions.resolve || {};
+
+		            if (!messageOptions.template && !messageOptions.templateUrl) {
+		              throw new Error('One of template or templateUrl options is required.');
+		            }
+
+		            var templateAndResolvePromise =
+		              $q.all([getTemplatePromise(messageOptions)].concat(getResolvePromises(messageOptions.resolve)));
+
+					templateAndResolvePromise.then(function resolveSuccess(tplAndVars) {	
+						var messageScope = (messageOptions.scope || $rootScope).$new();
+              			var ctrlInstance, ctrlLocals = {};
+              			var resolveIter = 1;
+
+						//controllers
+						ctrlLocals.$scope = messageScope;
+						ctrlLocals.$messageInstance = messageInstance;
+						angular.forEach(messageOptions.resolve, function (value, key) {
+						  ctrlLocals[key] = tplAndVars[resolveIter++];
+						});
+
+						ctrlInstance = $controller(controller, ctrlLocals);
+
+		              	$messageStack.open(messageInstance, {
+							scope:messageScope, 
+		              		content:tplAndVars[0]
+		              	});
+	    	        }, function resolveError(reason) {});
+
+		      	}
+
+		      return $message;
+		    }]
+		};
+
+		return $messageProvider;
 	}]);
