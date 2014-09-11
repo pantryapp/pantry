@@ -4,7 +4,6 @@ body{
 	padding-top:100px;
 	font-family:"Open sans";
 }
-
 .wrapper{
 	position:relative;
 	max-width:800px;
@@ -243,7 +242,7 @@ body{
 	a{
 		margin:2px;
 		padding:5px 10px;
-		color:#fff;
+		color:#fff; 
 		display:inline-block;
 		font-size:12px;
 		-webkit-transition: all 0.15s ease-in-out;
@@ -262,6 +261,15 @@ body{
 	border-color:red;
 }
 
+.with-btn-inset{
+	position:relative;
+	.btn-inset{
+		position:absolute;
+		top:0;right:0;
+		width:200px;
+	}
+}
+
 /* Messages */
 .message{
 	position:fixed;
@@ -270,6 +278,7 @@ body{
 	overflow:hidden;
 	opacity:0;
 	margin-top:-10px;
+	z-index:2000;
 
 	p{
 		font-size:12px;

@@ -25,6 +25,26 @@ angular.module('app.directives', [])
 			}
 		}
 	})
+	.directive('btnInset', function(){
+		return{
+			restrict: 'A',
+			link: function($scope, element ,attributes){
+				var input_parent = element.parent().find('input');
+				element.addClass('btn-inset');
+
+				input_parent.bind('keydown', function(event){
+					switch(event.keyCode){
+						case KEYS.enter:
+							if( !$scope.display_btn_inset ) return;
+							element[0].click();
+							event.preventDefault();
+						break;
+					}
+				})
+
+			}
+		}
+	})
 	.directive('focusMe', function($timeout){
 		return{
 			restrict: 'A',
@@ -125,6 +145,12 @@ angular.module('app.directives', [])
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/receipe-options.html'
+		}
+	})
+	.directive('receipeIngredientOptions', function(){
+		return{
+			restrict: 'E',
+			templateUrl: 'partials/receipe-ingredient-options.html'
 		}
 	})
 	.directive('itemFilter', function(){

@@ -235,17 +235,19 @@ angular.module('app.services', [])
 						});
 					},
 					trigger: function(event, args, caller, debug){
-						var is_event = false;
+						var is_event  = false,
+							bubble	  = null;
 						angular.forEach(obsCallbacks, function(obj){
 							if( obj.event == event ){
-								obj.callback(args);
 								is_event = true;
 								if( debug )
 									$log.info('Catched by : ' + obj.callback);
+								return obj.callback(args);
 							}
 						});
 						if( !is_event )
 							$log.warn ('There is no observer for event ' + event + " from " + caller);
+
 
 					},
 					clear:function(){
@@ -282,7 +284,7 @@ angular.module('app.services', [])
 						$log.info('Triggered by : ' + caller);
 
 					}
-					registeredEvents.trigger(event, args, caller, debug);
+					
 				}
 
 				$event.clear = function(){
@@ -353,6 +355,7 @@ angular.module('app.services', [])
 						angular.forEach(messageOptions.resolve, function (value, key) {
 						  ctrlLocals[key] = tplAndVars[resolveIter++];
 						});
+
 
 						ctrlInstance = $controller(controller, ctrlLocals);
 

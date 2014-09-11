@@ -169,6 +169,14 @@ body {
 .ng-dirty.ng-invalid {
   border-color: red; }
 
+.with-btn-inset {
+  position: relative; }
+  .with-btn-inset .btn-inset {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px; }
+
 /* Messages */
 .message {
   position: fixed;
@@ -178,6 +186,7 @@ body {
   overflow: hidden;
   opacity: 0;
   margin-top: -10px;
+  z-index: 2000;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
