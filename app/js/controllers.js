@@ -58,6 +58,7 @@ angular.module('app.controllers', [])
 
 		$scope.pantryItems = PantryStorage.getPantryItems();
 		$scope.search 	   = {};
+		$scope.newItemName = null;
 
 		$event.registerFor({
 			restock: function(groceryItem){
@@ -74,6 +75,9 @@ angular.module('app.controllers', [])
 			},
 			search: function(search){
 				$scope.search[search.prop] = search.value;
+			},
+			newItemCreation: function(name){
+				$scope.newItemName = name;
 			},
 			create_new_pantryitem: function(pantryItemName){
 				var pantryItem = PantryItemFactory.new({
@@ -229,6 +233,11 @@ angular.module('app.controllers', [])
 				$scope.savePantryItems();
 				if( newValue == false ) animate();
 			}
+		});
+
+		$scope.$watch('newPantryItem.name', function(newValue, oldValue){
+			if( newValue != oldValue && oldValue != undefined )
+				$event.trigger('newItemCreation', newValue);
 		});
 
 	}])
@@ -442,13 +451,11 @@ angular.module('app.controllers', [])
 		}
 
 		$scope.addIngredient = function(){
-			// console.log('add ingredient');
 			$scope.formReceipe.ingredients.push($scope.ingredient);
 			$scope.ingredient = null;
 		}	
 
-		$scope.removeIngredient = function(ingredient){
-			// console.log('remove ingredient');
+		$scope.removeIngredient = function(ingredient){	
 			$scope.formReceipe.ingredients.splice($scope.formReceipe.ingredients.indexOf(ingredient), 1);
 		}
 
