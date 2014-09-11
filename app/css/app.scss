@@ -4,6 +4,10 @@ body{
 	padding-top:100px;
 	font-family:"Open sans";
 }
+
+h2{
+	padding:0 10px 10px 15px;
+}
 .wrapper{
 	position:relative;
 	max-width:800px;
@@ -321,3 +325,12 @@ body{
 	-o-transition: -o-transform 0.1s ease-out;
 	transition: transform 0.1s ease-out; 
  }
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+	.navbar-search{
+		display:none;
+	}
+}
+ 
