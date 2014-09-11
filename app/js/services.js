@@ -1,7 +1,7 @@
 'use strict';
 
 /* Services */
-angular.module('app.services', [])
+angular.module('app.services', []).value('version', '0.0.1')
 	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){

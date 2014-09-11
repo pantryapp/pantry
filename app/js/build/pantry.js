@@ -575,7 +575,13 @@ angular.module('app.directives', [])
 			templateUrl: 'partials/item-filter.html',
 			controller: 'SearchController'
 		}
-	});
+	})
+	.directive('lastUpdate', ['version', function(version) {
+    	return function(scope, elm, attrs) {
+      		elm.text(version);
+    	};
+  }]);
+
 	
 
 	var KEYS = {
@@ -597,11 +603,11 @@ angular.module('app.filters', [])
 
 			return items;
 		}
-	}]);
+	}]);	
 'use strict';
 
 /* Services */
-angular.module('app.services', [])
+angular.module('app.services', []).value('version', '0.0.1')
 	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){

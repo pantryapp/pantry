@@ -13,4 +13,4 @@ angular.module('app.filters', [])
 
 			return items;
 		}
-	}]);
+	}]);	

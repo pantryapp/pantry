@@ -170,7 +170,13 @@ angular.module('app.directives', [])
 			templateUrl: 'partials/item-filter.html',
 			controller: 'SearchController'
 		}
-	});
+	})
+	.directive('lastUpdate', ['version', function(version) {
+    	return function(scope, elm, attrs) {
+      		elm.text(version);
+    	};
+  }]);
+
 	
 
 	var KEYS = {
