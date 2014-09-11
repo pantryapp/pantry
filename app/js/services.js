@@ -158,7 +158,7 @@ angular.module('app.services', [])
 	       	body.append(messageDomEl);
 
 			$timeout(function(){
-				// removeMessage(messageInstance);
+				removeMessage(messageInstance);
 	       	}, 3000);
 
 		}
