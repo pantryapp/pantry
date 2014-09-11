@@ -6,7 +6,7 @@
     <form role="form" name="pantryItemForm"  ng-controller="PantryItemController" ng-submit="pantryItemForm.$valid && createItem()" novalidate>
       <div class='form-group autoselect'>
         <select class='form-control' ng-options="name as name for name in categories" ng-model="newPantryItem.category">
-        <option value="" disabled>- Non classé -</option>
+        <option value="">- Non classé -</option>
         </select>
         <category-list></category-list>
       </div>

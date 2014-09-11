@@ -236,19 +236,20 @@ angular.module('app.services', [])
 					},
 					trigger: function(event, args, caller, debug){
 						var is_event  = false,
-							bubble	  = null;
+							result    = null;
 						angular.forEach(obsCallbacks, function(obj){
 							if( obj.event == event ){
 								is_event = true;
 								if( debug )
 									$log.info('Catched by : ' + obj.callback);
-								return obj.callback(args);
+								
+								result =  obj.callback(args);
 							}
 						});
 						if( !is_event )
 							$log.warn ('There is no observer for event ' + event + " from " + caller);
 
-
+						return result;
 					},
 					clear:function(){
 						var persistants = [];
@@ -284,6 +285,8 @@ angular.module('app.services', [])
 						$log.info('Triggered by : ' + caller);
 
 					}
+
+					return registeredEvents.trigger(event, args, caller, debug);
 					
 				}
 

@@ -34,12 +34,10 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class='collapse navbar-collapse' collapse="isCollapsed">
         <ul class="nav navbar-nav" >
-          <li class='animate' ng-class="{'active':isActive('/pantry')}">
-            <a href='#/pantry'>Garde-manger</a>
+          <li ng-class="{'active':isActive('/pantry')}">
             <a href='#/pantry'>Garde-manger</a>
           </li>
-          <li class='animate' ng-class="{'active':isActive('/groceries')}">
-            <a href='#/groceries'>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a>
+          <li ng-class="{'active':isActive('/groceries')}">
             <a href='#/groceries'>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a>
           </li>
           <li class="dropdown" ng-class="{'open':dropdownIsOpen, 'active':isActive('/receipes')}">
@@ -73,6 +71,11 @@
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
 
+  <script src="js/controllers/pantry.js"></script>
+  <script src="js/controllers/receipe.js"></script>
+  <script src="js/controllers/grocery.js"></script>
+  <script src="js/controllers/search.js"></script>
+  <script src="js/controllers/header.js"></script>
   <!-- 
   <script src="js/build/_bower.min.js"></script>
   <script src="js/build/pantry.min.js"></script>

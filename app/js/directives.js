@@ -33,11 +33,12 @@ angular.module('app.directives', [])
 				element.addClass('btn-inset');
 
 				input_parent.bind('keydown', function(event){
+
 					switch(event.keyCode){
 						case KEYS.enter:
-							if( !$scope.display_btn_inset ) return;
-							element[0].click();
-							event.preventDefault();
+							if( $scope.display_btn_inset )
+								element[0].click();
+								event.preventDefault();
 						break;
 					}
 				})

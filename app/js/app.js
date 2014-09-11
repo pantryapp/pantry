@@ -20,7 +20,7 @@ var app = angular.module('app', [
     templateUrl: 'partials/groceries.html'
   });
   $routeProvider.when('/receipes', {
-    templateUrl: 'partials/receipes.html'
+    templateUrl: 'partials/receipes.html',
   });
   $routeProvider.otherwise(
   	{
