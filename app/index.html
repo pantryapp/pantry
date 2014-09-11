@@ -22,9 +22,10 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
+
   <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" ng-controller="HeaderController" role="navigation">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#/pantry">
+        <a class="navbar-brand" nav-link href="#/pantry">
           <img src="img/build/logo.png" />
           <img src="img/build/logo2.png" />
         </a>
@@ -39,16 +40,16 @@
       <div class='collapse navbar-collapse' collapse="isCollapsed">
         <ul class="nav navbar-nav" >
           <li ng-class="{'active':isActive('/pantry')}">
-            <a href='#/pantry'>Garde-manger</a>
+            <a href='#/pantry' nav-link>Garde-manger</a>
           </li>
           <li ng-class="{'active':isActive('/groceries')}">
-            <a href='#/groceries'>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a>
+            <a href='#/groceries' nav-link>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a>
           </li>
           <li class="dropdown" ng-class="{'open':dropdownIsOpen, 'active':isActive('/receipes')}">
             <a href="#" class="dropdown-toggle" ng-click="toggleDropdown();">Manger <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#/receipes">Livre de recettes</a></li>
-                <li><a href="#">Idées</a></li>
+                <li><a href="#/receipes" nav-link>Livre de recettes</a></li>
+                <li><a href="#" nav-link'>Idées</a></li>
               </ul>
           </li>
         </ul>

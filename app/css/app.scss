@@ -16,12 +16,11 @@ body{
 		overflow:visible;
 
 		&.active a{
-			background-color:transparent!important;
+			// background-color:transparent!important;
 		}
 
 		.dropdown-menu li{
 			a{
-				color:#212121;
 				margin:5px 0;
 			}
 		}
@@ -60,7 +59,7 @@ body{
 
 			&.active{
 				a{
-					background-color:transparent !important;
+					// background-color:transparent !important;
 				}
 			}
 		}

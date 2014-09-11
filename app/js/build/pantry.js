@@ -430,6 +430,16 @@ angular.module('app.directives', [])
 			}
 		}
 	})
+	.directive('navLink', function(){
+		return{
+			restrict: 'A',
+			link:function($scope, element){
+				element.on('click', function(){
+					$scope.isCollapsed = true;
+				})
+			}
+		}
+	})
 	.directive('btnInset', function(){
 		return{
 			restrict: 'A',
