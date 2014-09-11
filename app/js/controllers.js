@@ -51,7 +51,7 @@ angular.module('app.controllers', [])
 		}
 
 	}])
-	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemFactory', 'lookup', '$message', '$event', function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event){
+	.controller('PantryItemsController', ['$scope', 'PantryStorage', 'PantryItemFactory', 'lookup', '$message', '$event', '$filter', function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event, $filter){
 		/*
 		 * Public
 		 */
@@ -74,6 +74,10 @@ angular.module('app.controllers', [])
 			},
 			search: function(search){
 				$scope.search[search.prop] = search.value;
+				$event.trigger('pantryItemsFilter', 
+					$filter('filter')($scope.pantryItems, {name:search.value}).length
+				);
+
 			},
 			create_new_pantryitem: function(pantryItemName){
 				var pantryItem = PantryItemFactory.new({
@@ -83,6 +87,20 @@ angular.module('app.controllers', [])
 
 				$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
 				$scope.pantryItems.push(pantryItem);
+
+				$message.open({
+					templateUrl: 'partials/messages/new_pantryitem.html',
+					scope:$scope,
+					resolve:{
+						args: function(){
+							return {
+								item: pantryItem,
+								type:'success'
+							}
+						}
+					}
+				});
+				return pantryItem;
 			}
 		});
 
@@ -112,7 +130,7 @@ angular.module('app.controllers', [])
 
 
 	}])
-	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'PantryItemFactory', '$event', '$message', function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message){
+	.controller('PantryItemController', ['$scope', '$modal', '$log', 'Slug', '$timeout', 'PantryStorage', 'PantryItemFactory', '$event', '$message', 'lookup', function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup){
 
 		/*
 		 * Public
@@ -126,7 +144,20 @@ angular.module('app.controllers', [])
 		$scope.createItem = function(){			
 			$scope.item = PantryItemFactory.new($scope.newPantryItem);
 
-			$scope.pantryItems.push($scope.item);
+			// Check if item with same slug exists
+			if( lookup.lookupFor($scope.pantryItems, $scope.item, 'slug') ){
+				$message.open({
+					templateUrl:'partials/messages/pantryitem-duplicate.html',
+					resolve:{
+						args:function(){
+							return{
+								item:$scope.item,
+								type:'warning'
+							}
+						}
+					}
+				});
+			} else $scope.pantryItems.push($scope.item);
 
 			// Reset form. Todo : put that away. Directive?
 			$scope.pantryItemForm.$setPristine();
@@ -410,7 +441,7 @@ angular.module('app.controllers', [])
 
 
 	}])
-	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', '$event', function($scope, $modal, Slug, guid, $event){
+	.controller('ReceipeController', ['$scope', '$modal', 'Slug', 'guid', '$event', '$message', 'lookup', function($scope, $modal, Slug, guid, $event, $message, lookup){
 
 		/*
 		 * Public
@@ -422,12 +453,17 @@ angular.module('app.controllers', [])
 			ingredients:[]
 		};		
 		$scope.modalForm;
+		$scope.display_btn_inset = false;
 
 		$scope.create  		= function(){return create();};
 		$scope.updateInline = function(){return updateInline();}
 		$scope.openForm 	= function(){return openForm();};
+
 		$scope.createItem 	= function(){
-			// console.log('create item');
+			console.log('create item');
+			var ingredient = $event.trigger('create_new_pantryitem', $scope.ingredient);
+			$scope.ingredient = {name:$scope.ingredient};
+			$scope.addIngredient();
 		}
 
 		$scope.save = function(){
@@ -443,7 +479,20 @@ angular.module('app.controllers', [])
 
 		$scope.addIngredient = function(){
 			// console.log('add ingredient');
-			$scope.formReceipe.ingredients.push($scope.ingredient);
+			if( lookup.lookupFor($scope.formReceipe.ingredients, $scope.ingredient, 'id') ){
+				$message.open({
+					templateUrl:'partials/messages/ingredient-duplicate.html',
+					resolve:{
+						args:function(){
+							return{
+								item:{ingredient:$scope.ingredient.name, receipe:$scope.formReceipe.name},
+								type:'warning'
+							}
+						}
+					}
+				});
+			} else $scope.formReceipe.ingredients.push($scope.ingredient);
+			
 			$scope.ingredient = null;
 		}	
 
@@ -540,10 +589,37 @@ angular.module('app.controllers', [])
 
 		$scope.$watch('receipe.name', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined ){
-				// console.log('receipe name change');
 				$scope.saveReceipes();
 			}
 		});
+
+		$event.registerFor({
+			pantryItemsFilter: function(n_items){
+				if( n_items == 0 )
+					$scope.display_btn_inset = true;
+				else
+					$scope.display_btn_inset = false;
+					
+			}
+		})
+
+		$scope.$watch('ingredient', function(newValue, oldValue){
+			if( newValue != oldValue && oldValue != undefined )
+				$event.trigger('search', {prop:'name', value:newValue}, 'ingredient search from receipe controller');
+
+		});
+
+	}])
+	.controller('IngredientController', ['$scope', '$event', function($scope, $event){
+		/*
+		 * Public
+		 */
+
+		$scope.toggled = false;
+
+		$scope.toggleOptions = function(){
+			$scope.toggled = !$scope.toggled;
+		}
 
 	}])
 	.controller('SearchController', ['$scope', '$event', function($scope, $event){

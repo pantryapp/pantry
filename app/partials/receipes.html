@@ -2,25 +2,7 @@
 
 <button class='btn btn-success' ng-click="openForm();">Nouvelle recette</button>
 <br /><br />
-<!-- <p>Créer une <button class='btn btn-success'>nouvelle</button> recette</p> -->
-
-<!--   <div class='list-group-item new-item-form'>
-    <form role="form" name="receipeForm"  ng-controller="ReceipeController" ng-submit="receipeForm.$valid && create()" novalidate>
-      <fieldset class="form-group row">
-        <div class='col-xs-6'>
-          <label for="item" class='sr-only'>Nom de la recette</label>
-          <input type="text" class="form-control" placeholder="Nom de la recette" ng-model="newReceipe.name" required />
-        </div>
-        <div class='col-xs-6'>
-          <select multiple ng-model="newReceipe.ingredients" ng-options="item.name for item in pantryItems">
-          </select>
-        </div>
-      </fieldset>
-      <button type='submit'>+</button>
-
-    </form>
-  </div>
- -->
 <receipe-list></receipe-list>
 
-<pantry-items ng-hide="true"><pantry-items>
+<pantry-items ng-hide="true"></pantry-items>
+<grocery-list ng-hide="true"></grocery-list>
