@@ -1,7 +1,7 @@
 'use strict';
 
 /* Directives */
-angular.module('app.directives', [])
+angular.module('app.directives', ['ui.bootstrap'])
 	.directive('quickEdit', function($timeout){
 		return{
 			restrict: 'A',
@@ -171,9 +171,12 @@ angular.module('app.directives', [])
 			controller: 'SearchController'
 		}
 	})
-	.directive('lastUpdate', ['version', function(version) {
+	.directive('lastUpdate', ['npConfig', function(npConfig) {
     	return function(scope, elm, attrs) {
-      		elm.text(version);
+			var config = npConfig.query(function(){
+				elm.text(config.version);
+			});
+      		
     	};
   }]);
 

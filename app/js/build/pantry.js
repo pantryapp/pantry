@@ -302,10 +302,7 @@
 
 // Declare app level module which depends on filters, and services
 var app = angular.module('app', [
-	'LocalStorageModule',
 	'ngRoute',
-  'slugifier', 
-  'ui.bootstrap',
 	'app.filters',
   'app.services',
   'app.directives',
@@ -339,8 +336,9 @@ controllers.controller('PantryController', [
 	'$route', 
 	'$log', 
 	'$message', 
-	'$event', 
+	'$event',
 	function($scope, $route, $log, $message, $event){
+
 
 		$scope.debug = function(value){
 			$log.info(value);
@@ -406,7 +404,7 @@ var categories = [
 'use strict';
 
 /* Directives */
-angular.module('app.directives', [])
+angular.module('app.directives', ['ui.bootstrap'])
 	.directive('quickEdit', function($timeout){
 		return{
 			restrict: 'A',
@@ -576,9 +574,13 @@ angular.module('app.directives', [])
 			controller: 'SearchController'
 		}
 	})
-	.directive('lastUpdate', ['version', function(version) {
+	.directive('lastUpdate', ['npConfig', function(npConfig) {
     	return function(scope, elm, attrs) {
-      		elm.text(version);
+
+			var config = npConfig.query(function(){
+				elm.text(config.version);
+			});
+      		
     	};
   }]);
 
@@ -607,7 +609,12 @@ angular.module('app.filters', [])
 'use strict';
 
 /* Services */
-angular.module('app.services', []).value('version', '0.0.1')
+angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier'])
+	.factory('npConfig', ['$resource', function($resource){
+	    return $resource('../package.json', null, {
+	    	query: {method:'GET'}
+	    });
+	}])
 	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){
@@ -940,9 +947,7 @@ angular.module('app.services', []).value('version', '0.0.1')
 				}
 
 				$message.open = function(messageOptions){
-					var messageInstance = {
-					}
-
+					var messageInstance = {}
 
             		messageOptions.resolve = messageOptions.resolve || {};
 

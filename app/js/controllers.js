@@ -9,8 +9,9 @@ controllers.controller('PantryController', [
 	'$route', 
 	'$log', 
 	'$message', 
-	'$event', 
+	'$event',
 	function($scope, $route, $log, $message, $event){
+
 
 		$scope.debug = function(value){
 			$log.info(value);

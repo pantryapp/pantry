@@ -1,7 +1,12 @@
 'use strict';
 
 /* Services */
-angular.module('app.services', []).value('version', '0.0.1')
+angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier'])
+	.factory('npConfig', ['$resource', function($resource){
+	    return $resource('../package.json', null, {
+	    	query: {method:'GET'}
+	    });
+	}])
 	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){
@@ -334,9 +339,7 @@ angular.module('app.services', []).value('version', '0.0.1')
 				}
 
 				$message.open = function(messageOptions){
-					var messageInstance = {
-					}
-
+					var messageInstance = {}
 
             		messageOptions.resolve = messageOptions.resolve || {};
 
