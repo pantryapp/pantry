@@ -126,7 +126,8 @@ ul > li > a.page_title {
         width: 100%;
         height: 100%;
         margin: 0;
-        padding: 0 15px; }
+        padding: 0 15px;
+        border: none; }
       .items-list .list-group-item .pantry-item .item.edit-mode button {
         position: absolute;
         top: 0;
