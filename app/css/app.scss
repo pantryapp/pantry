@@ -132,6 +132,9 @@ ul>li>a.page_title{
 
 .items-list{
 
+	$option_width:30%;
+	$edit_width:70%;
+
 	&.groceries, &.receipes {
 		.list-group-item{
 			.pantry-item{
@@ -165,7 +168,7 @@ ul>li>a.page_title{
 				transition:margin 0.15s ease-in-out;
 
 				&.active{ 
-					margin-left:20%; 
+					margin-left:$option_width; 
 					.item-options{margin-left:0;opacity:1;};
 				}
 			} // .item-wrapper
@@ -239,7 +242,7 @@ ul>li>a.page_title{
 			.item-options{
 				position:absolute;
 				top:0%;left:0%;
-				width:20%;height:100%;
+				width:$option_width;height:100%;
 				margin-left:-200%;
 				z-index:0;
 				opacity:0;
