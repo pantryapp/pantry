@@ -178,10 +178,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 			});
       		
     	};
-  }]);
-
-	
-
+ 	}]);
+ 	
 	var KEYS = {
 		enter : 13,
 		esc	  : 27
