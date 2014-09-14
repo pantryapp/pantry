@@ -1,4 +1,4 @@
 <!-- <button type="button" class="btn btn-info" ng-click="debug(item)">Debug</button> -->
-<button type="button" class="btn btn-danger"  ng-click="confirmDelete()">Supprimer</button>
-<button type="button" class="btn btn-warning" ng-click="toggleOutOfStock();toggled=false;" ng-hide="item.outOfStock">Out of stock</button>
-<button type="button" class="btn btn-success" ng-click="toggleOutOfStock();toggled=false;" ng-show="item.outOfStock">Restock</button>
+<button type="button" class="btn btn-danger"  ng-click="confirmDelete()"><span class='glyphicon glyphicon-trash'></span></button>
+<button type="button" class="btn btn-warning" ng-click="toggleOutOfStock();toggled=false;" ng-hide="item.outOfStock"><span class='glyphicon glyphicon-ban-circle'></span></button>
+<button type="button" class="btn btn-success" ng-click="toggleOutOfStock();toggled=false;" ng-show="item.outOfStock"><span class='glyphicon glyphicon-ok-circle'></span></button>

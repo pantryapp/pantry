@@ -3,7 +3,7 @@
 
     <div class='item edit-mode' ng-show="toggled">
       <input type='text' quick-edit="toggled" on-edit="updateInline()" ng-model="editingReceipe.name" />
-      <button type="button" class="btn btn-info"  ng-click="updateInline();">OK</button>
+      <button type="button" class="btn btn-info"  ng-click="updateInline();"><span class='glyphicon glyphicon-thumbs-up'></span></button>
     </div>
     <div class='item' ng-hide="toggled" ng-click="openItem();">
       <span class="glyphicon glyphicon-ok checkmark pull-left"></span>

@@ -93,7 +93,7 @@ ul > li > a.page_title {
     display: table;
     transition: margin 0.15s ease-in-out; }
     .items-list .list-group-item .pantry-item .item-wrapper.active {
-      margin-left: 325px; }
+      margin-left: 20%; }
       .items-list .list-group-item .pantry-item .item-wrapper.active .item-options {
         margin-left: 0;
         opacity: 1; }
@@ -116,7 +116,7 @@ ul > li > a.page_title {
       text-decoration: line-through;
       opacity: 0.2; }
     .items-list .list-group-item .pantry-item .item.edit-mode {
-      padding: 15px;
+      padding: 0px;
       position: relative; }
       .items-list .list-group-item .pantry-item .item.edit-mode input {
         font-size: 18px;
@@ -124,14 +124,16 @@ ul > li > a.page_title {
         color: #333;
         border: 1px solid #eee;
         width: 100%;
+        height: 100%;
         margin: 0;
-        padding: 0 0 0 5px; }
+        padding: 0 15px; }
       .items-list .list-group-item .pantry-item .item.edit-mode button {
         position: absolute;
-        top: 50%;
-        right: 15px;
-        margin-top: -17px;
-        width: 160px; }
+        top: 0;
+        right: 0;
+        width: 10%;
+        height: 100%;
+        border-radius: 0px; }
     .items-list .list-group-item .pantry-item .item .item-name {
       /*margin:0 0 0 10px; padding:20px 0 0 0; */
       margin: 0 0 0 10px;
@@ -150,7 +152,7 @@ ul > li > a.page_title {
     position: absolute;
     top: 0%;
     left: 0%;
-    width: 325px;
+    width: 20%;
     height: 100%;
     margin-left: -200%;
     z-index: 0;
@@ -162,7 +164,7 @@ ul > li > a.page_title {
     transition: all 0.15s ease-in-out; }
     .items-list .list-group-item .pantry-item .item-options button {
       height: 100%;
-      width: 33.4%; }
+      width: 50%; }
       .items-list .list-group-item .pantry-item .item-options button:last-child {
         border-top-right-radius: 0 !important;
         border-bottom-right-radius: 0 !important; }
