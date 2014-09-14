@@ -10,6 +10,9 @@ Sections idées
 Liste d'épicerie
 	* Ajouter des éléments sans les mettre outOfStock
 
+Recettes
+	* Afficher l'état de stock des ingredients dans la liste d'ingrédient de la recette
+
 Garde-manger
 
 	- un item peut avoir plusieurs tags (ex.: sucré, salé, légume, fruit, etc.)

@@ -25,6 +25,21 @@ angular.module('app.directives', ['ui.bootstrap'])
 			}
 		}
 	})
+	.directive('openItem', function(isTouch){
+		return{
+			restrict: 'A',
+			link:function($scope, element){
+				if( isTouch ){
+					
+				}else{
+					element.on('click', function(event){
+						$scope.openItem();
+					});					
+				}
+
+			}
+		}
+	})
 	.directive('navLink', function(){
 		return{
 			restrict: 'A',
