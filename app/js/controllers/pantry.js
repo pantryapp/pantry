@@ -133,24 +133,25 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.update = function(){
-			$scope.item.name = $scope.editingPantryItem.name;
-			$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
-			closeItem();
-			animate();
+			if( $scope.item.name != $scope.editingPantryItem.name ){
 
-			$message.open({
-				templateUrl: 'partials/messages/pantryitem-edit.html', scope:$scope,
-				resolve:{
-					args: function(){
-						return {
-							item: {
-								name:$scope.item.name
-							},
-							type:'success'
-						}
-					}
-				}
-			});
+				$scope.item.name = $scope.editingPantryItem.name;
+				$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
+				animate();
+
+				$message.open({
+					templateUrl: 'partials/messages/pantryitem-edit.html', 
+					scope:$scope,
+					resolve:{args: function(){return {
+								item: {
+									name:$scope.item.name
+								},
+								type:'success'
+							}}}
+				});
+			}
+
+			closeItem();
 		};
 
 		$scope.toggleOutOfStock = function(){
