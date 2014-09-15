@@ -204,6 +204,10 @@ controllers.controller('PantryItemController', [
 			closeItem();
 		};
 
+		$scope.setEdit = function(mode){
+			$editing = mode;
+		}
+
 		/*
 		 * Private
 		 */
