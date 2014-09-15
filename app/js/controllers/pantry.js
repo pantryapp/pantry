@@ -205,7 +205,7 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.setEdit = function(mode){
-			$editing = mode;
+			$scope.editing = mode;
 		}
 
 		/*
