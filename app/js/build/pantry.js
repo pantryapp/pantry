@@ -457,8 +457,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 						panning       = false,
 						margin_left   = 0;
 
-						
-					_hammer.on('pan', function(event){
+				
+					_hammer.on('panleft panright', function(event){
 						if( event.distance >= threshold && !$scope.toggled ){
 							$scope.openItem();
 							$scope.$apply('toggled');
