@@ -2,7 +2,7 @@
   <div class='item-wrapper' ng-class="{'active':toggled}">
 
     <div class='item edit-mode' ng-show="toggled">
-      <input type='text' quick-edit="toggled" on-edit="update()" ng-model="editingPantryItem.name" />
+      <input type='text'  on-edit="update()" ng-model="editingPantryItem.name" />
       <button type="button" class="btn btn-info"  ng-click="update();"><span class='glyphicon glyphicon-thumbs-up'></span></button>
     </div>
     <div class='item' ng-hide="toggled" ng-class="{'outofstock':item.outOfStock}" >

@@ -38,10 +38,12 @@ angular.module('app.directives', ['ui.bootstrap'])
 						threshold     = element_width * (options_ratio/100), // 30% of element width = item options width
 						wrapper       = element.children(),
 						buttons		  = element.find('pantry-item-options').children(),
-						panning       = false,
+						scrolling     = false,
 						margin_left   = 0;
 
-				
+
+
+					
 					_hammer.on('panleft panright', function(event){
 						if( event.distance >= threshold && !$scope.toggled ){
 							$scope.openItem();
@@ -51,7 +53,6 @@ angular.module('app.directives', ['ui.bootstrap'])
 							wrapper.css('margin-left', margin_left + '%');
 							buttons.css('margin-left', parseInt(-1 * (options_ratio - margin_left)) + '%');
 						}
-							
 					});
 
 					_hammer.on('panend', function(event){
