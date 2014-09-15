@@ -192,7 +192,7 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.openItem = function(){
-			alert('open');
+			console.log('open item' + $scope.toggled);
 			// Open item
 			$scope.toggled = true;
 			$scope.editingPantryItem.name = $scope.item.name;
