@@ -96,7 +96,8 @@ controllers.controller('PantryItemController', [
 	'$event', 
 	'$message', 
 	'lookup', 
-	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup){
+	'_options',
+	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup, _options){
 
 		/*
 		 * Public
@@ -104,8 +105,9 @@ controllers.controller('PantryItemController', [
 
 		$scope.toggled = false;
 		$scope.edited  = false;
-		$scope.focus   = true;
+		$scope.focus   = _options.get('autoFocus').value;
 		$scope.editingPantryItem = {};
+		$scope.showForm = _options.get('showForm').value;
 
 		$scope.createItem = function(){			
 			$scope.item = PantryItemFactory.new($scope.newPantryItem);
