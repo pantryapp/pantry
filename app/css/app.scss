@@ -154,8 +154,7 @@ ul>li>a.page_title{
 			background-color:rgba(255,255,255,0.8);
 
 			.item-wrapper{ 
-				height:65px;
-				display:table;
+				// display:table;
 				-webkit-transition:-webkit-transform 0.25s ease-in-out;	
 
 				&.active{ 
@@ -175,8 +174,10 @@ ul>li>a.page_title{
 			}
 
 			.item, .item-options{
-				display:table-cell;
-				vertical-align: middle;
+				// display:table-cell;
+				// vertical-align: middle;
+				height:74px;
+				padding:28px 0;
 			}
 
 			.item{
@@ -233,9 +234,10 @@ ul>li>a.page_title{
 			.item-options{
 				position:absolute;
 				top:0%;left:0%;
-				width:$option_width;height:100%;
+				width:$option_width;
 				z-index:0;
 				opacity:1;
+				padding:0;
 				margin-left:$option_width * -1;
 
 				button{ 
