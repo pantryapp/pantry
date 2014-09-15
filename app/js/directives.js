@@ -28,7 +28,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 
 				$scope.$watch('editing', function(value){
 					if( value )
-						$timeout(function(){element[0].focus();});
+						console.log(value)
+						$timeout(function(){element[0].focus();},10);
 				});
 			}
 		}
