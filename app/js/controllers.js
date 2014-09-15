@@ -31,7 +31,6 @@ controllers.controller('PantryController', [
 		$scope.categories = categories;
 }]);
 
-
 controllers.controller('DeleteModalInstanceController', [
 	'$scope', 
 	'$modalInstance', 
