@@ -133,7 +133,6 @@ ul>li>a.page_title{
 .items-list{
 
 	$option_width:50%;
-	// $option_width:200px;
 
 	&.groceries, &.receipes {
 		.list-group-item{
@@ -154,15 +153,10 @@ ul>li>a.page_title{
 			position:relative;
 			background-color:rgba(255,255,255,0.8);
 
-			&.animate{
-				.item-wrapper{
-					transition:-webkit-transform 0.25s ease-in-out;	
-				}
-			}
-
 			.item-wrapper{ 
 				height:65px;
 				display:table;
+				-webkit-transition:-webkit-transform 0.25s ease-in-out;	
 
 				&.active{ 
 					-webkit-transform:translate3d($option_width, 0, 0); 
