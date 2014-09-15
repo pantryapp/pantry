@@ -105,6 +105,7 @@ controllers.controller('PantryItemController', [
 		$scope.toggled = false;
 		$scope.edited  = false;
 		$scope.focus   = true;
+		$scope.editing = false;
 		$scope.editingPantryItem = {};
 
 		$scope.createItem = function(){			
@@ -196,7 +197,9 @@ controllers.controller('PantryItemController', [
 			$scope.editingPantryItem.name = $scope.item.name;
 		};
 
-		$scope.closeItem = closeItem;
+		$scope.closeItem = function(){
+			closeItem();
+		};
 
 		/*
 		 * Private
@@ -210,6 +213,7 @@ controllers.controller('PantryItemController', [
 
 		var closeItem = function(){
 			$scope.toggled = false;
+			$scope.editing = false;
 			$scope.editingPantryItem = {};
 		}
 

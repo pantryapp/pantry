@@ -2,7 +2,7 @@
 
 /* Directives */
 angular.module('app.directives', ['ui.bootstrap'])
-	.directive('quickEdit', function($timeout, isTouch){
+	.directive('inlineEdit', function($timeout){
 		return{
 			restrict: 'A',
 			link: function($scope, element, attributes){
@@ -13,21 +13,14 @@ angular.module('app.directives', ['ui.bootstrap'])
 							$scope.$apply(attributes.onEdit);
 						break;
 						case KEYS.esc:
-							$scope.toggled = false;
-							$scope.$apply($scope.toggled);
+							$scope.$apply(attributes.onCancel);
 						break;
 					}
 				});
-			}
-		}
-	})
-	.directive('toggleEdit', function($timeout){
-		return{
-			restrict: 'A',
-			link: function($scope, element){
-				console.log(element);
-				element.on('click', function(){
-					
+
+				$scope.$watch('editing', function(value){
+					if( value )
+						$timeout(function(){element[0].focus();});
 				});
 			}
 		}
