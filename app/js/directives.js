@@ -2,6 +2,14 @@
 
 /* Directives */
 angular.module('app.directives', ['ui.bootstrap'])
+	.directive('noCache', function(){
+		return{
+			restrict: 'A',
+			link:function($scope, element, attributes){
+				element[0].src = attributes.src + "?v=" + new Date().getTime();
+			}
+		}
+	})
 	.directive('inlineEdit', function($timeout){
 		return{
 			restrict: 'A',
