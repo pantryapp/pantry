@@ -163,10 +163,19 @@ ul>li>a.page_title{
 
 		.pantry-item{
 
+			&.animate{
+				.item-wrapper{
+					transition:margin 0.15s ease-in-out;	
+				}
+
+				.item-options{
+
+				}
+			}
+
 			.item-wrapper{ 
 				height:65px;
 				display:table;
-				// transition:margin 0.15s ease-in-out;
 
 				&.active{ 
 					margin-left:$option_width; 
@@ -190,12 +199,6 @@ ul>li>a.page_title{
 				position:relative;
 				z-index:10;
 				width:100%;
-
-				-webkit-transition: all 0.15s ease-in-out;
-				   -moz-transition: all 0.15s ease-in-out;
-				    -ms-transition: all 0.15s ease-in-out;
-				     -o-transition: all 0.15s ease-in-out;
-				        transition: all 0.15s ease-in-out;
 
 				&.outofstock .item-name{ text-decoration:line-through; opacity:0.2;}
 
@@ -249,14 +252,11 @@ ul>li>a.page_title{
 				margin-left:$option_width * -1;
 				z-index:0;
 				opacity:1;
-				// -webkit-transition: all 0.15s ease-in-out;
-				//    -moz-transition: all 0.15s ease-in-out;
-				//     -ms-transition: all 0.15s ease-in-out;
-				//      -o-transition: all 0.15s ease-in-out;
-				//         transition: all 0.15s ease-in-out;
+
 
 				button{ 
-					height:100%;width:50%; 
+					width:33.333%;height:100%;
+					margin:0;
 
 					&:last-child{
 						border-top-right-radius: 0!important;
@@ -359,6 +359,45 @@ ul>li>a.page_title{
 
 @media screen and (max-width: 768px) {
 	ul>li>a.page_title{display:block;}
+
+
+.items-list{
+	.list-group-item{
+		.pantry-item{
+			.item{
+				&.edit-mode{
+					padding:0px;
+					position:relative;
+
+					input{
+						font-size:18px;
+						font-weight:500;
+						color:#333;
+						border:1px solid #eee;
+						width:100%;height:100%;
+						margin:0;padding:0 15px;
+						border:none;
+					}
+
+					button{
+						position:absolute;
+						top:0;right:0; 
+						width:10%;height:100%;
+						min-width:60px;
+						border-radius:0px;
+					}
+				} // &.edit-mode
+			} // .item
+ 
+			.item-options{
+				button{ 
+					width:33%; 
+				} // button 
+			} // .item-options
+		} // .pantry-item
+	} // .list-group-item
+} // .items-list
+
 } // 768px
 
 @media screen 

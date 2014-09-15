@@ -2,7 +2,7 @@
 
 /* Directives */
 angular.module('app.directives', ['ui.bootstrap'])
-	.directive('quickEdit', function($timeout){
+	.directive('quickEdit', function($timeout, isTouch){
 		return{
 			restrict: 'A',
 			link: function($scope, element, attributes){
@@ -18,50 +18,17 @@ angular.module('app.directives', ['ui.bootstrap'])
 						break;
 					}
 				});
-
-				$scope.$watch('toggled', function(value){
-					if( value ) $timeout(function(){element[0].focus();});
-				});
 			}
 		}
 	})
-	.directive('openItem', function($timeout, isTouch){
+	.directive('toggleEdit', function($timeout){
 		return{
 			restrict: 'A',
-			priority: 1000,
-			link:function($scope, element){
-
-				$timeout(function(){
-					var element_width = element[0].offsetWidth,
-						options_ratio = 30,
-						_hammer 	  = new Hammer(element[0]),
-						threshold     = element_width * (options_ratio/100), // 30% of element width = item options width
-						wrapper       = element.children(),
-						buttons		  = element.find('pantry-item-options').children(),
-						scrolling     = false,
-						margin_left   = 0;
-
-
-
+			link: function($scope, element){
+				console.log(element);
+				element.on('click', function(){
 					
-					_hammer.on('panleft panright', function(event){
-						if( event.distance >= threshold && !$scope.toggled ){
-							$scope.openItem();
-							$scope.$apply('toggled');
-						}else if( !$scope.toggled ){
-							margin_left = 100*(event.distance/element_width);
-							wrapper.css('margin-left', margin_left + '%');
-							buttons.css('margin-left', parseInt(-1 * (options_ratio - margin_left)) + '%');
-						}
-					});
-
-					_hammer.on('panend', function(event){
-						wrapper.css('margin-left', '');
-						buttons.css('margin-left', '');
-					});		
-				}, 100);
-	
-				
+				});
 			}
 		}
 	})
@@ -156,7 +123,6 @@ angular.module('app.directives', ['ui.bootstrap'])
 	.directive('pantryItemOptions', function(){
 		return{
 			restrict: 'E',
-			priority: 100,
 			templateUrl: 'partials/pantry-item-options.html'
 		}
 	})
