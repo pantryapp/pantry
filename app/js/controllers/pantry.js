@@ -134,8 +134,9 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.update = function(){
+			console.log('update');
 			if( $scope.item.name != $scope.editingPantryItem.name ){
-
+				console.log('update it');
 				$scope.item.name = $scope.editingPantryItem.name;
 				$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
 				animate();
@@ -192,10 +193,11 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.openItem = function(){
-			// Open item
-			$scope.toggled = true;
-			$scope.editingPantryItem.name = $scope.item.name;
-			console.log('open item' + $scope.toggled)
+			if( !$scope.toggled )
+				// Open item
+				$scope.toggled = true;
+				console.log($scope.editing);
+				$scope.editingPantryItem.name = $scope.item.name;
 		};
 
 		$scope.closeItem = function(){
@@ -213,6 +215,7 @@ controllers.controller('PantryItemController', [
 		}
 
 		var closeItem = function(){
+			console.log('close item');
 			$scope.toggled = false;
 			$scope.editing = false;
 			$scope.editingPantryItem = {};
