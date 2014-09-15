@@ -29,14 +29,16 @@ angular.module('app.directives', ['ui.bootstrap'])
 		return{
 			restrict: 'A',
 			link:function($scope, element){
-				if( isTouch ){
-					
-				}else{
-					element.on('click', function(event){
-						$scope.openItem();
-					});					
-				}
 
+
+				var hammer = new Hammer(element[0]);
+
+				hammer.on('swiperight', function(event){
+					if( !$scope.toggled )
+						$scope.openItem();
+						$scope.$apply($scope.toggled);
+				});
+				
 			}
 		}
 	})
