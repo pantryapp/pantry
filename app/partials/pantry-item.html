@@ -1,5 +1,5 @@
-<div class='pantry-item animate' ng-class="{'edited':edited}">
-  <div class='item-wrapper' hm-tap="openItem()"  ng-class="{'active':toggled, 'editing':editing}">
+<div class='pantry-item animate' hm-tap="openItem()" ng-class="{'edited':edited}">
+  <div class='item-wrapper' ng-class="{'active':toggled, 'editing':editing}">
 
     <div class='item edit-mode' ng-show="toggled">
       <input type='text' ng-show="editing" inline-edit on-cancel="closeItem()" on-edit="update()" ng-model="editingPantryItem.name" />
