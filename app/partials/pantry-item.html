@@ -5,7 +5,7 @@
       <input type='text' ng-show="editing" inline-edit on-cancel="closeItem()" on-edit="update()" ng-model="editingPantryItem.name" />
       <!-- <input type='text'  ng-model="editingPantryItem.name" /> -->
       <input type='text' ng-hide="editing" disabled ng-model="editingPantryItem.name" />
-      <button type="button" class="btn btn-info" ng-click="update()"><span class='glyphicon glyphicon-thumbs-up'></span></button>
+      <button type="button" class="btn btn-info" hm-tap="update()"><span class='glyphicon glyphicon-thumbs-up'></span></button>
     </div>
     <div class='item' ng-hide="toggled"  hm-tap="openItem()" ng-class="{'outofstock':item.outOfStock}" >
       <span class="glyphicon glyphicon-ok checkmark pull-left"></span>
