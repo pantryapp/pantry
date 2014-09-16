@@ -1,6 +1,6 @@
 <div class='btn-group item-options'>
 	<!-- <button type="button" class="btn btn-info" ng-click="debug(item)">Debug</button> -->
-	<button type="button" class="btn btn-danger"  hm-tap="confirmDelete()"><span class='glyphicon glyphicon-trash'></span></button>
+	<button type="button" class="btn btn-danger"  ng-click="confirmDelete()"><span class='glyphicon glyphicon-trash'></span></button>
 	<button type="button" class="btn btn-warning" hm-tap="toggleOutOfStock();toggled=false;" ng-hide="item.outOfStock"><span class='glyphicon glyphicon-ban-circle'></span></button>
 	<button type="button" class="btn btn-success" hm-tap="toggleOutOfStock();toggled=false;" ng-show="item.outOfStock"><span class='glyphicon glyphicon-shopping-cart'></span></button>
 	<button type="button" class="btn btn-info" hm-tap="showEditForm()"><span class='glyphicon glyphicon-pencil'></span></button>
