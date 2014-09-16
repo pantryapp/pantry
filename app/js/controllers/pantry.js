@@ -134,9 +134,7 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.update = function(){
-			console.log('update');
 			if( $scope.item.name != $scope.editingPantryItem.name ){
-				console.log('update it');
 				$scope.item.name = $scope.editingPantryItem.name;
 				$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
 				animate();
@@ -153,7 +151,7 @@ controllers.controller('PantryItemController', [
 				});
 			}
 
-			closeItem();
+			showOptions();
 		};
 
 		$scope.toggleOutOfStock = function(){
@@ -192,21 +190,22 @@ controllers.controller('PantryItemController', [
 			$scope.pantryItems.splice($scope.pantryItems.indexOf($scope.item), 1);
 		};
 
-		$scope.openItem = function(){
-			if( !$scope.toggled )
-				// Open item
-				$scope.toggled = true;
-				console.log($scope.editing);
-				$scope.editingPantryItem.name = $scope.item.name;
+		$scope.showOptions = function(){
+			showOptions();
 		};
+
+		$scope.showEditForm = function(){
+			if( !$scope.editing )
+				$scope.editing = true;
+			if( $scope.toggled )
+				$scope.toggled = false;
+				$scope.editingPantryItem.name = $scope.item.name;
+		}
+
 
 		$scope.closeItem = function(){
 			closeItem();
 		};
-
-		$scope.setEdit = function(mode){
-			$scope.editing = mode;
-		}
 
 		/*
 		 * Private
@@ -219,10 +218,16 @@ controllers.controller('PantryItemController', [
 		}
 
 		var closeItem = function(){
-			console.log('close item');
 			$scope.toggled = false;
 			$scope.editing = false;
 			$scope.editingPantryItem = {};
+		}
+
+		var showOptions = function(){
+			if( !$scope.toggled )
+				$scope.toggled = true;
+			if( $scope.editing )
+				$scope.editing = false;
 		}
 
 		/*
