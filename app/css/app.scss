@@ -3,7 +3,6 @@
 body{
 	background:url('../img/pattern.jpg') repeat;
 	background-attachment: fixed;
-	// padding-top:60px;
 	font-family:"Open sans";
 }
 
@@ -158,7 +157,7 @@ ul>li>a.page_title{
 			} // &.active
 
 			.item-wrapper{
-				@include transition(all 0.2s ease-in-out);
+				@include transition(all 0.14s ease);
 				@include transform(translate3d(0,0,0));
 				@include transform-style(preserve-3d);
 			}
@@ -192,7 +191,6 @@ ul>li>a.page_title{
 
 				input{
 					border:none;
-					// background-color:transparent;
 					width:100%;height:100%;
 					padding-left:20px;
 				}
@@ -236,15 +234,9 @@ ul>li>a.page_title{
 		color:#fff; 
 		display:inline-block;
 		font-size:12px;
-		-webkit-transition: all 0.15s ease-in-out;
-		   -moz-transition: all 0.15s ease-in-out;
-		    -ms-transition: all 0.15s ease-in-out;
-		     -o-transition: all 0.15s ease-in-out;
-		        transition: all 0.15s ease-in-out;
+		@include transition(all 0.15s ease-in-out);
 
-		&:hover{
-			text-decoration: none;
-		}
+		&:hover{ text-decoration: none; }
 	}
 }
 
@@ -271,16 +263,12 @@ ul>li>a.page_title{
 	margin-top:-10px;
 	z-index:2000;
 
+	@include transition(all 0.3s ease);
+
 	p{
 		font-size:12px;
 		margin:0;
 	}
-
-   -webkit-transition: all 0.3s ease;
-      -moz-transition: all 0.3s ease;
-       -ms-transition: all 0.3s ease;
-        -o-transition: all 0.3s ease;
-           transition: all 0.3s ease;
 
     &.animate{
     	opacity:1;
@@ -294,18 +282,11 @@ ul>li>a.page_title{
 /* Bootstrap twitch for fastest modals */
  .fade {
    opacity: 0;
-   -webkit-transition: opacity 0.1s linear;
-      -moz-transition: opacity 0.1s linear;
-       -ms-transition: opacity 0.1s linear;
-        -o-transition: opacity 0.1s linear;
-           transition: opacity 0.1s linear;
+   @include transition(opacity 0.1s linear);
  }
 
  .modal.fade .modal-dialog{
-	-webkit-transition: -webkit-transform 0.1s ease-out;
-	-moz-transition: -moz-transform 0.1s ease-out;
-	-o-transition: -o-transform 0.1s ease-out;
-	transition: transform 0.1s ease-out; 
+	@include transition(transform 0.1s ease-in-out);
  }
 
  /* Bootstrap buttons overhaul */
