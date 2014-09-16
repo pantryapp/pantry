@@ -6,4 +6,4 @@ tmp
 .idea
 .sass-cache
 npm-debug.log
-.map.css
+app/css/app.map.css

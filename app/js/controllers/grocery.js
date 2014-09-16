@@ -74,6 +74,7 @@ controllers.controller('GroceryItemController', [
 
 		$scope.toggleOptions = function(){
 			$scope.toggled = !$scope.toggled;
+			console.log('sap');
 		};
 
 		$scope.buy = function(){
@@ -93,6 +94,10 @@ controllers.controller('GroceryItemController', [
 		$scope.create = function(){
 			$event.trigger('add_grocery', $scope.newGroceryItem, 'Grocery controller');
 			resetNewGroceryForm();
+		}
+
+		$scope.closeItem = function(){
+			$scope.toggled = false;
 		}
 
 		/*

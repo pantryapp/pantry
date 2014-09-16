@@ -1,12 +1,11 @@
-<div class='pantry-item'>
-  <div class='item-wrapper' ng-class="{'active':toggled}">
 
-    <div class='item' ng-click="toggleOptions();" >
-      <span class="glyphicon glyphicon-ok checkmark pull-left"></span>
-      <h4 class='item-name pull-left'>{{item.name}}</h3> 
-    </div>
+<div class='item-wrapper'>
 
-    <grocery-item-options class="btn-group item-options"></grocery-item-options>
+	<div class='item' hm-tap="toggleOptions();" >
+  		<span class="glyphicon glyphicon-ok checkmark pull-left"></span>
+  		<h4 class='item-name pull-left'>{{item.name}}</h4> 
+	</div>
 
-  </div>
+	<grocery-item-options class="btn-group item-options"></grocery-item-options>
+
 </div>

@@ -90,8 +90,8 @@ controllers.controller('ReceipeController', [
 
 
 		$scope.create  		= function(){return create();};
-		$scope.updateInline = function(){return updateInline();}
 		$scope.openForm 	= function(){return openForm();};
+		$scope.closeItem    = function(){return closeItem();};
 
 		$scope.createItem 	= function(){
 			var ingredient = $event.trigger('create_new_pantryitem', $scope.ingredient);
@@ -183,12 +183,6 @@ controllers.controller('ReceipeController', [
 
 		};
 
-		var updateInline = function(){
-			$scope.receipe.name = $scope.editingReceipe.name;
-			$scope.receipe.slug = Slug.slugify($scope.editingReceipe.name);
-			$scope.toggled 		= false;
-		}
-
 		var deleteItem = function(){
 			$scope.receipes.splice($scope.receipes.indexOf($scope.receipe), 1);
 		}
@@ -210,6 +204,10 @@ controllers.controller('ReceipeController', [
 						}
 					}
 				});
+		}
+
+		var closeItem = function(){
+			$scope.toggled = false;
 		}
 
 		/*

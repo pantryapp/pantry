@@ -1,16 +1,16 @@
 'use strict';
 
 /* Directives */
-angular.module('app.directives', ['ui.bootstrap'])
-	.directive('noCache', function(){
+var directives = angular.module('app.directives', ['ui.bootstrap']);
+directives.directive('noCache', function(){
 		return{
 			restrict: 'A',
 			link:function($scope, element, attributes){
 				element[0].src = attributes.src + "?v=" + new Date().getTime();
 			}
 		}
-	})
-	.directive('inlineEdit', function($timeout){
+	});
+directives.directive('inlineEdit', function($timeout){
 		return{
 			restrict: 'A',
 			link: function($scope, element, attributes){
@@ -32,8 +32,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 				});
 			}
 		}
-	})
-	.directive('navLink', function(){
+	});
+directives.directive('navLink', function(){
 		return{
 			restrict: 'A',
 			link:function($scope, element){
@@ -42,8 +42,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 				})
 			}
 		}
-	})
-	.directive('btnInset', function(){
+	});
+directives.directive('btnInset', function(){
 		return{
 			restrict: 'A',
 			link: function($scope, element ,attributes){
@@ -63,8 +63,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 
 			}
 		}
-	})
-	.directive('focusMe', function($timeout){
+	});
+directives.directive('focusMe', function($timeout){
 		return{
 			restrict: 'A',
 			link: function($scope, element, attributes){
@@ -89,8 +89,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 				})
 			}
 		}
-	})
-	.directive('messageWindow', function($timeout){
+	});
+directives.directive('messageWindow', function($timeout){
 		return{
 			restrict: 'EA',
 			templateUrl: 'partials/message.html',
@@ -101,85 +101,85 @@ angular.module('app.directives', ['ui.bootstrap'])
 				});
 			}
 		}
-	})
-	.directive('categoryList', function(){
+	});
+directives.directive('categoryList', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/category-list.html'
 		}
-	})
-	.directive('pantryItems', function(){
+	});
+directives.directive('pantryItems', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/pantry-list.html',
 			controller: 'PantryItemsController'
 		}
-	})
-	.directive('pantryItem', function(){
+	});
+directives.directive('pantryItem', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/pantry-item.html'
 		}
-	})
-	.directive('pantryItemOptions', function(){
+	});
+directives.directive('pantryItemOptions', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/pantry-item-options.html'
 		}
-	})
-	.directive('groceryList', function(){
+	});
+directives.directive('groceryList', function(){
 		return {
 			restrict: 'E',
 			templateUrl: 'partials/grocery-list.html',
 			controller: 'GroceryController'
 		}
-	})
-	.directive('groceryItem', function(){
+	});
+directives.directive('groceryItem', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/grocery-item.html'
 		}
-	})
-	.directive('groceryItemOptions', function(){
+	});
+directives.directive('groceryItemOptions', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/grocery-item-options.html'
 		}
-	})
-	.directive('receipeList', function(){
+	});
+directives.directive('receipeList', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/receipe-list.html',
 			controller:'ReceipesController'
 		}
-	})
-	.directive('receipe', function(){
+	});
+directives.directive('receipe', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/receipe.html',
 			controller: 'ReceipeController'
 		}
-	})
-	.directive('receipeOptions', function(){
+	});
+directives.directive('receipeOptions', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/receipe-options.html'
 		}
-	})
-	.directive('receipeIngredientOptions', function(){
+	});
+directives.directive('receipeIngredientOptions', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/receipe-ingredient-options.html'
 		}
-	})
-	.directive('itemFilter', function(){
+	});
+directives.directive('itemFilter', function(){
 		return{
 			restrict: 'E',
 			templateUrl: 'partials/item-filter.html',
 			controller: 'SearchController'
 		}
-	})
-	.directive('lastUpdate', ['npConfig', function(npConfig) {
+	});
+directives.directive('lastUpdate', ['npConfig', function(npConfig) {
     	return function(scope, elm, attrs) {
 			var config = npConfig.query(function(){
 				elm.text(config.version);

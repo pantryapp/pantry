@@ -7,26 +7,8 @@
 
     <div class='item-edit-form'>
       <input type='text' inline-edit on-edit="update()" on-cancel="showOptions()" ng-model="editingPantryItem.name" />
-        <button type="button" class="btn btn-info" hm-tap="update()"><span class='glyphicon glyphicon-thumbs-up'></span></button>   
+        <button button-save hm-tap="update()"></button>   
     </div>
 
     <pantry-item-options></pantry-item-options>
 </div>
-<!-- <div class='pantry-item' ng-class="{'edited':edited}">
-  <div class='item-wrapper' ng-class="{'active':toggled, 'editing':editing}">
-
-    <div class='item' hm-tap="openItem()" ng-class="{'outofstock':item.outOfStock}" >
-      <div ng-hide="editing">
-        <span class="glyphicon glyphicon-ok checkmark pull-left"></span>
-        <h4 class='item-name pull-left'>{{item.name}}</h4> 
-      </div>
-      <div class='item edit-mode' ng-show="editing">
-        <input type='text' inline-edit on-edit="update()" on-cancel="setEdit(false)" ng-model="editingPantryItem.name" />
-        <button type="button" class="btn btn-info" hm-tap="update()"><span class='glyphicon glyphicon-thumbs-up'></span></button>
-      </div>
-    </div>
-
-      <pantry-item-options></pantry-item-options>
-  </div>
-
-</div> -->
