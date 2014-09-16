@@ -166,7 +166,7 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 	       	body.append(messageDomEl);
 
 			$timeout(function(){
-				// removeMessage(messageInstance);
+				removeMessage(messageInstance);
 	       	}, 3000);
 
 		}
