@@ -74,7 +74,6 @@ controllers.controller('GroceryItemController', [
 
 		$scope.toggleOptions = function(){
 			$scope.toggled = !$scope.toggled;
-			console.log('sap');
 		};
 
 		$scope.buy = function(){

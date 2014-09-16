@@ -5,7 +5,8 @@ controllers.controller('PantryItemsController', [
 		'lookup', 
 		'$message', 
 		'$event', 
-		function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event){
+		'_configs',
+		function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event, _configs){
 
 			/*
 			 * Public
@@ -14,6 +15,8 @@ controllers.controller('PantryItemsController', [
 			$scope.pantryItems = PantryStorage.getPantryItems();
 			$scope.search 	   = {};
 			$scope.newItemName = null;
+
+			$scope.showForm = _configs.get('showForm').value;
 
 			$event.registerFor({
 				restock: function(groceryItem){
@@ -26,6 +29,20 @@ controllers.controller('PantryItemsController', [
 						// Create new item if it has been deleted
 						pantryItem = PantryItemFactory.duplicate(groceryItem);
 						$scope.pantryItems.push(pantryItem);
+
+						$message.open({
+							templateUrl: 'partials/messages/pantryitem-new.html',
+							scope:$scope,
+							resolve:{
+								args: function(){
+									return {
+										item: pantryItem,
+										type:'success'
+									}
+								}
+							}
+						});
+						
 					}
 				},
 				search: function(search){
@@ -96,8 +113,8 @@ controllers.controller('PantryItemController', [
 	'$event', 
 	'$message', 
 	'lookup', 
-	'_options',
-	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup, _options){
+	'_configs',
+	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup, _configs){
 
 		/*
 		 * Public
@@ -105,10 +122,9 @@ controllers.controller('PantryItemController', [
 
 		$scope.toggled = false;
 		$scope.edited  = false;
-		$scope.focus   = _options.get('autoFocus').value;
+		$scope.focus   = _configs.get('autoFocus').value;
 		$scope.editing = false;
 		$scope.editingPantryItem = {};
-		$scope.showForm = _options.get('showForm').value;
 
 		$scope.createItem = function(){			
 			$scope.item = PantryItemFactory.new($scope.newPantryItem);

@@ -56,21 +56,16 @@
               </ul>
           </li>
         </ul>
-        <item-filter></item-filter>
+        <!-- <item-filter></item-filter> -->
         <!-- <button class='btn btn-default' ng-click="showEvents();">Debug events</button> -->
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Options</a></li>
+          <li><a href="#/configs" nav-link><span class='glyphicon glyphicon-cog'></span><span class='sr-only'>Configs</span></a></li>
         </ul>
       </div>
   </nav>
 
 
   <div class='wrapper'>
-
-    <div class='outside'>
-      <options></options>
-    </div>
-
     <div class='inner-wrapper'>
       <div ng-view></div>
     </div>
@@ -92,7 +87,7 @@
   <script src="js/libs/hammer.min.js"></script>
 
   <script src="js/app.js"></script>
-  <script src="js/options.js"></script>
+  <script src="js/configs.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
@@ -105,7 +100,6 @@
   <script src="js/controllers/grocery.js"></script>
   <script src="js/controllers/search.js"></script>
   <script src="js/controllers/header.js"></script>
-
   
 <!--   
   <script type="text/javascript">

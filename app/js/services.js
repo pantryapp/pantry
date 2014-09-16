@@ -30,6 +30,12 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 			saveReceipes: function(receipes){
 				localStorageService.set('pantry.receipes', receipes);
 			},
+			saveConfigs: function(configs){
+				localStorageService.set('pantry.configs', configs);
+			},
+			getConfigs: function(default_configs){
+				return localStorageService.get('pantry.configs') || default_configs;
+			},
 			itemAlreadyInCollection: function(item, collection){
 				for(var i=0, in_array=false;i<collection.length;i++){
 					if( collection[i].id == item.id ){

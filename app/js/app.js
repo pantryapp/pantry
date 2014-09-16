@@ -3,7 +3,7 @@
 // Declare app level module which depends on filters, and services
 var app = angular.module('app', [
 	'ngRoute',
-  'pantryAppOptions',
+  'pantryAppConfigs',
   'hmTouchEvents',
 	'app.filters',
   'app.services',
@@ -23,6 +23,10 @@ var app = angular.module('app', [
   $routeProvider.when('/receipes', {
     templateUrl: 'partials/receipes.html',
     title:'Recettes'
+  });
+  $routeProvider.when('/configs', {
+    templateUrl: 'partials/configs.html',
+    controller: 'ConfigsController'
   });
   $routeProvider.otherwise(
   	{
