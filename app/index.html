@@ -8,13 +8,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Pantry</title>
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="apple-touch-icon" sizes="60x60" href="img/build/60x60.png">
   <link rel="apple-touch-icon" sizes="120x120" href="img/build/120x120x.png">
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="css/app.css"/>
+  <link no-cache rel="stylesheet" href="css/app.css"/>
 </head>
 <body ng-controller="PantryController">
 
@@ -23,12 +23,15 @@
   <![endif]-->
 
 
-  <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" ng-controller="HeaderController" role="navigation">
+  <nav class="navbar navbar-default navbar-inverse" ng-controller="HeaderController" role="navigation">
     <div class="navbar-header">
         <a class="navbar-brand" nav-link href="#/pantry">
           <img src="img/build/logo.png" />
           <img src="img/build/logo2.png" />
         </a>
+        <ul class='nav navbar-nav pull-left'>
+          <li><a href='#' class='page_title'>{{pageTitle}}</a></li>
+        </ul>
         <button type="button" class="navbar-toggle" ng-click="toggleCollapse()">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -76,15 +79,18 @@
   <footer>
     <p>Version <span last-update></span></p>
   </footer>
-  
+
   <script src="bower_components/fastclick/lib/fastclick.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="bower_components/angular-hammer/angular-hammer.js"></script>
   <script src="js/libs/angular-local-storage.min.js"></script>
   <script src="js/libs/slugify.js"></script>
+  <script src="js/libs/hammer.min.js"></script>
+
   <script src="js/app.js"></script>
   <script src="js/options.js"></script>
   <script src="js/services.js"></script>
@@ -97,17 +103,14 @@
   <script src="js/controllers/grocery.js"></script>
   <script src="js/controllers/search.js"></script>
   <script src="js/controllers/header.js"></script>
-  <!-- 
-  <script src="js/build/_bower.min.js"></script>
-  <script src="js/build/pantry.min.js"></script>
-   -->
 
   
-
+<!--   
   <script type="text/javascript">
     window.addEventListener('load', function() {
       FastClick.attach(document.body);
     }, false);
   </script>
+   -->
 </body>
 </html>

@@ -4,6 +4,7 @@
 var app = angular.module('app', [
 	'ngRoute',
   'pantryAppOptions',
+  'hmTouchEvents',
 	'app.filters',
   'app.services',
   'app.directives',
@@ -13,12 +14,15 @@ var app = angular.module('app', [
   $routeProvider.when('/pantry', 
   	{
   		  templateUrl: 'partials/pantry.html',
+        title: 'Garde-manger'
   	});
   $routeProvider.when('/groceries',{
-    templateUrl: 'partials/groceries.html'
+    templateUrl: 'partials/groceries.html',
+    title: 'Épicerie'
   });
   $routeProvider.when('/receipes', {
     templateUrl: 'partials/receipes.html',
+    title:'Recettes'
   });
   $routeProvider.otherwise(
   	{

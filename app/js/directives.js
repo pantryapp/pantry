@@ -2,7 +2,15 @@
 
 /* Directives */
 angular.module('app.directives', ['ui.bootstrap'])
-	.directive('quickEdit', function($timeout){
+	.directive('noCache', function(){
+		return{
+			restrict: 'A',
+			link:function($scope, element, attributes){
+				element[0].src = attributes.src + "?v=" + new Date().getTime();
+			}
+		}
+	})
+	.directive('inlineEdit', function($timeout){
 		return{
 			restrict: 'A',
 			link: function($scope, element, attributes){
@@ -13,14 +21,14 @@ angular.module('app.directives', ['ui.bootstrap'])
 							$scope.$apply(attributes.onEdit);
 						break;
 						case KEYS.esc:
-							$scope.toggled = false;
-							$scope.$apply($scope.toggled);
+							$scope.$apply(attributes.onCancel);
 						break;
 					}
 				});
 
-				$scope.$watch('toggled', function(value){
-					if( value ) $timeout(function(){element[0].focus();});
+				$scope.$watch('editing', function(value){
+					if( value )
+						$timeout(function(){element[0].focus();});
 				});
 			}
 		}
@@ -178,10 +186,8 @@ angular.module('app.directives', ['ui.bootstrap'])
 			});
       		
     	};
-  }]);
-
-	
-
+ 	}]);
+ 	
 	var KEYS = {
 		enter : 13,
 		esc	  : 27

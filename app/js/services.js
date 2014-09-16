@@ -7,6 +7,9 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 	    	query: {method:'GET'}
 	    });
 	}])
+	.factory('isTouch', function(){
+		return 'ontouchstart' in document.documentElement;
+	})
 	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){

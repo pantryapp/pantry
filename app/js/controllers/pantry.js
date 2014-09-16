@@ -106,6 +106,7 @@ controllers.controller('PantryItemController', [
 		$scope.toggled = false;
 		$scope.edited  = false;
 		$scope.focus   = _options.get('autoFocus').value;
+		$scope.editing = false;
 		$scope.editingPantryItem = {};
 		$scope.showForm = _options.get('showForm').value;
 
@@ -135,24 +136,24 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.update = function(){
-			$scope.item.name = $scope.editingPantryItem.name;
-			$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
-			closeItem();
-			animate();
+			if( $scope.item.name != $scope.editingPantryItem.name ){
+				$scope.item.name = $scope.editingPantryItem.name;
+				$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
+				animate();
 
-			$message.open({
-				templateUrl: 'partials/messages/pantryitem-edit.html', scope:$scope,
-				resolve:{
-					args: function(){
-						return {
-							item: {
-								name:$scope.item.name
-							},
-							type:'success'
-						}
-					}
-				}
-			});
+				$message.open({
+					templateUrl: 'partials/messages/pantryitem-edit.html', 
+					scope:$scope,
+					resolve:{args: function(){return {
+								item: {
+									name:$scope.item.name
+								},
+								type:'success'
+							}}}
+				});
+			}
+
+			showOptions();
 		};
 
 		$scope.toggleOutOfStock = function(){
@@ -191,10 +192,21 @@ controllers.controller('PantryItemController', [
 			$scope.pantryItems.splice($scope.pantryItems.indexOf($scope.item), 1);
 		};
 
-		$scope.openItem = function(){
-			// Open item
-			$scope.toggled = true;
-			$scope.editingPantryItem.name = $scope.item.name;
+		$scope.showOptions = function(){
+			showOptions();
+		};
+
+		$scope.showEditForm = function(){
+			if( !$scope.editing )
+				$scope.editing = true;
+			if( $scope.toggled )
+				$scope.toggled = false;
+				$scope.editingPantryItem.name = $scope.item.name;
+		}
+
+
+		$scope.closeItem = function(){
+			closeItem();
 		};
 
 		/*
@@ -209,7 +221,15 @@ controllers.controller('PantryItemController', [
 
 		var closeItem = function(){
 			$scope.toggled = false;
+			$scope.editing = false;
 			$scope.editingPantryItem = {};
+		}
+
+		var showOptions = function(){
+			if( !$scope.toggled )
+				$scope.toggled = true;
+			if( $scope.editing )
+				$scope.editing = false;
 		}
 
 		/*

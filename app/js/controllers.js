@@ -12,13 +12,14 @@ controllers.controller('PantryController', [
 	'$event',
 	function($scope, $route, $log, $message, $event){
 
+		$scope.pageTitle = "";
 
 		$scope.debug = function(value){
 			$log.info(value);
 		}
 
 		$scope.$on("$routeChangeSuccess", function(){
-	
+			$scope.pageTitle = $route.current.title;
 			$event.clear();
 		});
 
@@ -29,7 +30,6 @@ controllers.controller('PantryController', [
 		//Hardcoded categories
 		$scope.categories = categories;
 }]);
-
 
 controllers.controller('DeleteModalInstanceController', [
 	'$scope', 
