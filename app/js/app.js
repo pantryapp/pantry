@@ -4,6 +4,7 @@
 var app = angular.module('app', [
 	'ngRoute',
   'pantryAppConfigs',
+  'ngCordova',
   'hmTouchEvents',
 	'app.filters',
   'app.services',
