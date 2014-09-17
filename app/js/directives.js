@@ -70,7 +70,7 @@ directives.directive('focusMe', function($timeout){
 			link: function($scope, element, attributes){
 
 				var focusInput = function(){
-					$timeout(function(){element[0].focus();});
+					$timeout(function(){element[0].focus();},100);
 				}
 
 				if( $scope.focus )
