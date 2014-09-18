@@ -11,11 +11,10 @@
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <link rel="apple-touch-icon" sizes="60x60" href="img/build/60x60.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="img/build/120x120x.png">
-  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="apple-touch-icon" sizes="60x60" href="images/60x60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="images/120x120x.png">
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-  <link id='app_styles' rel="stylesheet" href="css/app.css" />
+  <link id='app_styles' rel="stylesheet" href="styles/app.css" />
 </head>
 <body ng-controller="PantryController">
 
@@ -27,8 +26,8 @@
   <nav class="navbar navbar-default header navbar-inverse" ng-controller="HeaderController" role="navigation">
     <div class="navbar-header">
         <a class="navbar-brand" nav-link href="#/pantry">
-          <img src="img/build/logo.png" />
-          <img src="img/build/logo2.png" />
+          <img src="images/logo.png" />
+          <img src="images/logo2.png" />
         </a>
         <ul class='nav navbar-nav pull-left'>
           <li><a href='#' class='page_title'>{{pageTitle}}</a></li>
@@ -72,44 +71,64 @@
     </div>
   </div>
 
-  <footer>
+<!--   <footer>
     <p>Version <span last-update></span></p>
-  </footer>
+  </footer> -->
 
+
+  <!-- build:js(.) scripts/oldieshim.js -->
+  <!--[if lt IE 9]>
+  <script src="bower_components/es5-shim/es5-shim.js"></script>
+  <script src="bower_components/json3/lib/json3.js"></script>
+  <![endif]-->
+  <!-- endbuild -->
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/hammerjs/hammer.js"></script>
   <script src="bower_components/angular-hammer/angular-hammer.js"></script>
-  <script src="bower_components/ngCordova/dist/ng-cordova.js"></script>
-  <script src="js/libs/angular-local-storage.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
 
-  <script src="js/libs/slugify.js"></script>
-  <script src="js/libs/hammer.min.js"></script>
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/libs/angular-local-storage.min.js"></script>
+  <script src="scripts/libs/slugify.js"></script>
 
-  <script no-cache src="js/app.js"></script>
-  <script no-cache src="js/configs.js"></script>
-  <script no-cache src="js/services.js"></script>
-  <script no-cache src="js/controllers.js"></script>
-  <script no-cache src="js/filters.js"></script>
-  <script no-cache src="js/directives.js"></script>
 
-  <script no-cache src="js/directives/buttons.js"></script>
+  <script no-cache src="scripts/app.js"></script>
+  <script no-cache src="scripts/configs.js"></script>
+  <script no-cache src="scripts/services.js"></script>
+  <script no-cache src="scripts/controllers.js"></script>
+  <script no-cache src="scripts/filters.js"></script>
+  <script no-cache src="scripts/directives.js"></script>
 
-  <script no-cache src="js/controllers/pantry.js"></script>
-  <script no-cache src="js/controllers/receipe.js"></script>
-  <script no-cache src="js/controllers/grocery.js"></script>
-  <script no-cache src="js/controllers/search.js"></script>
-  <script no-cache src="js/controllers/header.js"></script>
+  <script no-cache src="scripts/directives/buttons.js"></script>
+
+  <script no-cache src="scripts/controllers/pantry.js"></script>
+  <script no-cache src="scripts/controllers/receipe.js"></script>
+  <script no-cache src="scripts/controllers/grocery.js"></script>
+  <script no-cache src="scripts/controllers/search.js"></script>
+  <script no-cache src="scripts/controllers/header.js"></script>
+  <!-- endbuild -->
   
-<!--   
-  <script type="text/javascript">
-    window.addEventListener('load', function() {
-      FastClick.attach(document.body);
-    }, false);
-  </script>
-   -->
 
    <script type='text/javascript'>
     (function(){

@@ -1,9 +1,5 @@
-logs/*
-!.gitkeep
-node_modules/
-tmp
-.DS_Store
-.idea
+node_modules
+dist
+.tmp
 .sass-cache
-npm-debug.log
-app/css/app.map.css
+bower_components
