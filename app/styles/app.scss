@@ -309,7 +309,7 @@ ul>li>a.page_title{
  /* Bootstrap buttons overhaul */
 
  .btn{
-
+ 	border:none;
  	&.btn-default, &.btn-info, &.btn-warning, &.btn-danger, &.btn-success{
  		background-color:#fff;
  		border-color:transparent;
