@@ -1,0 +1,30 @@
+<div class='panel'>
+	<div class='panel-heading'>
+		<h3 class='panel-title'>Configuration</h3>
+	</div>
+	<div class='panel-body'>
+		<p>Configurer votre garde-manger</p>
+		
+		<div class='list-group'>
+			<div class='list-group-item' ng-repeat="config in configs" ng-controller="ConfigController">
+				<h4>{{config.name}}</h4>
+				<p>{{config.description}}</h4>
+				<div ng-show="config.type == config_types.BOOLEAN">
+
+					<div class="btn-group">
+					  <button type="button" hm-tap="toggle()" ng-class="{'active':config.value == true}" class="btn btn-primary">Oui</button>
+					  <button type="button" hm-tap="toggle()" ng-class="{'active':config.value == false}"class="btn btn-primary">Non</button>
+					</div>
+				</div>
+
+				<div ng-show="config.type == config_types.STRING">
+					<input type='text' value="{{config.value}}" />
+					<!-- <button hm-tap="toggle()">{{config.value}}</button> -->
+				</div>
+
+
+			</div>
+		</div>
+		
+	</div>
+</div>

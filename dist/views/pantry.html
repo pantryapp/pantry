@@ -1,0 +1,23 @@
+  <!-- <button class='btn btn-default' ng-click="clearPantry();">Clear</button> -->
+<!--   <button class='btn btn-default' ng-click="openAMessage('success');">Open a success message</button>
+  <button class='btn btn-default' ng-click="openAMessage('error');">Open a error message</button> -->
+  <div ng-show="showForm" class='list-group-item new-item-form'>
+
+    <form role="form" name="pantryItemForm"  ng-controller="PantryItemController" ng-submit="pantryItemForm.$valid && createItem()" novalidate>
+      <div class='form-group autoselect'>
+        <select class='form-control' ng-options="name as name for name in categories" ng-model="newPantryItem.category">
+        <option value="">- Non classé -</option>
+        </select>
+        <category-list></category-list>
+      </div>
+      <div class="form-group">
+          <label for="item" class='sr-only'>Ingrédient</label>
+          <input type="text" class="form-control" focus-me="focus" placeholder="Ingrédient" ng-model="newPantryItem.name" required />
+      </div>
+      <button type='submit' class='btn btn-default'>Sauvegarder</button>
+    </form>
+  </div>
+
+<pantry-items></pantry-items>
+
+<grocery-list ng-hide="true"></grocery-list>

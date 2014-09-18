@@ -2,7 +2,10 @@
   "name": "pantry",
   "version": "0.1.12",
   "description": "Small food management app",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.9.1",
+    "gzippo": "^0.2.0"
+  },
   "devDependencies": {
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
