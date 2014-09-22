@@ -5,6 +5,7 @@ angular.module('app', [
 	'ngRoute',
   'pantryAppConfigs',
   'hmTouchEvents',
+  'pantryAPI',
 	'app.filters',
   'app.services',
   'app.directives',

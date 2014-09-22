@@ -72,8 +72,7 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 				return {
 					name:model.name,
 					slug:model.slug != undefined ? model.slug : item_model.slug(model.name),
-					outOfStock:model.outOfStock != undefined ? model.outOfStock : item_model.outOfStock,
-					id:guid.new()
+					outOfStock:model.outOfStock != undefined ? model.outOfStock : item_model.outOfStock
 				};
 			},
 			duplicate:function(model){

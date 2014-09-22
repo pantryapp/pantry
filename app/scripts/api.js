@@ -6,7 +6,7 @@ var api = angular.module('pantryAPI', ['ngResource']);
 
 api.factory('API', ['$resource', function($resource){
 
-	var pantryitems = $resource('http://pantryapp-api.herokuapp.com/pantryitems/:pantryItemId', {pantryItemId: '@id'});
+	var pantryitems = $resource(api_url + '/pantryitems/:pantryItemId', {pantryItemId: '@id'});
 	// var groceries 	= $resource('http://localhost:3000/groceries');
 
 	return{
@@ -26,8 +26,8 @@ api.factory('API', ['$resource', function($resource){
 					});
 				},
 				update: function(item, success, error){
-					var item = pantryitems.save(item, function(item){
-						success(item);
+					var item = pantryitems.save({pantryItemId:item.id, pantryitem:item}, function(){
+						success();
 					});
 				},
 				delete: function(id, success, error){
@@ -50,3 +50,7 @@ api.factory('API', ['$resource', function($resource){
 }).call(this);
 
 
+var developement_url = "http://localhost:3000";
+var production_url = "http://pantryapp-api.herokuapp.com";
+
+var api_url = developement_url;

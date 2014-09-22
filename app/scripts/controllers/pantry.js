@@ -6,13 +6,15 @@ controllers.controller('PantryItemsController', [
 		'$message', 
 		'$event', 
 		'_configs',
-		function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event, _configs){
+		'API',
+		function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event, _configs,API){
 
 			/*
 			 * Public
 			 */
 
-			$scope.pantryItems = PantryStorage.getPantryItems();
+			// $scope.pantryItems = PantryStorage.getPantryItems();
+			$scope.pantryItems = API.pantryitems().getAll();
 			$scope.search 	   = {};
 			$scope.newItemName = null;
 
@@ -114,7 +116,8 @@ controllers.controller('PantryItemController', [
 	'$message', 
 	'lookup', 
 	'_configs',
-	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup, _configs){
+	'API',
+	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup, _configs, API){
 
 		/*
 		 * Public
@@ -142,7 +145,15 @@ controllers.controller('PantryItemController', [
 						}
 					}
 				});
-			} else $scope.pantryItems.push($scope.item);
+			} else {
+
+				API.pantryitems().create($scope.item, function(item){
+					$scope.item = item;
+					$scope.pantryItems.push($scope.item);	
+				});
+
+				
+			}
 
 			// Reset form. Todo : put that away. Directive?
 			$scope.pantryItemForm.$setPristine();
@@ -153,19 +164,22 @@ controllers.controller('PantryItemController', [
 
 		$scope.update = function(){
 			if( $scope.item.name != $scope.editingPantryItem.name ){
-				$scope.item.name = $scope.editingPantryItem.name;
-				$scope.item.slug   = Slug.slugify($scope.editingPantryItem.name);
-				animate();
 
-				$message.open({
-					templateUrl: 'views/messages/pantryitem-edit.html', 
-					scope:$scope,
-					resolve:{args: function(){return {
-								item: {
-									name:$scope.item.name
-								},
-								type:'success'
-							}}}
+				$scope.item.name = $scope.editingPantryItem.name;
+				$scope.item.slug = Slug.slugify($scope.editingPantryItem.name);
+
+				API.pantryitems().update($scope.item, function(){
+					animate();
+					$message.open({
+						templateUrl: 'views/messages/pantryitem-edit.html', 
+						scope:$scope,
+						resolve:{args: function(){return {
+									item: {
+										name:$scope.item.name
+									},
+									type:'success'
+								}}}
+					});
 				});
 			}
 
@@ -205,7 +219,10 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.deleteItem = function(){
-			$scope.pantryItems.splice($scope.pantryItems.indexOf($scope.item), 1);
+			API.pantryitems().delete($scope.item.id, function(){
+				$scope.pantryItems.splice($scope.pantryItems.indexOf($scope.item), 1);
+			});
+			
 		};
 
 		$scope.showOptions = function(){
