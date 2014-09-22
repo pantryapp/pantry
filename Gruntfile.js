@@ -11,6 +11,8 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
+  grunt.loadNpmTasks('grunt-gh-pages');
+
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -26,6 +28,13 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: appConfig,
+
+    'gh-pages': {
+      options: {
+        base: 'dist'
+      },
+      src: ['**']
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -51,6 +60,7 @@ module.exports = function (grunt) {
       gruntfile: {
         files: ['Gruntfile.js']
       },
+
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -415,7 +425,6 @@ module.exports = function (grunt) {
     'connect:test',
     'karma'
   ]);
-
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
