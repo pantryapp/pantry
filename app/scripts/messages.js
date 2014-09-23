@@ -1,11 +1,13 @@
 var messages = angular.module('Messages', []);
 
 var MESSAGES = {
-	'newPantryItem' : {
-		templateUrl: 'views/messages/pantryitem-new.html',
+	'pantryitem-new' : {
+		template : 'views/messages/pantryitem-new.html',
+		type 	 : 'success'
 	},
-	'duplicatePantryItem' : {
-		templateUrl: 'views/messages/pantryitem-duplicate.html',
+	'pantryitem-duplicate' : {
+		template : 'views/messages/pantryitem-duplicate.html',
+		type 	 : 'warning'
 	}
 };
 
@@ -33,10 +35,22 @@ messages.provider('$message', [function(){
 				return promisesArr;
 			}
 
-			$message.open = function(messageOptions){
-				console.log(messageOptions);
-				var messageInstance = {}
+			$message.open = function(templateUrl, resolveArgs){
 
+				var messageInstance = {},
+					messageOptions  = {templateUrl: MESSAGES[templateUrl].template},
+					resolve  	    = {};
+
+				resolve.args = function(){
+					var args = resolveArgs;
+					console.log(args);
+					args.type = MESSAGES[templateUrl].type;
+					return args;
+				};				
+				messageOptions.resolve = resolve;
+
+
+				console.log(messageOptions);
         		messageOptions.resolve = messageOptions.resolve || {};
 
 	            if (!messageOptions.template && !messageOptions.templateUrl) {

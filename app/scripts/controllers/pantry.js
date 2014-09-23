@@ -29,18 +29,7 @@ controllers.controller('PantryItemsController', [
 					}else{
 						// Create new item if it has been deleted
 						pantryItem = PantryItemModel.new({name:groceryItem.name});
-						$message.open({
-							templateUrl: 'views/messages/pantryitem-new.html',
-							scope:$scope,
-							resolve:{
-								args: function(){
-									return {
-										item: pantryItem,
-										type:'success'
-									}
-								}
-							}
-						});
+						$message.open('pantryitem-new', {item:pantryItem});
 					}
 				},
 				search: function(search){
@@ -50,6 +39,7 @@ controllers.controller('PantryItemsController', [
 					$scope.newItemName = name;
 				},
 				create_new_pantryitem: function(pantryItemName){
+
 					var pantryItem = PantryItemModel.new({
 						name:pantryItemName,
 						outofstock:true
@@ -58,18 +48,7 @@ controllers.controller('PantryItemsController', [
 					$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
 					$scope.pantryItems.push(pantryItem);
 
-					$message.open({
-						templateUrl: 'views/messages/pantryitem-new.html',
-						scope:$scope,
-						resolve:{
-							args: function(){
-								return {
-									item: pantryItem,
-									type:'success'
-								}
-							}
-						}
-					});
+					$message.open('pantryitem-new', {item:pantryItem});
 					return pantryItem;
 				}
 			});
@@ -100,27 +79,16 @@ controllers.controller('PantryItemController', [
 
 		$scope.createItem = function(){			
 			// Check if item with same slug exists
-			if( lookup.lookupFor($scope.pantryItems, Slug.slugify($scope.newPantryItem.name), 'slug') ){
-				$message.open({
-					templateUrl:'views/messages/pantryitem-duplicate.html',
-					resolve:{
-						args:function(){
-							return{
-								item:$scope.item,
-								type:'warning'
-							}
-						}
-					}
-				});
-			} else {
+			if( lookup.lookupFor($scope.pantryItems, Slug.slugify($scope.newPantryItem.name), 'slug') )
+				$message.open('pantryitem-duplicate', {item:{name:$scope.newPantryItem.name}});
+			// If not create new item
+			else 
 				$scope.pantryItems.push(PantryItemModel.new($scope.newPantryItem));
-			}
 
-			// Reset form. Todo : put that away. Directive?
-			$scope.pantryItemForm.$setPristine();
+			// Reset form.
 			$scope.newPantryItem.name = "";
-
-			$scope.focus = true;
+			$scope.focus 			  = true;
+			$scope.pantryItemForm.$setPristine();
 		};
 
 		$scope.updateName = function(){

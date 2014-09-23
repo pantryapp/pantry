@@ -39,7 +39,6 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 		var sort = function(hay, key){
 			var lookup = {};
 			for(var i=0, len=hay.length;i<len;i++){
-				// console.log(hay[i]);
 				lookup[hay[i][key]] = hay[i];
 			}
 			return lookup;
