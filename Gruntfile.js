@@ -459,6 +459,7 @@ module.exports = function (grunt) {
   ]);
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant:production',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
@@ -471,8 +472,7 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'ngconstant:production'
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
