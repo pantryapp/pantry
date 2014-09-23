@@ -100,16 +100,7 @@ controllers.controller('PantryItemController', [
 
 				$scope.item.$update(function(){
 					animate();
-					$message.open({
-						templateUrl: 'views/messages/pantryitem-edit.html', 
-						scope:$scope,
-						resolve:{args: function(){return {
-									item: {
-										name:$scope.item.name
-									},
-									type:'success'
-								}}}
-					});
+					$message.open('pantryitem-edit', {item:{name:$scope.item.name}});
 				});
 			}
 
@@ -199,19 +190,6 @@ controllers.controller('PantryItemController', [
 		/*
 		 * Event listeners
 		 */
-
-		$scope.$watchCollection('item.name', function(newValue, oldValue){
-			if( newValue != oldValue && oldValue != undefined ){
-				// $scope.savePantryItems();
-			}
-		});
-
-		$scope.$watch('item.outofstock', function(newValue, oldValue){
-			if( newValue != oldValue && oldValue != undefined){
-				// $scope.savePantryItems();
-				if( newValue == false ) animate();
-			}
-		});
 
 		$scope.$watch('newPantryItem.name', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined )

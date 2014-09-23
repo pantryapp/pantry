@@ -37,7 +37,7 @@ controllers.controller('GroceryController', [
 		 */
 
 		var addGrocery = function(item){
-			var groceryItem = lookup.lookupFor($scope.groceryItems, item, 'slug');
+			var groceryItem = lookup.lookupFor($scope.groceryItems, item.slug, 'slug');
 			if( groceryItem === undefined )
 				$scope.groceryItems.push(item);
 		};

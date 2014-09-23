@@ -5,6 +5,10 @@ var MESSAGES = {
 		template : 'views/messages/pantryitem-new.html',
 		type 	 : 'success'
 	},
+	'pantryitem-edit' : {
+		template: 'views/messages/pantryitem-edit.html', 
+		type : 'success'
+	},
 	'pantryitem-duplicate' : {
 		template : 'views/messages/pantryitem-duplicate.html',
 		type 	 : 'warning'
@@ -43,14 +47,11 @@ messages.provider('$message', [function(){
 
 				resolve.args = function(){
 					var args = resolveArgs;
-					console.log(args);
 					args.type = MESSAGES[templateUrl].type;
 					return args;
 				};				
+
 				messageOptions.resolve = resolve;
-
-
-				console.log(messageOptions);
         		messageOptions.resolve = messageOptions.resolve || {};
 
 	            if (!messageOptions.template && !messageOptions.templateUrl) {
