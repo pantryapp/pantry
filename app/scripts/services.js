@@ -7,9 +7,6 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 	    	query: {method:'GET'}
 	    });
 	}])
-	.factory('isTouch', function(){
-		return 'ontouchstart' in document.documentElement;
-	})
 	.factory('PantryStorage', ['localStorageService', function(localStorageService){
 		return {
 			getPantryItems: function(){
@@ -35,14 +32,6 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 			},
 			getConfigs: function(defaultConfigs){
 				return localStorageService.get('pantry.configs') || defaultConfigs;
-			},
-			itemAlreadyInCollection: function(item, collection){
-				for(var i=0, in_array=false;i<collection.length;i++){
-					if( collection[i].id == item.id ){
-						in_array = true;break;
-					}
-				}
-				return in_array;
 			}
 		}
 	}])
@@ -61,41 +50,21 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 			}
 		}
 	})
-	.factory('PantryItemFactory', ['guid', 'Slug', function(guid, Slug){
+	.factory('PantryItemModel', ['API','Slug', function(API, Slug){
 		var item_model = {
 			slug:function(name){return Slug.slugify(name);},
-			outOfStock:false
+			outofstock:false
 		};
 
 		return{
-			new:function(model){
-				return {
+			new: function(model){
+				return API.pantryitems().save({
 					name:model.name,
 					slug:model.slug != undefined ? model.slug : item_model.slug(model.name),
-					outOfStock:model.outOfStock != undefined ? model.outOfStock : item_model.outOfStock
-				};
-			},
-			duplicate:function(model){
-				return{
-					name:model.name,
-					slug:Slug.slugify(model.name),
-					outOfStock:model.outOfStock,
-					id:model.id
-				}
+					outofstock:model.outofstock != undefined ? model.outofstock : item_model.outofstock
+				});
 			}
 		}
-	}])
-	.factory('guid', [function(){
-	    var svc = {
-	        new: function() {
-	            function _p8(s) {
-	                var p = (Math.random().toString(16)+"000000000").substr(2,8);
-	                return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
-	            }
-	            return _p8() + _p8(true) + _p8(true) + _p8();
-	        }
-	    };
-	    return svc;
 	}])
 	.factory('$$stackedMessages', [function(){
 	    return {

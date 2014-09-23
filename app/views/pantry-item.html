@@ -5,8 +5,8 @@
     </div>
 
     <div class='item-edit-form'>
-      <input type='text' inline-edit on-edit="update()" on-cancel="showOptions()" ng-model="editingPantryItem.name" />
-        <button button-save hm-tap="update()"></button>   
+      <input type='text' inline-edit on-edit="updateName()" on-cancel="showOptions()" ng-model="editingPantryItem.name" />
+        <button button-save hm-tap="updateName()"></button>   
     </div>
 
     <pantry-item-options></pantry-item-options>

@@ -1,11 +1,8 @@
-(function(){
-
 'use strict';
 
 var pantryConfigs = angular.module('pantryAppConfigs', []);
 
 pantryConfigs.provider('_configs', function(){
-
 
 	this.$get = ['PantryStorage', function(PantryStorage){
 
@@ -58,23 +55,7 @@ pantryConfigs.provider('_configs', function(){
 		};
 	}];
 
-});
-
-pantryConfigs.directive('configs', function(){
-	return{
-		restrict: 'E',
-		templateUrl:'partials/configs/configs.html',
-		controller:'ConfigsController'
-	}
-});
-
-pantryConfigs.directive('config', function(){
-	return{
-		restrict: 'E',
-		templateUrl:'partials/configs/config.html',
-		controller:'ConfigController'
-	}
-});
+})
 
 pantryConfigs.controller('ConfigsController', [
 	'$scope',
@@ -87,13 +68,9 @@ pantryConfigs.controller('ConfigsController', [
 pantryConfigs.controller('ConfigController', [
 	'$scope',
 	'_configs', 
-	'PantryStorage',
-	function($scope, _configs, PantryStorage){
+	function($scope, _configs){
 		$scope.toggle = function(){
 			_configs.set($scope.config.key, !$scope.config.value);
 			_configs.save($scope.configs);
 		}
 	}]);
-
-
-}).call(this);

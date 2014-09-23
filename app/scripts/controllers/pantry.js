@@ -1,20 +1,19 @@
 controllers.controller('PantryItemsController', [
 		'$scope', 
 		'PantryStorage', 
-		'PantryItemFactory', 
+		'PantryItemModel', 
 		'lookup', 
 		'$message', 
 		'$event', 
 		'_configs',
 		'API',
-		function($scope, PantryStorage, PantryItemFactory, lookup, $message, $event, _configs,API){
+		function($scope, PantryStorage, PantryItemModel, lookup, $message, $event, _configs, API){
 
 			/*
 			 * Public
 			 */
 
-			// $scope.pantryItems = PantryStorage.getPantryItems();
-			$scope.pantryItems = API.pantryitems().getAll();
+			$scope.pantryItems = API.pantryitems().query();
 			$scope.search 	   = {};
 			$scope.newItemName = null;
 
@@ -26,12 +25,11 @@ controllers.controller('PantryItemsController', [
 
 					// pantryItem will be undefined if it has been deleted whilst the item was in the grocery list.
 					if( pantryItem != undefined ){
-						pantryItem.outOfStock = false;
+						pantryItem.outofstock = false;
+						pantryItem.$update();
 					}else{
 						// Create new item if it has been deleted
-						pantryItem = PantryItemFactory.duplicate(groceryItem);
-						$scope.pantryItems.push(pantryItem);
-
+						pantryItem = PantryItemModel.new({name:groceryItem.name});
 						$message.open({
 							templateUrl: 'views/messages/pantryitem-new.html',
 							scope:$scope,
@@ -44,7 +42,6 @@ controllers.controller('PantryItemsController', [
 								}
 							}
 						});
-						
 					}
 				},
 				search: function(search){
@@ -54,9 +51,9 @@ controllers.controller('PantryItemsController', [
 					$scope.newItemName = name;
 				},
 				create_new_pantryitem: function(pantryItemName){
-					var pantryItem = PantryItemFactory.new({
+					var pantryItem = PantryItemModel.new({
 						name:pantryItemName,
-						outOfStock:true
+						outofstock:true
 					});
 
 					$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
@@ -78,31 +75,6 @@ controllers.controller('PantryItemsController', [
 				}
 			});
 
-			$scope.clearPantry = function(){
-				$scope.pantryItems = [];
-				savePantryItems();
-			}
-
-			$scope.savePantryItems = function(){return savePantryItems();};
-
-			/*
-			 * Private
-			 */
-
-			var savePantryItems = function(){PantryStorage.savePantryItems($scope.pantryItems);}
-
-
-			/*
-			 * Event listeners
-			 */
-
-			// Catch create and delete pantry item
-			$scope.$watchCollection('pantryItems.length', function(){			
-				savePantryItems();
-			});
-
-
-
 }]);
 controllers.controller('PantryItemController', [
 	'$scope', 
@@ -111,13 +83,12 @@ controllers.controller('PantryItemController', [
 	'Slug',
 	'$timeout', 
 	'PantryStorage', 
-	'PantryItemFactory', 
+	'PantryItemModel', 
 	'$event', 
 	'$message', 
 	'lookup', 
 	'_configs',
-	'API',
-	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemFactory, $event, $message, lookup, _configs, API){
+	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemModel, $event, $message, lookup, _configs){
 
 		/*
 		 * Public
@@ -130,10 +101,8 @@ controllers.controller('PantryItemController', [
 		$scope.editingPantryItem = {};
 
 		$scope.createItem = function(){			
-			$scope.item = PantryItemFactory.new($scope.newPantryItem);
-
 			// Check if item with same slug exists
-			if( lookup.lookupFor($scope.pantryItems, $scope.item, 'slug') ){
+			if( lookup.lookupFor($scope.pantryItems, Slug.slugify($scope.newPantryItem.name), 'slug') ){
 				$message.open({
 					templateUrl:'views/messages/pantryitem-duplicate.html',
 					resolve:{
@@ -146,13 +115,7 @@ controllers.controller('PantryItemController', [
 					}
 				});
 			} else {
-
-				API.pantryitems().create($scope.item, function(item){
-					$scope.item = item;
-					$scope.pantryItems.push($scope.item);	
-				});
-
-				
+				$scope.pantryItems.push(PantryItemModel.new($scope.newPantryItem));
 			}
 
 			// Reset form. Todo : put that away. Directive?
@@ -162,13 +125,14 @@ controllers.controller('PantryItemController', [
 			$scope.focus = true;
 		};
 
-		$scope.update = function(){
+		$scope.updateName = function(){
 			if( $scope.item.name != $scope.editingPantryItem.name ){
 
 				$scope.item.name = $scope.editingPantryItem.name;
 				$scope.item.slug = Slug.slugify($scope.editingPantryItem.name);
 
-				API.pantryitems().update($scope.item, function(){
+
+				$scope.item.$update(function(){
 					animate();
 					$message.open({
 						templateUrl: 'views/messages/pantryitem-edit.html', 
@@ -187,13 +151,21 @@ controllers.controller('PantryItemController', [
 		};
 
 		$scope.toggleOutOfStock = function(){
-			$scope.item.outOfStock = !$scope.item.outOfStock;
-			if( !$scope.item.outOfStock)
-				animate();
-			else
-				$event.trigger('outofstock', $scope.item, 'pantry item set out of stock');
+			$scope.item.outofstock = !$scope.item.outofstock;
+			$scope.item.$update(function(){
+				if( !$scope.item.outofstock)
+					animate();
+				else
+					$event.trigger('outofstock', $scope.item, 'pantry item set out of stock');
 
-			closeItem();
+				closeItem();
+			});
+		};
+
+		$scope.deleteItem = function(){
+			$scope.item.$delete(function(){
+				$scope.pantryItems.splice($scope.pantryItems.indexOf($scope.item), 1);
+			});
 		};
 
 		$scope.confirmDelete = function(){
@@ -216,13 +188,6 @@ controllers.controller('PantryItemController', [
 			}, function () {
 				//dismiss
 			});
-		};
-
-		$scope.deleteItem = function(){
-			API.pantryitems().delete($scope.item.id, function(){
-				$scope.pantryItems.splice($scope.pantryItems.indexOf($scope.item), 1);
-			});
-			
 		};
 
 		$scope.showOptions = function(){
@@ -271,13 +236,13 @@ controllers.controller('PantryItemController', [
 
 		$scope.$watchCollection('item.name', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined ){
-				$scope.savePantryItems();
+				// $scope.savePantryItems();
 			}
 		});
 
-		$scope.$watch('item.outOfStock', function(newValue, oldValue){
+		$scope.$watch('item.outofstock', function(newValue, oldValue){
 			if( newValue != oldValue && oldValue != undefined){
-				$scope.savePantryItems();
+				// $scope.savePantryItems();
 				if( newValue == false ) animate();
 			}
 		});

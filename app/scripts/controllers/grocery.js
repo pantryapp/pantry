@@ -1,7 +1,8 @@
 controllers.controller('GroceryController', [
 	'$scope', 
+	'lookup',
 	'PantryStorage', 
-	'$event', function($scope, PantryStorage, $event){
+	'$event', function($scope, lookup, PantryStorage, $event){
 
 		/*
 		 * Public
@@ -36,9 +37,9 @@ controllers.controller('GroceryController', [
 		 */
 
 		var addGrocery = function(item){
-			if( !PantryStorage.itemAlreadyInCollection(item, $scope.groceryItems) ){
-				$scope.groceryItems.push({name:item.name, id:item.id});
-			}
+			var groceryItem = lookup.lookupFor($scope.groceryItems, item, 'slug');
+			if( groceryItem === undefined )
+				$scope.groceryItems.push(item);
 		};
 
 		var removeGrocery = function(item){

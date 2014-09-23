@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var controllers = angular.module('app.controllers', []);
+var controllers = angular.module('app.controllers', ['ngResource']);
 
 
 controllers.controller('PantryController', [
