@@ -1,13 +1,12 @@
 controllers.controller('PantryItemsController', [
 		'$scope', 
-		'PantryStorage', 
 		'PantryItemModel', 
 		'lookup', 
 		'$message', 
 		'$event', 
 		'_configs',
 		'API',
-		function($scope, PantryStorage, PantryItemModel, lookup, $message, $event, _configs, API){
+		function($scope, PantryItemModel, lookup, $message, $event, _configs, API){
 
 			/*
 			 * Public
@@ -82,13 +81,12 @@ controllers.controller('PantryItemController', [
 	'$log', 
 	'Slug',
 	'$timeout', 
-	'PantryStorage', 
 	'PantryItemModel', 
 	'$event', 
 	'$message', 
 	'lookup', 
 	'_configs',
-	function($scope, $modal, $log, Slug, $timeout, PantryStorage, PantryItemModel, $event, $message, lookup, _configs){
+	function($scope, $modal, $log, Slug, $timeout, PantryItemModel, $event, $message, lookup, _configs){
 
 		/*
 		 * Public
