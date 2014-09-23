@@ -3,9 +3,10 @@
 // Declare app level module which depends on filters, and services
 angular.module('app', [
 	'ngRoute',
-  'pantryAppConfigs',
+  'pantryAppConfigs', 
+  'pantryApi',
+  'env',
   'hmTouchEvents',
-  'pantryAPI',
 	'app.filters',
   'app.services',
   'app.directives',

@@ -11,8 +11,6 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
-  grunt.loadNpmTasks('grunt-gh-pages');
-
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -34,6 +32,39 @@ module.exports = function (grunt) {
         base: 'dist'
       },
       src: ['**']
+    },
+
+    //Environment var
+    ngconstant: {
+      // Options for all targets
+      options: {
+        space: '  ',
+        wrap: '"use strict";\n\n {%= __ngModule %}',
+        name: 'env',
+      },
+      // Environment targets
+      development: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/env.js'
+        },
+        constants: {
+          ENV: {
+            name: 'development',
+            apiEndpoint: 'http://0.0.0.0:3000'
+          }
+        }
+      },
+      production: {
+        options: {
+          dest: '<%= yeoman.dist %>/scripts/env.js'
+        },
+        constants: {
+          ENV: {
+            name: 'production',
+            apiEndpoint: 'http://pantryapp-api.herokuapp.com'
+          }
+        }
+      }
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -405,6 +436,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:development',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -439,7 +471,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'ngconstant:production'
   ]);
 
   grunt.registerTask('default', [

@@ -1,12 +1,10 @@
 'use strict';
 
-(function(){
 
-var api = angular.module('pantryAPI', ['ngResource']);
+angular.module('pantryApi', ['ngResource'])
+	.factory('API', ['$resource', 'ENV', function($resource, ENV){
 
-api.factory('API', ['$resource', function($resource){
-
-	var pantryitems = $resource(api_url + '/pantryitems/:pantryItemId', {pantryItemId: '@id'}, {
+	var pantryitems = $resource(ENV.apiEndpoint + '/pantryitems/:pantryItemId', {pantryItemId: '@id'}, {
 		'update' : { method : 'PUT' }
 	});
 	// var groceries 	= $resource('http://localhost:3000/groceries');
@@ -54,11 +52,3 @@ api.factory('API', ['$resource', function($resource){
 		}
 	}
 }]);
-
-}).call(this);
-
-
-var developement_url = "http://localhost:3000";
-var production_url = "http://pantryapp-api.herokuapp.com";
-
-var api_url = developement_url;
