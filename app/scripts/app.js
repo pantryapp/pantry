@@ -7,6 +7,7 @@ angular.module('app', [
   'pantryApi',
   'env',
   'hmTouchEvents',
+  'Messages',
 	'app.filters',
   'app.services',
   'app.directives',
