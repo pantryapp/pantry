@@ -6,7 +6,9 @@ var api = angular.module('pantryAPI', ['ngResource']);
 
 api.factory('API', ['$resource', function($resource){
 
-	var pantryitems = $resource(api_url + '/pantryitems/:pantryItemId', {pantryItemId: '@id'});
+	var pantryitems = $resource(api_url + '/pantryitems/:pantryItemId', {pantryItemId: '@id'}, {
+		'update' : { method : 'PUT' }
+	});
 	// var groceries 	= $resource('http://localhost:3000/groceries');
 
 	return{
@@ -26,12 +28,18 @@ api.factory('API', ['$resource', function($resource){
 					});
 				},
 				update: function(item, success, error){
-					var item = pantryitems.save({pantryItemId:item.id, pantryitem:item}, function(){
-						success();
-					});
+					// var item = pantryitems.save({method: 'PUT', pantryItemId:item.id, pantryitem:item}, function(){
+					// 	success();
+					// });
+					// var _item = pantryitems.get({pantryItemId: item.id}, function(){
+					// 	_item = item;
+					// 	_item.$update(pantryItemId: item.id, );
+					// 	success();
+					// });
+					pantryitems.update({pantryItemId:item.id}, {pantryitem:item});
 				},
 				delete: function(id, success, error){
-					var item = pantryitems.remove({pantryItemId:id}, function(){
+					pantryitems.remove({pantryItemId:id}, function(){
 						success();
 					});
 				}
