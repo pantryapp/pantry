@@ -20,7 +20,7 @@ controllers.controller('PantryItemsController', [
 
 			$event.registerFor({
 				restock: function(groceryItem){
-					var pantryItem = lookup.lookupFor($scope.pantryItems, groceryItem, 'id');
+					var pantryItem = lookup.lookupFor($scope.pantryItems, groceryItem.pantryitem_id, 'id');
 
 					// pantryItem will be undefined if it has been deleted whilst the item was in the grocery list.
 					if( pantryItem != undefined ){
@@ -40,16 +40,13 @@ controllers.controller('PantryItemsController', [
 				},
 				create_new_pantryitem: function(pantryItemName){
 
-					var pantryItem = PantryItemModel.new({
-						name:pantryItemName,
-						outofstock:true
+					PantryItemModel.new({name:pantryItemName, outofstock:true}, function(pantryItem){
+						$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
+						$scope.pantryItems.push(pantryItem);
+
+						$message.open('pantryitem-new', {item:pantryItem});
 					});
 
-					$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
-					$scope.pantryItems.push(pantryItem);
-
-					$message.open('pantryitem-new', {item:pantryItem});
-					return pantryItem;
 				}
 			});
 

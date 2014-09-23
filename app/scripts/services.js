@@ -57,11 +57,29 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 		};
 
 		return{
-			new: function(model){
-				return API.pantryitems().save({
+			new: function(model, success){
+				var item = API.pantryitems().save({
 					name:model.name,
 					slug:model.slug != undefined ? model.slug : item_model.slug(model.name),
 					outofstock:model.outofstock != undefined ? model.outofstock : item_model.outofstock
+				}, function(){
+					if( success !== undefined )
+						success(item);
+				});
+				return item;
+			}
+		}
+	}])
+
+	.factory('GroceryItemModel', ['API', function(API){
+		return{
+			new: function(model){
+				return API.groceries().save({
+					name:model.name,
+					slug:model.slug,
+					outofstock:true,
+					pantryitem_id:model.id,
+					id: null,
 				});
 			}
 		}

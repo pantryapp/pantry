@@ -1,15 +1,18 @@
 controllers.controller('GroceryController', [
-	'$scope', 
+	'$scope',
+	'$event',
+	'GroceryItemModel',
 	'lookup',
-	'PantryStorage', 
-	'$event', function($scope, lookup, PantryStorage, $event){
+	'API',
+	'$event', function($scope, $event, GroceryItemModel, lookup, API){
 
 		/*
 		 * Public
 		 */
 
-		$scope.groceryItems = PantryStorage.getGroceries();
+		$scope.groceryItems = API.groceries().query();
 		$scope.search 		= {};
+
 
 		$scope.hasGroceries = $scope.groceryItems.length > 0 
 
@@ -39,25 +42,22 @@ controllers.controller('GroceryController', [
 		var addGrocery = function(item){
 			var groceryItem = lookup.lookupFor($scope.groceryItems, item.slug, 'slug');
 			if( groceryItem === undefined )
-				$scope.groceryItems.push(item);
+				$scope.groceryItems.push(GroceryItemModel.new(item));
 		};
 
 		var removeGrocery = function(item){
+			item.$delete();
 			$scope.groceryItems.splice($scope.groceryItems.indexOf(item), 1);
 		};
 
-		var save = function(){
-			PantryStorage.saveGroceries($scope.groceryItems);
-		}
 
 		/*
 		 * Event listeners
 		 */ 
 
 		$scope.$watch('groceryItems.length', function(){
-			$event.trigger('grocery_change', $scope.groceryItems, 'Grocery controllerƒ');
+			$event.trigger('grocery_change', $scope.groceryItems, 'Grocery controller');
 			$scope.hasGroceries = $scope.groceryItems.length > 0 
-			save();
 		});
 
 }]);

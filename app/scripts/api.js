@@ -7,6 +7,9 @@ angular.module('pantryApi', ['ngResource'])
 			return $resource(ENV.apiEndpoint + '/pantryitems/:pantryItemId', {pantryItemId: '@id'}, {
 				'update' : {method : 'PUT'}
 			});
+		},
+		groceries: function(){
+			return $resource(ENV.apiEndpoint + '/groceries/:groceryId', {groceryId : '@id'});
 		}
 	}
 }]);
