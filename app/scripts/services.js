@@ -59,9 +59,9 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 		return{
 			new: function(model, success){
 				var item = API.pantryitems().save({
-					name:model.name,
-					slug:model.slug != undefined ? model.slug : item_model.slug(model.name),
-					outofstock:model.outofstock != undefined ? model.outofstock : item_model.outofstock
+					name 	   : model.name,
+					slug 	   : model.slug != undefined ? model.slug : item_model.slug(model.name),
+					outofstock : model.outofstock != undefined ? model.outofstock : item_model.outofstock
 				}, function(){
 					if( success !== undefined )
 						success(item);
@@ -75,11 +75,35 @@ angular.module('app.services', ['ngResource', 'LocalStorageModule', 'slugifier']
 		return{
 			new: function(model){
 				return API.groceries().save({
-					name:model.name,
-					slug:model.slug,
-					outofstock:true,
-					pantryitem_id:model.id,
-					id: null,
+					name 		  : model.name,
+					slug 		  : model.slug,
+					outofstock 	  : true,
+					pantryitem_id : model.id,
+					id 			  : null
+				});
+			}
+		}
+	}])
+
+	.factory('ReceipeModel', ['API', 'Slug', function(API, Slug){
+		return{
+			new: function(model){
+
+				return API.receipes().save({
+					name 		: model.name,
+					slug 		: Slug.slugify(model.name),
+					ingredients : angular.toJson(model.ingredients)
+				});
+			},
+			update: function(model, success){
+				var receipe = API.receipes().update({
+					name 		: model.name,
+					slug 		: Slug.slugify(model.name),
+					ingredients : angular.toJson(model.ingredients),
+					id 			: model.id
+				}, function(){
+					if( success !== undefined )
+						success(receipe);
 				});
 			}
 		}

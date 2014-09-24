@@ -1,15 +1,16 @@
 controllers.controller('ReceipesController', [
 	'$scope', 
 	'$modal', 
-	'PantryStorage', 
 	'$event', 
-	function($scope, $modal, PantryStorage, $event){
+	'ReceipeModel',
+	'API',
+	function($scope, $modal, $event, ReceipeModel, API){
 		
 		/*
 		 * Public
 		 */
-		$scope.receipes    = PantryStorage.getReceipes();
-		$scope.search      = {};
+		$scope.receipes = API.receipes().query();
+		$scope.search   = {};
 
 		$scope.saveReceipes = function(){return saveReceipes();};
 		$scope.openForm = function(){return openForm();};
@@ -21,21 +22,15 @@ controllers.controller('ReceipesController', [
 		var modalForm;
 		$event.registerFor({
 			new_receipe: function(receipe){
-				$scope.receipes.push(receipe);
+				$scope.receipes.push(ReceipeModel.new(receipe));
 				$scope.search = {};
 				modalForm.close();
-			},
-			receipe_edited: function(){
-				PantryStorage.saveReceipes($scope.receipes);
 			},
 			search: function(search){
 				$scope.search[search.prop] = search.value;
 			}
 		});
 
-		var saveReceipes = function(){
-			PantryStorage.saveReceipes($scope.receipes);
-		}
 
 		var openForm = function(){
 			modalForm = $modal.open({
@@ -55,14 +50,6 @@ controllers.controller('ReceipesController', [
 			});
 		}
 
-		/*
-		 * Event listener
-		 */
-
-		$scope.$watch('receipes.length', function(){
-	 		PantryStorage.saveReceipes($scope.receipes);
-		});
-
 }]);
 
 controllers.controller('ReceipeController', [
@@ -71,10 +58,11 @@ controllers.controller('ReceipeController', [
 	'$event',
 	'$message',
 	'$modal', 
-	'Slug', 
-	'guid', 
 	'lookup', 
-	function($scope, $filter, $event, $message,$modal, Slug, guid, lookup){
+	'Slug',
+	'ReceipeModel',
+	'API',
+	function($scope, $filter, $event, $message,$modal, lookup, Slug, ReceipeModel, API){
 
 		/*
 		 * Public
@@ -87,6 +75,8 @@ controllers.controller('ReceipeController', [
 		};		
 		$scope.modalForm;
 		$scope.display_btn_inset = false;
+		$scope.receipe = $scope.receipe || [];
+		$scope.receipe.ingredients = angular.fromJson($scope.receipe.ingredients);
 
 
 		$scope.create  		= function(){return create();};
@@ -112,7 +102,7 @@ controllers.controller('ReceipeController', [
 
 		$scope.addIngredient = function(){
 
-			if( lookup.lookupFor($scope.formReceipe.ingredients, $scope.ingredient, 'id') ){
+			if( lookup.lookupFor($scope.formReceipe.ingredients, $scope.ingredient.id, 'id') ){
 				$message.open({
 					templateUrl:'views/messages/ingredient-duplicate.html',
 					resolve:{
@@ -167,8 +157,6 @@ controllers.controller('ReceipeController', [
 		var create = function(){
 			$event.trigger('new_receipe', {
 				name 	    : $scope.formReceipe.name,
-				slug 	    : Slug.slugify($scope.formReceipe.name),
-				id 		    : guid.new(),
 				ingredients : $scope.formReceipe.ingredients
 			}, 'receipe created in receipe form');
 		};
@@ -177,14 +165,17 @@ controllers.controller('ReceipeController', [
 			$scope.receipe.name 	   = $scope.formReceipe.name;
 			$scope.receipe.slug  	   = Slug.slugify($scope.formReceipe.name);
 			$scope.receipe.ingredients = $scope.formReceipe.ingredients;
-			$event.trigger('receipe_edited', {}, 'recipe edited by receipe form');
 
-			$scope.modalForm.close();
+			ReceipeModel.update($scope.receipe, function(){
+				$scope.modalForm.close();
+			});
 
 		};
 
 		var deleteItem = function(){
-			$scope.receipes.splice($scope.receipes.indexOf($scope.receipe), 1);
+			$scope.receipe.$delete(function(){
+				$scope.receipes.splice($scope.receipes.indexOf($scope.receipe), 1);	
+			});
 		}
 
 		var openForm = function(){
@@ -209,16 +200,6 @@ controllers.controller('ReceipeController', [
 		var closeItem = function(){
 			$scope.toggled = false;
 		}
-
-		/*
-		 * Event listeners
-		 */
-
-		$scope.$watch('receipe.name', function(newValue, oldValue){
-			if( newValue != oldValue && oldValue != undefined ){
-				$scope.saveReceipes();
-			}
-		});
 
 		$scope.$watch('ingredient', function(newValue, oldValue){
 			if( newValue != oldValue && newValue != undefined && newValue != null){

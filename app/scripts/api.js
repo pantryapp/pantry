@@ -10,6 +10,11 @@ angular.module('pantryApi', ['ngResource'])
 		},
 		groceries: function(){
 			return $resource(ENV.apiEndpoint + '/groceries/:groceryId', {groceryId : '@id'});
+		},
+		receipes: function(){
+			return $resource(ENV.apiEndpoint + '/receipes/:receipeId', {receipeId: '@id'}, {
+				'update' : {method : 'PUT'}
+			});
 		}
 	}
 }]);

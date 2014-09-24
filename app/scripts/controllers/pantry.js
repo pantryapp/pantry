@@ -40,12 +40,14 @@ controllers.controller('PantryItemsController', [
 				},
 				create_new_pantryitem: function(pantryItemName){
 
-					PantryItemModel.new({name:pantryItemName, outofstock:true}, function(pantryItem){
+					var item = PantryItemModel.new({name:pantryItemName, outofstock:true}, function(pantryItem){
 						$event.trigger('outofstock', pantryItem, 'new pantry item created, demanded by grocery controller');
 						$scope.pantryItems.push(pantryItem);
 
 						$message.open('pantryitem-new', {item:pantryItem});
 					});
+
+					return item;
 
 				}
 			});
@@ -81,6 +83,7 @@ controllers.controller('PantryItemController', [
 			// If not create new item
 			else 
 				$scope.pantryItems.push(PantryItemModel.new($scope.newPantryItem));
+				$message.open('pantryitem-new', {item:{name:$scope.newPantryItem.name}});
 
 			// Reset form.
 			$scope.newPantryItem.name = "";
