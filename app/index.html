@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="app" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="app" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Pantry</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/app.css -->
+  <link id='app_styles' rel="stylesheet" href="styles/app.css" />
+   <!-- endbuild -->
+</head>
+<body ng-controller="PantryController">
+
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+
+  <nav class="navbar navbar-default header navbar-inverse" ng-controller="HeaderController" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" nav-link href="#/pantry">
+          <img src="images/logo.png" />
+          <img src="images/logo2.png" />
+        </a>
+        <ul class='nav navbar-nav pull-left'>
+          <li><a href='#' class='page_title'>{{pageTitle}}</a></li>
+        </ul>
+        <button type="button" class="navbar-toggle" ng-click="toggleCollapse()">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class='collapse navbar-collapse' collapse="isCollapsed">
+        <ul class="nav navbar-nav" >
+          <li ng-class="{'active':isActive('/pantry')}">
+            <a href='#/pantry' nav-link>Garde-manger</a>
+          </li>
+          <li ng-class="{'active':isActive('/groceries')}">
+            <a href='#/groceries' nav-link>Liste d'épicerie <span class='badge'>{{n_groceries}}</span></a>
+          </li>
+          <li class="dropdown" ng-class="{'open':dropdownIsOpen, 'active':isActive('/receipes')}">
+            <a href="#" class="dropdown-toggle" ng-click="toggleDropdown();">Manger <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#/receipes" nav-link>Livre de recettes</a></li>
+                <li><a href="#" nav-link>Idées</a></li>
+              </ul>
+          </li>
+        </ul>
+        <!-- <item-filter></item-filter> -->
+        <!-- <button class='btn btn-default' ng-click="showEvents();">Debug events</button> -->
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#/configs" nav-link><span class='glyphicon glyphicon-cog'></span><span class='sr-only'>Configs</span></a></li>
+        </ul>
+      </div>
+  </nav>
+
+
+  <div class='wrapper'>
+    <div class='inner-wrapper'>
+      <div ng-view></div>
+    </div>
+  </div>
+
+<!--   <footer>
+    <p>Version <span last-update></span></p>
+  </footer> -->
+
+
+  <!-- build:js(.) scripts/oldieshim.js -->
+  <!--[if lt IE 9]>
+  <script src="bower_components/es5-shim/es5-shim.js"></script>
+  <script src="bower_components/json3/lib/json3.js"></script>
+  <![endif]-->
+  <!-- endbuild -->
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/alert.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/dropdown.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/transition.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/modal.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tooltip.js"></script>
+  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/hammerjs/hammer.js"></script>
+  <script src="bower_components/angular-hammer/angular-hammer.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+  <script src="scripts/env.js"></script>
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/libs/angular-local-storage.min.js"></script>
+  <script src="scripts/libs/slugify.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/api.js"></script>
+  <script src="scripts/configs.js"></script>
+  <script src="scripts/messages.js"></script>
+  <script src="scripts/services.js"></script>
+  <script src="scripts/controllers.js"></script>
+  <script src="scripts/filters.js"></script>
+  <script src="scripts/directives.js"></script>
+
+  <script src="scripts/directives/buttons.js"></script>
+
+  <script src="scripts/controllers/pantry.js"></script>
+  <script src="scripts/controllers/receipe.js"></script>
+  <script src="scripts/controllers/grocery.js"></script>
+  <script src="scripts/controllers/search.js"></script>
+  <script src="scripts/controllers/header.js"></script>
+  <!-- endbuild -->
+  
+</body>
+</html>

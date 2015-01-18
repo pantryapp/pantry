@@ -1,0 +1,5 @@
+<div class='list-group items-list'>
+
+  <pantry-item class='list-group-item pantry-item' ng-controller="PantryItemController" ng-repeat="item in pantryItems | orderBy:'name' | filter:{name:search.name, category:search.category} | item_exists:newItemName" ng-class="{'edited':edited, 'outofstock':item.outofstock,'editing':editing, 'options':toggled}"></pantry-item>
+
+</div>

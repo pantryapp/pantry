@@ -1,0 +1,13 @@
+<div class='item-wrapper'>
+    <div class='item' hm-tap="showOptions()">
+      <span class="glyphicon glyphicon-ok checkmark pull-left"></span>
+      <h4 class='item-name pull-left'>{{item.name}}</h4>
+    </div>
+
+    <div class='item-edit-form'>
+      <input type='text' inline-edit on-edit="updateName()" on-cancel="showOptions()" ng-model="editingPantryItem.name" />
+        <button button-save hm-tap="updateName()"></button>   
+    </div>
+
+    <pantry-item-options></pantry-item-options>
+</div>
