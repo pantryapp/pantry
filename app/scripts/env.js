@@ -2,6 +2,6 @@
 
  angular.module('env', [])
 
-.constant('ENV', {name:'development',apiEndpoint:'http://pantryapp-api.herokuapp.com/'})
+.constant('ENV', {name:'development',apiEndpoint:'http://0.0.0.0:3000'})
 
 ;
