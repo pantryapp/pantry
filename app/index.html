@@ -22,19 +22,13 @@
 
     <!-- Add your site or application content here -->
     <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="#">Home</a></li>
-          <li><a ng-href="#/about">About</a></li>
-          <li><a ng-href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">pantry</h3>
-      </div>
+
+      <h3 class="text-muted">Garde manger</h3>
 
       <div ng-view=""></div>
 
       <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+        <img width="20" src="images/strawberry.png">
       </div>
     </div>
 
@@ -73,8 +67,15 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/routes.js"></script>
+        <script src="scripts/constant.js"></script>
+
+        <!-- Controller -->
+        <script src="scripts/controllers/PantryItems.js"></script>
+
+        <!-- Services -->
+        <script src="scripts/services/api.js"></script>
+
         <!-- endbuild -->
 </body>
 </html>

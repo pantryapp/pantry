@@ -1,0 +1,8 @@
+<h1>Pantry items list</h1>
+
+
+<div ng-controller="PantryItems as pantryItems">
+  <ul>
+    <li ng-repeat="pantryItem in pantryItems.items" ng-bind="pantryItem.name"></li>
+  </ul>
+</div>
