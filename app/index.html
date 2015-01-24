@@ -21,16 +21,14 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container">
-
-      <h3 class="text-muted">Garde manger</h3>
+    <!-- <div class="container"> -->
 
       <div ng-view=""></div>
 
       <div class="footer">
         <img width="20" src="images/strawberry.png">
       </div>
-    </div>
+    <!-- </div> -->
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -72,9 +70,10 @@
 
         <!-- Controller -->
         <script src="scripts/controllers/PantryItems.js"></script>
+        <script src="scripts/controllers/Categories.js"></script>
 
         <!-- Services -->
-        <script src="scripts/services/api.js"></script>
+        <script src="scripts/services/dataservice.js"></script>
 
         <!-- endbuild -->
 </body>

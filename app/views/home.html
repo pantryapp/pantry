@@ -1,8 +1,28 @@
-<h1>Pantry items list</h1>
+<table ng-controller="PantryItems as pantryItems" class="table table-stripped">
+  <caption>Liste des items dans votre garde-manger</caption>
+  <thead>
+    <tr>
+      <th ng-click="pantryItems.orderBy('name')">
+        Item
+        <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'name' && !pantryItems.orderByProp.reverse"></span>
+        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'name' && pantryItems.orderByProp.reverse"></span>
+      </th>
+      <th>Catégorie</th>
+      <th ng-click="pantryItems.orderBy('outofstock')">
+        En stock
+        <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'outofstock' && !pantryItems.orderByProp.reverse"></span>
+        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'outofstock' && pantryItems.orderByProp.reverse"></span>
+      </th>
+    </tr>
+  </thead>
 
-
-<div ng-controller="PantryItems as pantryItems">
-  <ul>
-    <li ng-repeat="pantryItem in pantryItems.items" ng-bind="pantryItem.name"></li>
-  </ul>
-</div>
+  <tbody>
+    <tr ng-repeat="pantryItem in pantryItems.items | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
+      <td ng-bind="pantryItem.name"></td>
+      <td ng-bind="pantryItem.category"></td>
+      <td>
+        <span class="glyphicon glyphicon-ok-circle" ng-show="!pantryItem.outofstock"></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
