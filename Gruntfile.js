@@ -51,13 +51,16 @@ module.exports = function (grunt) {
       gruntfile: {
         files: ['Gruntfile.js']
       },
+      sass: {
+        files: ['<%= yeoman.app %>/styles/**/*.sass'],
+        tasks: ['css']
+      },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -330,6 +333,14 @@ module.exports = function (grunt) {
       }
     },
 
+    sass: {
+      dist: {
+        files: {
+          '<%= yeoman.app %>/styles/global.css': '<%= yeoman.app %>/styles/global.sass'
+        }
+      }
+    },
+
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
@@ -363,6 +374,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'sass',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -374,6 +386,10 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
+
+  grunt.registerTask('css', [
+    'sass'
+  ]);
 
   grunt.registerTask('test', [
     'clean:server',

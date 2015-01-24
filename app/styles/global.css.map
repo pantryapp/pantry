@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,IAAI;EACF,OAAO,EAAE,cAAc;;AAEzB;EAAG;EAED,qBAAqB,EAAE,IAAI;EAC3B,WAAW,EAAE,IAAI;;AAEnB,EAAE;EACA,MAAM,EAAE,OAAO",
+"sources": ["base/customize.sass"],
+"names": [],
+"file": "global.css"
+}
