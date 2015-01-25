@@ -15,21 +15,57 @@
     <link rel="stylesheet" href="styles/global.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="pantryApp">
+  <body ng-app="pantryApp" ng-controller="PantryItems as pantryItems">
+
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <!-- <div class="container"> -->
+
+    <nav class="navbar navbar-default width-wrap main-nav">
+      <div class="container-fluid">
+        <a class="navbar-brand"  ng-class="{open: offsideMenuIsOpen}" href="/">
+          <img alt="Brand" width="20"src="images/strawberry.png">
+        </a>
+        <div class="pull-right">
+          <button type="button" ng-click="offsideMenuIsOpen = true;" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="wrapper offside-menu-slide" ng-class="{open: offsideMenuIsOpen}">
 
       <div ng-view=""></div>
 
       <div class="footer">
-        <img width="20" src="images/strawberry.png">
+          <img width="20" src="images/strawberry.png">
       </div>
-    <!-- </div> -->
 
+    </div>
+
+    <div class="offside-menu" ng-class="{open: offsideMenuIsOpen}">
+
+      <form novalidate ng-submit="pantryItems.create()">
+        <div class="form-group">
+          <label>
+            Nom
+            <input type="text" ng-model="pantryItems.newItem.name" class="form-control">
+          </label>
+        </div>
+
+        <div class="form-group" ng-controller="Categories as categories">
+          <label>
+            Catégorie
+            <select ng-model="pantryItems.newItem.category">
+              <option  ng-repeat="category in categories.categories | orderBy" ng-value="category" ng-bind="category"></option>
+            </select>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Créer</button>
+
+      </form>
+    </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
@@ -60,6 +96,9 @@
         <!-- Controller -->
         <script src="scripts/controllers/PantryItems.js"></script>
         <script src="scripts/controllers/Categories.js"></script>
+
+        <!-- Directives -->
+        <script src="scripts/directives/OffsideMenu.directive.js"></script>
 
         <!-- Services -->
         <script src="scripts/services/dataservice.js"></script>

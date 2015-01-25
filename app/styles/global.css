@@ -1,5 +1,7 @@
 body {
-  padding: 50px 20px 10px; }
+  padding-bottom: 10px;
+  padding-top: 10px;
+  position: relative; }
 
 td,
 th {
@@ -8,5 +10,45 @@ th {
 
 th {
   cursor: pointer; }
+
+.width-wrap,
+body,
+.wrapper,
+.main-nav {
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.main-nav .navbar-brand {
+  margin-top: -4px; }
+
+.offside-menu,
+.offside-menu-slide,
+.main-nav .navbar-brand {
+  transition: transform 0.2s ease-in-out; }
+
+.offside-menu {
+  background-color: #f8f8f8;
+  height: 100%;
+  left: 0;
+  padding: 20px 10px;
+  position: fixed;
+  top: 0;
+  transform: translate3d(-255px, 0px, 0px);
+  width: 255px; }
+  .offside-menu.open {
+    transform: translate3d(0px, 0px, 0px); }
+  .offside-menu input[type="text"] {
+    font-weight: normal;
+    margin-top: 5px; }
+  .offside-menu input,
+  .offside-menu button,
+  .offside-menu label,
+  .offside-menu select {
+    width: 100%; }
+
+.offside-menu-slide, .main-nav .navbar-brand {
+  transform: translate3d(0px, 0px, 0px); }
+  .offside-menu-slide.open, .main-nav .open.navbar-brand {
+    transform: translate3d(255px, 0px, 0px); }
 
 /*# sourceMappingURL=global.css.map */

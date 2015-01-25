@@ -1,0 +1,32 @@
+.offside-menu,
+.offside-menu-slide
+  transition: transform 0.2s ease-in-out
+
+.offside-menu
+  background-color: #f8f8f8
+  height: 100%
+  left: 0
+  padding: 20px 10px
+  position: fixed
+  top: 0
+  transform: translate3d(-$offsideMenuWidth, 0px, 0px)
+  width: $offsideMenuWidth
+
+  &.open
+    transform: translate3d(0px, 0px, 0px)
+
+  input[type="text"]
+    font-weight: normal
+    margin-top: 5px
+
+  input,
+  button,
+  label,
+  select
+    width: 100%
+
+.offside-menu-slide
+  transform: translate3d(0px, 0px, 0px)
+
+  &.open
+    transform: translate3d(255px, 0px, 0px)

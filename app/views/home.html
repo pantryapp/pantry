@@ -1,50 +1,32 @@
-<div ng-controller="PantryItems as pantryItems">
-  <form novalidate ng-submit="pantryItems.create()">
-    <div class="form-group">
-      <label>
-        <input type="text" placeholder="Nom de l'item" ng-model="pantryItems.newItem.name" class="form-control">
-      </label>
-    </div>
+<table class="table table-stripped">
+  <caption>Liste des items dans votre garde-manger</caption>
+  <thead>
+    <tr>
+      <th ng-click="pantryItems.orderBy('name')">
+        Item
+        <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'name' && !pantryItems.orderByProp.reverse"></span>
+        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'name' && pantryItems.orderByProp.reverse"></span>
+      </th>
+      <th ng-click="pantryItems.orderBy('category')">
+        Catégorie
+        <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'category' && !pantryItems.orderByProp.reverse"></span>
+        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'category' && pantryItems.orderByProp.reverse"></span>
+      </th>
+      <th ng-click="pantryItems.orderBy('outofstock')">
+        En stock
+        <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'outofstock' && !pantryItems.orderByProp.reverse"></span>
+        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'outofstock' && pantryItems.orderByProp.reverse"></span>
+      </th>
+    </tr>
+  </thead>
 
-    <div class="form-group" ng-controller="Categories as categories">
-      <select ng-model="pantryItems.newItem.category">
-        <option  ng-repeat="category in categories.categories | orderBy" ng-value="category" ng-bind="category"></option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-default">Créer</button>
-
-  </form>
-
-  <table class="table table-stripped">
-    <caption>Liste des items dans votre garde-manger</caption>
-    <thead>
-      <tr>
-        <th ng-click="pantryItems.orderBy('name')">
-          Item
-          <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'name' && !pantryItems.orderByProp.reverse"></span>
-          <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'name' && pantryItems.orderByProp.reverse"></span>
-        </th>
-        <th ng-click="pantryItems.orderBy('category')">
-          Catégorie
-          <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'category' && !pantryItems.orderByProp.reverse"></span>
-          <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'category' && pantryItems.orderByProp.reverse"></span>
-        </th>
-        <th ng-click="pantryItems.orderBy('outofstock')">
-          En stock
-          <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'outofstock' && !pantryItems.orderByProp.reverse"></span>
-          <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'outofstock' && pantryItems.orderByProp.reverse"></span>
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr ng-repeat="pantryItem in pantryItems.items | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
-        <td ng-bind="pantryItem.name"></td>
-        <td ng-bind="pantryItem.category"></td>
-        <td>
-          <span class="glyphicon glyphicon-ok-circle" ng-show="!pantryItem.outofstock"></span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <tbody>
+    <tr ng-repeat="pantryItem in pantryItems.items | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
+      <td ng-bind="pantryItem.name"></td>
+      <td ng-bind="pantryItem.category"></td>
+      <td>
+        <span class="glyphicon glyphicon-ok-circle" ng-show="!pantryItem.outofstock"></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
