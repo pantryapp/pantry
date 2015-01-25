@@ -24,7 +24,11 @@
           <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'name' && !pantryItems.orderByProp.reverse"></span>
           <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'name' && pantryItems.orderByProp.reverse"></span>
         </th>
-        <th>Catégorie</th>
+        <th ng-click="pantryItems.orderBy('category')">
+          Catégorie
+          <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'category' && !pantryItems.orderByProp.reverse"></span>
+          <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'category' && pantryItems.orderByProp.reverse"></span>
+        </th>
         <th ng-click="pantryItems.orderBy('outofstock')">
           En stock
           <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'outofstock' && !pantryItems.orderByProp.reverse"></span>
