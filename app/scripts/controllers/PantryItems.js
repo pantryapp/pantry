@@ -10,41 +10,26 @@
     var vm = this;
 
     vm.items       = [];
+
     vm.orderBy     = orderBy;
     vm.orderByProp = {value: 'name', reverse: false};
 
-    activate();
+    vm.create = create;
 
-    function activate() {
-        /**
-         * Step 1
-         * Ask the getPantryItems function for the
-         * avenger data and wait for the promise
-         */
-        return getPantryItems().then(function() {
-            /**
-             * Step 4
-             * Perform an action on resolve of final promise
-             */
-            // Remove loading for exemple
-        });
-    }
+    vm.items = dataservice.pantryitems().query(function(data) {
+      vm.items = data;
+    });
 
-    function getPantryItems() {
-          /**
-           * Step 2
-           * Ask the data service for the data and wait
-           * for the promise
-           */
-          return dataservice.getPantryItems()
-              .then(function(data) {
-                  /**
-                   * Step 3
-                   * set the data and resolve the promise
-                   */
-                  vm.items = data;
-                  return vm.items;
-          });
+    function create() {
+      dataservice.pantryitems().save({
+        name: vm.newItem.name,
+        category: vm.newItem.category,
+        outofstock: false
+
+      }, function(newItem) {
+        vm.items.push({name: newItem.name, category: newItem.category, outofstock: false});
+        console.log(vm.items);
+      });
     }
 
     function orderBy(key) {
