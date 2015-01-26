@@ -25,16 +25,17 @@
 
     <nav class="navbar navbar-default width-wrap main-nav">
       <div class="container-fluid">
-        <a class="navbar-brand"  ng-class="{open: offsideMenuIsOpen}" href="/">
+        <a class="navbar-brand"  ng-class="{open: offsideContentIsOpen}" href="/">
           <img alt="Brand" width="20"src="images/strawberry.png">
         </a>
         <div class="pull-right">
-          <button type="button" ng-click="offsideMenuIsOpen = true;" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
+          <button type="button" ng-click="offsideContentIsOpen = true;" ng-show="!offsideContentIsOpen" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
+          <button type="button" ng-click="offsideContentIsOpen = false;" ng-show="offsideContentIsOpen" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
       </div>
     </nav>
 
-    <div class="wrapper offside-menu-slide" ng-class="{open: offsideMenuIsOpen}">
+    <div class="wrapper offside-content-slide" ng-class="{open: offsideContentIsOpen}">
 
       <div ng-view=""></div>
 
@@ -44,7 +45,7 @@
 
     </div>
 
-    <div class="offside-menu" ng-class="{open: offsideMenuIsOpen}">
+    <div class="offside-content" ng-class="{open: offsideContentIsOpen}">
 
       <form novalidate ng-submit="pantryItems.create()">
         <div class="form-group">
