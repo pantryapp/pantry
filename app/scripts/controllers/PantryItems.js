@@ -14,7 +14,7 @@
     vm.orderBy     = orderBy;
     vm.orderByProp = {value: 'name', reverse: false};
 
-    vm.create = create;
+    vm.createItem = createItem;
 
     getItems();
 
@@ -22,7 +22,7 @@
       dataservice.pantryitems().query().$promise.then(getItemsComplete, getItemsFailed);
     }
 
-    function create() {
+    function createItem() {
 
       dataservice.pantryitems().save({
         name        : vm.newItem.name,
@@ -41,6 +41,7 @@
 
     function createItemComplete(newItem) {
       vm.items.push(newItem);
+      vm.newItem.name = '';
     }
 
     function createItemFailed(error) {

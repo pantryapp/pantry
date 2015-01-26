@@ -9,8 +9,12 @@
   padding: 120px 10px 10px
   position: fixed
   top: 0
-  width: $offsideMenuWidth
+  width: $offsideContentWidth
   z-index: 0
+
+  form
+    margin: auto
+    width: 75%
 
   input[type="text"]
     font-weight: normal
@@ -26,4 +30,4 @@
   transform: translate3d(0px, 0px, 0px)
 
   &.open
-    transform: translate3d(255px, 0px, 0px)
+    transform: translate3d($offsideContentWidth, 0px, 0px)
