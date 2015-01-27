@@ -2,11 +2,16 @@ body
   position: relative
 
 .wrapper
-  @extend %width-wrap
-  background-color: #ffffff
   min-height: 100%
   padding-bottom: 20px
-  padding-top: 20px
+  position: relative
+  z-index: 1
+
+.view-main-content
+  @extend %width-wrap
+  background-color: #ffffff
+  height: 100%
+  padding-top: 30px
   position: relative
   z-index: 1
 

@@ -28,14 +28,10 @@
         <span class="navbar-brand"  ng-class="{open: offsideContentIsOpen}">
           <img alt="Brand" width="20"src="images/strawberry.png">
         </span>
-        <div class="pull-right">
-          <button type="button" ng-click="offsideContentIsOpen = true;" ng-show="!offsideContentIsOpen" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
-          <button type="button" ng-click="offsideContentIsOpen = false;" ng-show="offsideContentIsOpen" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
-        </div>
       </div>
     </nav>
 
-    <div class="wrapper offside-content-slide" ng-class="{open: offsideContentIsOpen}">
+    <div class="wrapper">
 
       <div ng-view=""></div>
 
@@ -43,30 +39,6 @@
           <img width="20" src="images/strawberry.png">
       </div>
 
-    </div>
-
-    <div class="offside-content" ng-class="{open: offsideContentIsOpen}">
-
-      <form novalidate ng-submit="pantryItems.items.add()">
-        <h2>Nouvel item</h2>
-        <div class="form-group">
-          <label>
-            Nom
-            <input type="text" ng-model="pantryItems.newItem.name" class="form-control">
-          </label>
-        </div>
-
-        <div class="form-group" ng-controller="Categories as categories">
-          <label>
-            Catégorie
-            <select ng-model="pantryItems.newItem.category">
-              <option  ng-repeat="category in categories.categories | orderBy" ng-value="category" ng-bind="category"></option>
-            </select>
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Créer</button>
-
-      </form>
     </div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
