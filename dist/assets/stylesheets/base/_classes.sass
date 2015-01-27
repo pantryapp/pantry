@@ -1,0 +1,97 @@
+.clearfix,
+%clearfix
+  zoom: 1
+
+  &:after
+    content: ""
+    clear: both
+    display: block
+
+.ir
+  background-color: transparent
+  background-repeat: no-repeat
+  border: 0
+  direction: ltr
+  display: block
+  *line-height: 0
+  overflow: hidden
+  text-align: left
+  text-indent: -999em
+
+  br
+    display: none
+
+.hidden
+  display: none !important
+  visibility: hidden
+
+.visuallyhidden
+  border: 0
+  clip: rect(0 0 0 0)
+  height: 1px
+  margin: -1px
+  overflow: hidden
+  padding: 0
+  position: absolute
+  width: 1px
+
+  &.focusable:active, &.focusable:focus
+    clip: auto
+    height: auto
+    margin: 0
+    overflow: visible
+    position: static
+    width: auto
+
+.invisible
+  visibility: hidden
+
+.shy
+  position: absolute
+  left: -9999px
+
+.content-wrap
+  margin: 0 auto
+  min-width: 960px
+  width: 960px
+
+.gentitle
+  color: white
+  font-size: 40px
+  line-height: 40px
+  margin: 0 0 30px -14px
+
+  span
+    background: $lblue
+    display: inline-block
+    padding: 10px 14px 2px
+
+  br + span
+    padding: 0 14px 10px
+
+.genpretitle
+  color: $lblue
+  font-size: 18px
+  margin: 0 0 4px
+  text-transform: uppercase
+
+.gensubtitle
+  color: white
+  font-size: 28px
+  line-height: 28px
+  margin: 0 0 20px -14px
+
+  span
+    background: $blue
+    display: inline-block
+    padding: 10px 14px 2px
+
+  br + span
+    padding: 0 14px 10px
+
+.onreached
+  opacity: 0
+  transition: opacity 0.8s
+
+  &.reached
+    opacity: 1

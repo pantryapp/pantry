@@ -1,0 +1,24 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+/* TEAM */
+
+  Designer: [TODO]
+  Location: Québec, Qc, Canada
+
+  Project Manager: [TODO]
+  Location: Québec, QC, Canada
+
+  Developer: [TODO]
+  Twitter: [TODO]
+  Location: Québec, Qc, Canada
+
+/* SITE */
+
+  /* Standards */
+  HTML5, CSS3
+
+  /* Components */
+  GIT             [http://git-scm.com/]
+  ANGULARJS       [http://angularjs.org/]
+  SASS            [http://sass-lang.com/]

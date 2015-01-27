@@ -1,0 +1,183 @@
+//=================== Header
+.header
+  background: $dblue url('/assets/images/layout/bkg-header@2x.jpg') no-repeat center center
+  background-size: 1669px 128px
+  font-family: $proxsb
+  font-size: 18px
+  height: 128px
+  min-width: 960px
+  position: relative
+
+  .no-backgroundsize &
+    background-image: url('/assets/images/layout/bkg-header.jpg')
+
+.header-logo
+  @extend .ir
+  background: url('/assets/images/layout/logo-uqar@2x.png') no-repeat center center
+  background-size: 145px 44px
+  height: 44px
+  position: relative
+  top: 22px
+  width: 145px
+
+  .no-backgroundsize &
+    background-image: url('/assets/images/layout/logo-uqar.png')
+
+.header-nav-wrap
+  bottom: 0
+  position: absolute
+  display: block
+  height: 40px
+  width: 100%
+
+.header-nav
+  @extend .clearfix
+  background: $menuColor
+  color: white
+  display: block
+  height: 40px
+  line-height: 40px
+  width: 100%
+
+  .header-nav-wrap.reached &
+    bottom: auto
+    position: fixed
+    top: 0
+    z-index: 100
+
+  & .content-wrap
+    position: relative
+
+.header-nav-back
+  float: left
+
+.header-nav-dropdown
+  cursor: pointer
+  float: right
+  padding: 0
+  text-align: right
+
+.header-nav-dropdown-arrow
+  display: inline-block
+  line-height: 6px
+  padding: 0 0 0 7px
+  position: relative
+  top: 4px
+  transform: rotate(-90deg)
+
+.header-nav-dropdown-submenu
+  background: $menuColor
+  display: none
+  font-size: 16px
+  line-height: 32px
+  padding: 4px 0 8px
+  position: relative
+  z-index: 100
+
+  .header-nav-dropdown:hover &
+    display: block
+
+  button
+    background: transparent
+    border: none
+    color: white
+    font-family: $prox
+    height: 32px
+    outline: none
+    padding-left: 16px
+    padding-right: 16px
+    text-align: left
+    width: 100%
+
+    &:hover
+      background: $lblue
+
+.header-nav-dots
+  height: 40px
+  left: 0
+  margin: 0 auto
+  padding: 0
+  position: absolute
+  right: 0
+  text-align: center
+  width: 200px
+
+  li
+    display: inline-block
+    height: 40px
+    line-height: 32px
+
+  button
+    @extend .ir
+    background: transparent
+    border: 1px solid white
+    border-radius: 5px
+    height: 10px
+    margin: 15px 0
+    outline: none
+    padding: 0
+    position: relative
+    //top: 7px
+    width: 10px
+
+    &:hover
+      background-color: $lblue
+
+    &.active
+      background-color: white
+
+//=================== Footer
+.footer
+  min-width: 960px
+
+.footer-drivetoclick
+  @extend .clearfix
+  background: $lblue // IE9 fallback
+  background: radial-gradient(ellipse at center 20%, rgba(73,182,223,1) 0%,rgba(24,163,215,1) 100%)
+  color: white
+  padding: 40px 0 24px
+
+.footer-drivetoclick-title
+  border-bottom: 2px solid white
+  font-family: $proxsb
+  font-size: 84px
+  line-height: 1
+  margin: 0 0 33px
+  padding: 0 0 30px
+
+.footer-drivetoclick-button
+  background: url('/assets/images/layout/btn-footer-arrow@2x.png') no-repeat right center
+  background-size: 54px 26px
+  border: 1px solid white
+  display: inline-block
+  float: right
+  font-family: $proxl
+  font-size: 18px
+  margin: 0 18px 0 0
+  padding: 12px 133px 9px 16px
+  text-transform: uppercase
+  transition: background-position 0.3s
+
+  &:hover
+    background-position: 103% center
+
+.footer-social
+  color: $lblue
+  padding: 36px 0 50px
+  text-align: center
+
+.footer-social-title
+  font-family: $proxl
+  font-size: 24px
+  margin: 0 0 30px
+  text-transform: uppercase
+
+.footer-social-box
+  background: $llblue
+  display: inline-block
+  padding: 17px 65px
+
+  .twitter-share-button
+    margin-left: 30px
+    position: relative
+    top: 3px
