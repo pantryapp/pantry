@@ -1,4 +1,4 @@
-<table class="table table-stripped">
+<table class="table table-stripped table-hover">
   <caption>Liste des items dans votre garde-manger</caption>
   <thead>
     <tr>
@@ -21,7 +21,7 @@
   </thead>
 
   <tbody>
-    <tr ng-repeat="pantryItem in pantryItems.items | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
+    <tr ng-repeat="pantryItem in pantryItems.pantry | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
       <td ng-bind="pantryItem.name"></td>
       <td ng-bind="pantryItem.category"></td>
       <td>

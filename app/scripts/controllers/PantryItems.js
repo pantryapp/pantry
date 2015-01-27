@@ -9,43 +9,52 @@
   function PantryItems(dataservice) {
     var vm = this;
 
-    vm.items       = [];
+    vm.pantry       = [];
 
     vm.orderBy     = orderBy;
     vm.orderByProp = {value: 'name', reverse: false};
 
-    vm.createItem = createItem;
+    vm.createItem = items().createItem;
 
-    getItems();
+    items().get();
 
-    function getItems() {
-      dataservice.pantryitems().query().$promise.then(getItemsComplete, getItemsFailed);
-    }
+    vm.items = items;
 
-    function createItem() {
+    function items() {
 
-      dataservice.pantryitems().save({
-        name        : vm.newItem.name,
-        category    : vm.newItem.category,
-        outofstock  : false
-      }).$promise.then(createItemComplete, createItemFailed);
-    }
+      function _createComplete(newItem) {
+        vm.pantry.push(newItem);
+        vm.newItem.name = '';
+      }
 
-    function getItemsComplete(data) {
-      vm.items = data;
-    }
+      function _createFailed(error) {
+        console.log('Error while creating an item', error);
+      }
 
-    function getItemsFailed(error) {
-      console.log('Error while querying items', error);
-    }
+      function _getComplete(data) {
+        vm.pantry = data;
+      }
 
-    function createItemComplete(newItem) {
-      vm.items.push(newItem);
-      vm.newItem.name = '';
-    }
+      function _getFailed(error) {
+        console.log('Error while querying items', error);
+      }
 
-    function createItemFailed(error) {
-      console.log('Error while creating an item', error);
+      function get() {
+          dataservice.pantryitems().query().$promise.then(_getComplete, _getFailed);
+      }
+
+      function create() {
+        dataservice.pantryitems().save({
+          name        : vm.newItem.name,
+          category    : vm.newItem.category,
+          outofstock  : false
+        }).$promise.then(_createComplete, _createFailed);
+      }
+
+      return {
+        get: get,
+        add: create
+      };
     }
 
     function orderBy(key) {
