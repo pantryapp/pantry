@@ -4,9 +4,13 @@
 
   angular
     .module('pantryApp')
-    .service('dataservice', dataservice);
+    .factory('dataservice', dataservice);
 
   function dataservice($resource, apiEndPoint) {
+
+    return {
+      pantryitems : pantryitems
+    };
 
     function pantryitems() {
       return $resource(apiEndPoint.prod + '/pantryitems/:pantryItemId', {pantryItemId: '@id'}, {
@@ -14,9 +18,6 @@
       });
     }
 
-    return {
-      pantryitems : pantryitems
-    };
   }
 
 
