@@ -23,9 +23,11 @@ files =
   ]
   jsbody: [
     # JS Components, plugins + your compiled Coffee
+    '<%= paths.bower %>/jquery/dist/jquery.js'
     '<%= paths.bower %>/angular/angular.js'
-    '<%= paths.bower %>/angular-animate/angular-animate.js'
     '<%= paths.bower %>/angular-route/angular-route.js'
+    '<%= paths.bower %>/angular-resource/angular-resource.js'
+    '<%= paths.bower %>/angular-touch/angular-touch.js'
     '<%= paths.js %>/angular/app.js'
     '<%= paths.js %>/angular/**/*.js'
     '<%= paths.tmp %>/App.<%= ext.js %>'

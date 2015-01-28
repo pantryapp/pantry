@@ -1,31 +1,17 @@
-'use strict';
-
-(function (angular) {
+(function() {
 
   'use strict';
 
-  var constant = {
-    'someConstant': 'Hello'
-  };
-
-  function config($routeProvider) {
-    $routeProvider
-      .when('/', {
-        controller: 'MainCtrl',
-        controllerAs: 'main',
-        templateUrl: '/views/main.html'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  }
-
   angular
-    .module('demoApp', [
-      'ngAnimate',
-      'ngRoute'
+    .module('pantryApp', [
+      'ngResource',
+      'ngRoute',
+      'ngTouch'
     ])
-    .constant('appSettings', constant)
-    .config(config);
+    .constant('apiEndPoint', {
+      dev: 'http://0.0.0.0:3000',
+      prod: 'http://pantryapp-api.herokuapp.com'
+    });
 
-}(window.angular));
+
+})();
