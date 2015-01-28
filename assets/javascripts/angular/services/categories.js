@@ -4,12 +4,10 @@
 
   angular
     .module('pantryApp')
-    .controller('Categories', Categories);
+    .factory('foodCategories', foodCategories);
 
-  function Categories() {
-    var vm = this;
-
-    vm.categories = [
+  function foodCategories() {
+    return [
       'Pâtisserie',
       'Herbes et épices séchées',
       'Pâtes et nouilles séchées',
@@ -24,8 +22,7 @@
       'Sauces',
       'Conserves',
       'Vinaigres',
-      'Autre'
+      'Autre',
     ];
   }
-
 })();
