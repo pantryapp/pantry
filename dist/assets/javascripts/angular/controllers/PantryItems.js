@@ -6,11 +6,13 @@
     .module('pantryApp')
     .controller('PantryItems', PantryItems);
 
-  PantryItems.$inject = ['dataservice'];
+  PantryItems.$inject = ['dataservice', 'foodCategories'];
 
-  function PantryItems(dataservice) {
+  function PantryItems(dataservice, foodCategories) {
     var vm = this;
-    vm.pantry       = [];
+
+    vm.pantry         = [];
+    vm.foodCategories = foodCategories;
 
     vm.orderBy     = orderBy;
     vm.orderByProp = {value: 'name', reverse: false};
@@ -69,6 +71,15 @@
         console.log('Error while querying items', error);
       }
 
+      function _editComplete(data) {
+        vm.showEditForm = false;
+        vm.editItem = null;
+      }
+
+      function _editFailed(error) {
+        console.log('Error while editing item', error);
+      }
+
       function get() {
         dataservice.pantryitems().query().$promise.then(_getComplete, _getFailed);
       }
@@ -82,7 +93,11 @@
       }
 
       function edit() {
-        console.log(vm.editItem);
+        dataservice.pantryitems().update({
+          name        : vm.editItem.name,
+          category    : vm.editItem.category,
+          outofstock  : false
+        }).$promise.then(_editComplete, _editFailed);
       }
 
       return {

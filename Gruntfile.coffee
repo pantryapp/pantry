@@ -162,6 +162,9 @@ module.exports = (grunt) ->
         files:
           '<%= paths.tmp %>/annotated.<%= ext.js %>': files.jsbody
 
+    jshint:
+      all: ['<%= paths.js %>/angular/**/*.js']
+
     # Compiles Sass to CSS and generates necessary files if requested
     sass:
       options:
@@ -221,7 +224,7 @@ module.exports = (grunt) ->
   # Used by concurrent
   grunt.registerTask 'js', 'Javascript related tasks', ->
     if env == 'angular'
-      grunt.task.run ['coffee','ngAnnotate','uglify:angular']
+      grunt.task.run ['coffee','jshint', 'ngAnnotate','uglify:angular']
     else
       grunt.task.run ['coffee','uglify:dist']
 
