@@ -1,4 +1,4 @@
-# Angular Boilerplate
+# Pantry
 
 ## Installation
 1. Run `npm install` and let the magic happen
