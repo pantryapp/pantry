@@ -1,48 +1,45 @@
 <!DOCTYPE html>
-<html class="no-js" lang="fr" ng-app="demoApp">
+<html class="no-js" lang="fr" ng-app="pantryApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>[TODO]</title>
-
-  <meta name="description" content="[TODO]">
+  <title>Pantry</title>
 
   <!-- CSS -->
+  <link rel="stylesheet" href="assets/components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/stylesheets/global-compiled.css">
 
   <!-- Icons -->
-  <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.png">
   <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
-
-  <!-- Facebook -->
-  <meta property="og:title" content="[TODO]"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="[TODO]"/>
-  <meta property="og:image" content="http://[TODO]"/>
-  <meta property="og:site_name" content="[TODO]"/>
-  <meta property="og:locale" content="fr_CA[TODO]"/>
-  <meta property="og:description" content="[TODO]"/>
 
   <!-- Head JS (Modernizr, etc) -->
   <script src="/assets/javascripts/globalhead.js"></script>
 
 </head>
 <body>
-  <h1>Hello World!</h1>
 
-  <div ng-view></div>
+  <nav class="navbar navbar-default width-wrap main-nav">
+    <div class="container-fluid">
+      <span class="navbar-brand">
+        <img alt="Brand" width="20"src="/assets/images/strawberry.png">
+      </span>
+    </div>
+  </nav>
+
+  <div class="wrapper">
+
+    <div ng-view=""></div>
+
+    <div class="footer">
+        <img width="20" src="/assets/images/strawberry.png">
+    </div>
+
+  </div>
 
   <!-- JS -->
   <script src="/assets/javascripts/global.js"></script>
 
-  <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-901222-1');ga('send','pageview');
-  </script>
 
 </body>
 </html>

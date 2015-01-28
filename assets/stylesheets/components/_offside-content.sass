@@ -1,0 +1,37 @@
+.offside-content,
+.offside-content-slide,
+.contextual-nav
+  transition: transform 0.2s cubic-bezier(0.275, 0.895, 0.51, 1) 0.1s
+
+.offside-content
+  background-color: #f8f8f8
+  height: 100%
+  left: 0
+  padding: 60px 10px 10px
+  position: fixed
+  top: 0
+  width: $offsideContentWidth
+  z-index: 0
+
+  form
+    margin: auto
+    width: 75%
+
+  input[type="text"]
+    font-weight: normal
+    margin-top: 5px
+
+  input,
+  button,
+  label,
+  select
+    width: 100%
+
+.offside-content-slide
+  transform: translate3d(0px, 0px, 0px)
+
+  &.open
+    transform: translate3d($offsideContentWidth, 0px, 0px)
+
+    .contextual-nav
+      transform: translate3d(-$offsideContentWidth, 0px, 0px)
