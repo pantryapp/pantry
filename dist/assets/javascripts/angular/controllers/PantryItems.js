@@ -94,6 +94,7 @@
 
       function edit() {
         dataservice.pantryitems().update({
+          id          : vm.editItem.id,
           name        : vm.editItem.name,
           category    : vm.editItem.category,
           outofstock  : false
