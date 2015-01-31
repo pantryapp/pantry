@@ -27,15 +27,22 @@
             <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'outofstock' && !pantryItems.orderByProp.reverse"></span>
             <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'outofstock' && pantryItems.orderByProp.reverse"></span>
           </th>
+          <th></th>
         </tr>
       </thead>
 
       <tbody>
-        <tr ng-click="pantryItems.toggleEditForm(pantryItem);" ng-repeat="pantryItem in pantryItems.pantry | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
+        <tr ng-repeat="pantryItem in pantryItems.pantry | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
           <td ng-bind="pantryItem.name"></td>
           <td ng-bind="pantryItem.category"></td>
           <td>
             <span class="glyphicon glyphicon-ok-circle" ng-show="!pantryItem.outofstock"></span>
+          </td>
+          <td>
+            <button button-edit ng-click="pantryItems.toggleEditForm(pantryItem);"></button>
+            <button button-out-of-stock ng-show="!pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock()"></button>
+            <button button-buy ng-show="pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock()"></button>
+            <button button-delete></button>
           </td>
         </tr>
       </tbody>
