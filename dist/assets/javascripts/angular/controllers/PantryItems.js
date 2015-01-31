@@ -97,14 +97,23 @@
           id          : vm.editItem.id,
           name        : vm.editItem.name,
           category    : vm.editItem.category,
-          outofstock  : false
+          outofstock  : vm.editItem.outofstock
         }).$promise.then(_editComplete, _editFailed);
+      }
+
+      function toggleOutOfStock(item) {
+        item.outofstock = !item.outofstock;
+        dataservice.pantryitems().update({
+          id          : item.id,
+          outofstock  : item.outofstock
+        });
       }
 
       return {
         get: get,
         add: create,
-        edit: edit
+        edit: edit,
+        toggleOutOfStock: toggleOutOfStock
       };
     }
 

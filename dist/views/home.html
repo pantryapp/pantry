@@ -40,8 +40,8 @@
           </td>
           <td>
             <button button-edit ng-click="pantryItems.toggleEditForm(pantryItem);"></button>
-            <button button-out-of-stock ng-show="!pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock()"></button>
-            <button button-buy ng-show="pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock()"></button>
+            <button button-out-of-stock ng-show="!pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock(pantryItem)"></button>
+            <button button-buy ng-show="pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock(pantryItem)"></button>
             <button button-delete></button>
           </td>
         </tr>
