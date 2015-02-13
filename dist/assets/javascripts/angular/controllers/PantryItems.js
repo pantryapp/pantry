@@ -6,115 +6,76 @@
     .module('pantryApp')
     .controller('PantryItems', PantryItems);
 
-  PantryItems.$inject = ['dataservice', 'foodCategories'];
+  PantryItems.$inject = ['foodCategories', 'PantryItemsService'];
 
-  function PantryItems(dataservice, foodCategories) {
+  function PantryItems(foodCategories, PantryItemsService) {
+
     var vm = this;
 
-    vm.pantry         = [];
     vm.foodCategories = foodCategories;
 
-    vm.orderBy     = orderBy;
-    vm.orderByProp = {value: 'name', reverse: false};
+    vm.orderByProp = {
+      value   : 'name',
+      reverse : false
+    };
 
-    vm.createItem     = items().createItem;
-    vm.toggleEditForm = toggleEditForm;
-    vm.toggleNewForm  = toggleNewForm;
+    vm.forms = {
+      'new'  : false,
+      'edit' : false
+    };
+
+    // Actions on pantry items
+    vm.getItems         = getItems;
+    vm.createItem       = createItem;
+    vm.editItem         = editItem;
+    vm.deleteItem       = deleteItem;
+    vm.toggleOutOfStock = toggleOutOfStock;
+
+    // Form controls
+    vm.toggleForm     = toggleForm;
     vm.closeForms     = closeForms;
+    vm.toggleEditForm = toggleEditForm;
 
-    vm.showNewForm  = false;
-    vm.showEditForm = false;
-    vm.editItem     = null;
+    // Reorder list
+    vm.orderBy     = orderBy;
 
-    items().get();
-
-    vm.items = items;
-
-    function closeForms() {
-      vm.showNewForm  = false;
-      vm.showEditForm = false;
+    function getItems() {
+      return PantryItemsService.getItems();
     }
 
-    function toggleNewForm() {
-      vm.showNewForm = !vm.showNewForm;
+    function createItem(item) {
+      PantryItemsService.createItem(item);
+      closeForms();
+    }
 
-      if(vm.showNewForm === true) {
-        vm.showEditForm = false;
-      }
+    function deleteItem(item) {
+      PantryItemsService.deleteItem(item);
+    }
+
+    function editItem(item) {
+      PantryItemsService.editItem(item);
+      closeForms();
+    }
+
+    function toggleOutOfStock(item) {
+      PantryItemsService.toggleOutOfStock(item);
     }
 
     function toggleEditForm(item) {
-      vm.editItem = item;
-      vm.showEditForm = !vm.showEditForm;
-
-      if(vm.showEditForm === true) {
-        vm.showNewForm = false;
-      }
+      vm.selectedItem = item;
+      vm.forms.edit   = !vm.forms.edit;
+      vm.forms.new    = vm.forms.edit ? false : true;
     }
 
-    function items() {
+    function toggleForm(form) {
+      vm.forms[form] = !vm.forms[form];
+    }
 
-      function _createComplete(newItem) {
-        vm.pantry.push(newItem);
-        vm.newItem.name = '';
+    function closeForms(form) {
+      for(form in vm.forms) {
+        if(vm.forms[form])
+          vm.forms[form] = false;
       }
-
-      function _createFailed(error) {
-        console.log('Error while creating an item', error);
-      }
-
-      function _getComplete(data) {
-        vm.pantry = data;
-      }
-
-      function _getFailed(error) {
-        console.log('Error while querying items', error);
-      }
-
-      function _editComplete(data) {
-        vm.showEditForm = false;
-        vm.editItem = null;
-      }
-
-      function _editFailed(error) {
-        console.log('Error while editing item', error);
-      }
-
-      function get() {
-        dataservice.pantryitems().query().$promise.then(_getComplete, _getFailed);
-      }
-
-      function create() {
-        dataservice.pantryitems().save({
-          name        : vm.newItem.name,
-          category    : vm.newItem.category,
-          outofstock  : false
-        }).$promise.then(_createComplete, _createFailed);
-      }
-
-      function edit() {
-        dataservice.pantryitems().update({
-          id          : vm.editItem.id,
-          name        : vm.editItem.name,
-          category    : vm.editItem.category,
-          outofstock  : vm.editItem.outofstock
-        }).$promise.then(_editComplete, _editFailed);
-      }
-
-      function toggleOutOfStock(item) {
-        item.outofstock = !item.outofstock;
-        dataservice.pantryitems().update({
-          id          : item.id,
-          outofstock  : item.outofstock
-        });
-      }
-
-      return {
-        get: get,
-        add: create,
-        edit: edit,
-        toggleOutOfStock: toggleOutOfStock
-      };
     }
 
     function orderBy(key) {

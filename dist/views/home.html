@@ -1,10 +1,13 @@
 <div ng-controller="PantryItems as pantryItems">
-  <div class="view-main-content offside-content-slide"  ng-class="{open: pantryItems.showNewForm || pantryItems.showEditForm}">
+  <div class="view-main-content offside-content-slide" ng-class="{open: pantryItems.forms.new === true || pantryItems.forms.edit}">
 
     <nav class="contextual-nav">
       <div class="pull-right">
-        <button type="button" ng-click="pantryItems.toggleNewForm();" ng-show="!pantryItems.showNewForm && !pantryItems.showEditForm" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
-        <button type="button" ng-click="pantryItems.closeForms();" ng-show="pantryItems.showNewForm || pantryItems.showEditForm" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
+
+        <button type="button" ng-click="pantryItems.toggleForm('new');" ng-show="!pantryItems.forms.new && !pantryItems.forms.edit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-plus"></span></button>
+
+        <button type="button" ng-click="pantryItems.closeForms();" ng-show="pantryItems.forms.new || pantryItems.forms.edit" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
+
       </div>
     </nav>
 
@@ -14,35 +17,46 @@
         <tr>
           <th ng-click="pantryItems.orderBy('name')">
             Item
+
             <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'name' && !pantryItems.orderByProp.reverse"></span>
+
             <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'name' && pantryItems.orderByProp.reverse"></span>
+
           </th>
+
           <th ng-click="pantryItems.orderBy('category')">
             Catégorie
+
             <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'category' && !pantryItems.orderByProp.reverse"></span>
+
             <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'category' && pantryItems.orderByProp.reverse"></span>
+
           </th>
+
           <th ng-click="pantryItems.orderBy('outofstock')">
             En stock
+
             <span class="glyphicon glyphicon-sort-by-attributes" ng-show="pantryItems.orderByProp.value == 'outofstock' && !pantryItems.orderByProp.reverse"></span>
+
             <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="pantryItems.orderByProp.value == 'outofstock' && pantryItems.orderByProp.reverse"></span>
+
           </th>
           <th></th>
         </tr>
       </thead>
 
       <tbody>
-        <tr ng-repeat="pantryItem in pantryItems.pantry | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
-          <td ng-bind="pantryItem.name"></td>
-          <td ng-bind="pantryItem.category"></td>
+        <tr ng-repeat="pantryItem in pantryItems.getItems() | orderBy:pantryItems.orderByProp.value:pantryItems.orderByProp.reverse">
+          <td>{{ pantryItem.name }}</td>
+          <td>{{ pantryItem.category }}</td>
           <td>
             <span class="glyphicon glyphicon-ok-circle" ng-show="!pantryItem.outofstock"></span>
           </td>
           <td>
             <button button-edit ng-click="pantryItems.toggleEditForm(pantryItem);"></button>
-            <button button-out-of-stock ng-show="!pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock(pantryItem)"></button>
-            <button button-buy ng-show="pantryItem.outofstock" ng-click="pantryItems.items().toggleOutOfStock(pantryItem)"></button>
-            <button button-delete></button>
+            <button button-out-of-stock ng-show="!pantryItem.outofstock" ng-click="pantryItems.toggleOutOfStock(pantryItem)"></button>
+            <button button-buy ng-show="pantryItem.outofstock" ng-click="pantryItems.toggleOutOfStock(pantryItem)"></button>
+            <button button-delete ng-click="pantryItems.deleteItem(pantryItem)"></button>
           </td>
         </tr>
       </tbody>
@@ -53,7 +67,7 @@
 
   <div class="offside-content">
 
-    <form novalidate ng-submit="pantryItems.items().add()" ng-show="pantryItems.showNewForm">
+    <form novalidate ng-submit="pantryItems.createItem(pantryItems.newItem)" ng-show="pantryItems.forms.new">
       <h2>Nouvel item</h2>
       <div class="form-group">
         <label>
@@ -66,7 +80,7 @@
         <label>
           Catégorie
           <select ng-model="pantryItems.newItem.category">
-            <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category" ng-bind="category"></option>
+            <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category">{{ category }}</option>
           </select>
         </label>
       </div>
@@ -74,20 +88,20 @@
 
     </form>
 
-    <form novalidate ng-submit="pantryItems.items().edit()" ng-show="pantryItems.showEditForm">
+    <form novalidate ng-submit="pantryItems.editItem(pantryItems.selectedItem)" ng-show="pantryItems.forms.edit">
       <h2>Modifier l'item</h2>
       <div class="form-group">
         <label>
           Nom
-          <input type="text" ng-model="pantryItems.editItem.name" class="form-control">
+          <input type="text" ng-model="pantryItems.selectedItem.name" class="form-control">
         </label>
       </div>
 
       <div class="form-group">
         <label>
           Catégorie
-          <select ng-model="pantryItems.editItem.category">
-            <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category" ng-selected="category === pantryItems.editItem.category" ng-bind="category"></option>
+          <select ng-model="pantryItems.selectedItem.category">
+            <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category" ng-selected="category === pantryItems.selectedItem.category">{{ category }}</option>
           </select>
         </label>
       </div>
