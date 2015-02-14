@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 
   'use strict';
 
@@ -10,34 +10,34 @@
 
   function PantryItems(foodCategories, PantryItemsService) {
 
-    var vm = this;
+    var _this = this;
 
-    vm.foodCategories = foodCategories;
+    _this.foodCategories = foodCategories;
 
-    vm.orderByProp = {
+    _this.orderByProp = {
       value   : 'name',
       reverse : false
     };
 
-    vm.forms = {
+    _this.forms = {
       'new'  : false,
       'edit' : false
     };
 
     // Actions on pantry items
-    vm.getItems         = getItems;
-    vm.createItem       = createItem;
-    vm.editItem         = editItem;
-    vm.deleteItem       = deleteItem;
-    vm.toggleOutOfStock = toggleOutOfStock;
+    _this.getItems         = getItems;
+    _this.createItem       = createItem;
+    _this.editItem         = editItem;
+    _this.deleteItem       = deleteItem;
+    _this.toggleOutOfStock = toggleOutOfStock;
 
     // Form controls
-    vm.toggleForm     = toggleForm;
-    vm.closeForms     = closeForms;
-    vm.toggleEditForm = toggleEditForm;
+    _this.toggleForm     = toggleForm;
+    _this.closeForms     = closeForms;
+    _this.toggleEditForm = toggleEditForm;
 
     // Reorder list
-    vm.orderBy     = orderBy;
+    _this.orderBy     = orderBy;
 
     function getItems() {
       return PantryItemsService.getItems();
@@ -62,27 +62,30 @@
     }
 
     function toggleEditForm(item) {
-      vm.selectedItem = item;
-      vm.forms.edit   = !vm.forms.edit;
-      vm.forms.new    = vm.forms.edit ? false : true;
+      _this.selectedItem = item;
+      _this.forms.edit   = !_this.forms.edit;
+      _this.forms.new    = _this.forms.edit ? false : true;
+      _this.formToggled();
     }
 
     function toggleForm(form) {
-      vm.forms[form] = !vm.forms[form];
+      _this.forms[form] = !_this.forms[form];
+      _this.formToggled();
     }
 
     function closeForms(form) {
-      for(form in vm.forms) {
-        if(vm.forms[form])
-          vm.forms[form] = false;
+      for(form in _this.forms) {
+        if(_this.forms[form])
+          _this.forms[form] = false;
       }
+      _this.formToggled();
     }
 
     function orderBy(key) {
-      vm.orderByProp.value = key;
-      vm.orderByProp.reverse = vm.orderByProp ? !vm.orderByProp.reverse : false;
+      _this.orderByProp.value = key;
+      _this.orderByProp.reverse = _this.orderByProp ? !_this.orderByProp.reverse : false;
     }
 
   }
 
-})();
+})(window.angular);

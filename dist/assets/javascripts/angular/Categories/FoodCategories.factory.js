@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 
   'use strict';
 
@@ -29,4 +29,4 @@
       'Autre',
     ];
   }
-})();
+})(window.angular);

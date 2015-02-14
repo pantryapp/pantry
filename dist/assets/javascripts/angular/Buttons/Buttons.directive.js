@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
 
   'use strict';
 
@@ -40,4 +40,4 @@
         templateUrl: 'views/templates/buttons/button-outofstock.html'
       };
     }
-})();
+})(window.angular);

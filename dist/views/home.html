@@ -1,5 +1,5 @@
 <div ng-controller="PantryItems as pantryItems">
-  <div class="view-main-content offside-content-slide" ng-class="{open: pantryItems.forms.new === true || pantryItems.forms.edit}">
+  <offside-content class="view-main-content" toggle-on="pantryItems.formToggled">
 
     <nav class="contextual-nav">
       <div class="pull-right">
@@ -63,7 +63,8 @@
 
     </table>
 
-  </div>
+  <!-- </div> -->
+  </offside-content>
 
   <div class="offside-content">
 
