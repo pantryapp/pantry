@@ -21,11 +21,18 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-default width-wrap main-nav">
+  <nav class="navbar navbar-default width-wrap main-nav" ng-controller="headerController as header">
     <div class="container-fluid">
       <span class="navbar-brand">
         <img alt="Brand" width="20"src="assets/images/strawberry.png">
       </span>
+
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#/pantry" ng-class="{ active: header.isActive('/pantry') }">Garde manger</a></li>
+          <li><a href="#/groceries">Épicerie</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 

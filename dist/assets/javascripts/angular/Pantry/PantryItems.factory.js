@@ -4,11 +4,11 @@
 
   angular
     .module('pantryApp')
-    .factory('PantryItemsService', PantryItemsService);
+    .factory('pantryItemsFactory', pantryItemsFactory);
 
-  PantryItemsService.$inject = ['dataservice'];
+  pantryItemsFactory.$inject = ['dataservice'];
 
-  function PantryItemsService(dataservice) {
+  function pantryItemsFactory(dataservice) {
 
     var itemList = [];
 

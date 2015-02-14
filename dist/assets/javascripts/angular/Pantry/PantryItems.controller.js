@@ -4,11 +4,11 @@
 
   angular
     .module('pantryApp')
-    .controller('PantryItems', PantryItems);
+    .controller('pantryItemsController', pantryItemsController);
 
-  PantryItems.$inject = ['foodCategories', 'PantryItemsService'];
+  pantryItemsController.$inject = ['foodCategories', 'pantryItemsFactory'];
 
-  function PantryItems(foodCategories, PantryItemsService) {
+  function pantryItemsController(foodCategories, pantryItemsFactory) {
 
     var _this = this;
 
@@ -40,25 +40,25 @@
     _this.orderBy     = orderBy;
 
     function getItems() {
-      return PantryItemsService.getItems();
+      return pantryItemsFactory.getItems();
     }
 
     function createItem(item) {
-      PantryItemsService.createItem(item);
+      pantryItemsFactory.createItem(item);
       closeForms();
     }
 
     function deleteItem(item) {
-      PantryItemsService.deleteItem(item);
+      pantryItemsFactory.deleteItem(item);
     }
 
     function editItem(item) {
-      PantryItemsService.editItem(item);
+      pantryItemsFactory.editItem(item);
       closeForms();
     }
 
     function toggleOutOfStock(item) {
-      PantryItemsService.toggleOutOfStock(item);
+      pantryItemsFactory.toggleOutOfStock(item);
     }
 
     function toggleEditForm(item) {

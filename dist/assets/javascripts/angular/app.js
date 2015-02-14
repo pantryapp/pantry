@@ -4,11 +4,14 @@
 
   function config($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/home.html'
+      .when('/pantry', {
+        templateUrl: 'views/pantry.html'
+      })
+      .when('/groceries', {
+        templateUrl: 'views/groceries.html'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/pantry'
     });
   }
 

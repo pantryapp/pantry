@@ -1,0 +1,20 @@
+<form novalidate ng-submit="pantryItems.createItem(pantryItems.newItem)">
+  <h2>Nouvel item</h2>
+  <div class="form-group">
+    <label>
+      Nom
+      <input type="text" ng-model="pantryItems.newItem.name" class="form-control">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>
+      Catégorie
+      <select ng-model="pantryItems.newItem.category">
+        <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category">{{ category }}</option>
+      </select>
+    </label>
+  </div>
+  <button type="submit" class="btn btn-primary">Créer</button>
+
+</form>

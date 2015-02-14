@@ -1,4 +1,5 @@
-<div ng-controller="PantryItems as pantryItems">
+<div ng-controller="pantryItemsController as pantryItems">
+
   <offside-content class="view-main-content" toggle-on="pantryItems.formToggled">
 
     <nav class="contextual-nav">
@@ -56,58 +57,16 @@
             <button button-edit ng-click="pantryItems.toggleEditForm(pantryItem);"></button>
             <button button-out-of-stock ng-show="!pantryItem.outofstock" ng-click="pantryItems.toggleOutOfStock(pantryItem)"></button>
             <button button-buy ng-show="pantryItem.outofstock" ng-click="pantryItems.toggleOutOfStock(pantryItem)"></button>
-            <button button-delete ng-click="pantryItems.deleteItem(pantryItem)"></button>
+            <button button-delete confirmation-needed="Êtes vous certain de vouloir supprimer {{ pantryItem.name }} ?" ng-click="pantryItems.deleteItem(pantryItem)"></button>
           </td>
         </tr>
       </tbody>
 
     </table>
 
-  <!-- </div> -->
   </offside-content>
 
-  <div class="offside-content">
+  <pantry-item-new-form class="offside-content" ng-show="pantryItems.forms.new"></pantry-item-new-form>
+  <pantry-item-edit-form class="offside-content" ng-show="pantryItems.forms.edit"></pantry-item-edit-form>
 
-    <form novalidate ng-submit="pantryItems.createItem(pantryItems.newItem)" ng-show="pantryItems.forms.new">
-      <h2>Nouvel item</h2>
-      <div class="form-group">
-        <label>
-          Nom
-          <input type="text" ng-model="pantryItems.newItem.name" class="form-control">
-        </label>
-      </div>
-
-      <div class="form-group">
-        <label>
-          Catégorie
-          <select ng-model="pantryItems.newItem.category">
-            <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category">{{ category }}</option>
-          </select>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Créer</button>
-
-    </form>
-
-    <form novalidate ng-submit="pantryItems.editItem(pantryItems.selectedItem)" ng-show="pantryItems.forms.edit">
-      <h2>Modifier l'item</h2>
-      <div class="form-group">
-        <label>
-          Nom
-          <input type="text" ng-model="pantryItems.selectedItem.name" class="form-control">
-        </label>
-      </div>
-
-      <div class="form-group">
-        <label>
-          Catégorie
-          <select ng-model="pantryItems.selectedItem.category">
-            <option ng-repeat="category in pantryItems.foodCategories | orderBy" ng-value="category" ng-selected="category === pantryItems.selectedItem.category">{{ category }}</option>
-          </select>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Enregistrer</button>
-
-    </form>
-  </div>
 </div>
