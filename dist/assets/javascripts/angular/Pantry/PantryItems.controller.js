@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
 
   'use strict';
 
@@ -40,6 +40,7 @@
     _this.orderBy     = orderBy;
 
     function getItems() {
+      console.log(pantryItemsFactory.getItems());
       return pantryItemsFactory.getItems();
     }
 
@@ -88,4 +89,4 @@
 
   }
 
-})(window.angular);
+})();

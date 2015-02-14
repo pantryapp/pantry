@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
 
   'use strict';
 
@@ -49,6 +49,10 @@
       });
     }
 
+    function _deleteComplete(item) {
+      itemList.splice(itemList.indexOf(item), 1);
+    }
+
     function _createComplete(newItem) {
       itemList.push(newItem);
     }
@@ -65,12 +69,8 @@
       console.error('Error while querying items', error);
     }
 
-    function _get(_list) {
+    function _get() {
       dataservice.pantryitems().query().$promise.then(_getComplete, _getFailed);
-    }
-
-    function _deleteComplete(item) {
-      itemList.splice(itemList.indexOf(item), 1);
     }
 
     return {
@@ -83,4 +83,4 @@
 
   }
 
-})(window.angular);
+})();

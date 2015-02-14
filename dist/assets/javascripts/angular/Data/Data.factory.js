@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
 
   'use strict';
 
@@ -9,7 +9,8 @@
   function dataservice($resource, apiEndPoint) {
 
     return {
-      pantryitems : pantryitems
+      pantryitems : pantryitems,
+      groceries   : groceries
     };
 
     function pantryitems() {
@@ -17,6 +18,12 @@
         'update' : {method : 'PUT'}
       });
     }
+
+    function groceries() {
+      return $resource(apiEndPoint.prod + '/groceries/:groceryId', {groceryId: '@id'}, {
+        'update' : {method : 'PUT'}
+      });
+    }
   }
 
-})(window.angular);
+})();

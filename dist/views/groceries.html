@@ -1,1 +1,30 @@
-Hai
+<div ng-controller="groceriesController as groceries">
+
+  <div class="view-main-content">
+
+    <table class="table table-stripped table-hover">
+      <caption>Liste d'épicerie</caption>
+      <thead>
+        <tr>
+          <th>
+            Item
+          </th>
+
+          <th>
+            Catégorie
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr ng-repeat="grocery in groceries.getGroceries()">
+          <td>{{ grocery.name }}</td>
+          <td>{{ grocery.category }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
