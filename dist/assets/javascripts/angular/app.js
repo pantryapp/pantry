@@ -4,27 +4,32 @@
 
   function config($routeProvider) {
     $routeProvider
-      .when('/pantry', {
-        templateUrl: 'views/pantry.html'
+      .when('/', {
+        templateUrl   : 'views/dashboard.html',
+        controller    : 'Dashboard',
+        controllerAs  : 'dashboard'
       })
-      .when('/groceries', {
-        templateUrl: 'views/groceries.html'
+      .when('/:category', {
+        templateUrl   : 'views/items.html',
+        controller    : 'Items', 
+        controllerAs  : 'items' 
+      })
+      .when('/item/:id', {
+        templateUrl   : 'view/item.html',
+        controller    : 'Item',
+        controllerAs  : 'item'  
       })
       .otherwise({
-        redirectTo: '/pantry'
-    });
+        redirectTo: '/'
+      });
   }
 
   angular
-    .module('pantryApp', [
-      'ngResource',
-      'ngRoute',
+    .module('store', [
+      'ngRoute', 
       'ngTouch'
     ])
-    .constant('apiEndPoint', {
-      dev: 'http://0.0.0.0:3000',
-      prod: 'http://pantryapp-api.herokuapp.com'
-    })
+    .constant('apiEndPoint', 'http://pantryapp-api.herokuapp.com')
     .config(config);
 
 })();

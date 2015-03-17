@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html class="no-js" lang="fr" ng-app="pantryApp">
+<html class="no-js" lang="fr" ng-app="store">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Pantry</title>
+  <title>Store</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="assets/components/bootstrap/dist/css/bootstrap.min.css">
@@ -21,26 +21,8 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-default width-wrap main-nav" ng-controller="headerController as header">
-    <div class="container-fluid">
-      <span class="navbar-brand">
-        <img alt="Brand" width="20"src="assets/images/strawberry.png">
-      </span>
-
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li ng-class="{active: header.isActive('/pantry')}"><a href="#/pantry">Garde manger</a></li>
-          <li ng-class="{active: header.isActive('/groceries')}"><a href="#/groceries">Épicerie</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div ng-view=""></div>
-
-  <div class="footer">
-      <img width="20" src="assets/images/strawberry.png">
-  </div>
+  <ng-view></ng-view>
+    
 
   <!-- JS -->
   <script src="assets/javascripts/global.js"></script>

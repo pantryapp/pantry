@@ -38,15 +38,11 @@ hr {
   padding: 0; }
 
 a {
-  color: white;
   cursor: pointer;
   text-decoration: none; }
 
 a:focus {
   outline: 0; }
-
-a:hover, a:focus {
-  color: white; }
 
 a:link {
   -webkit-tap-highlight-color: white; }
