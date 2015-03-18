@@ -28,7 +28,7 @@
 		}
 
 		function getItemsByCategory(category) {
-			return $http({method: 'GET', url: apiEndPoint + '/pantryitems'});
+			return $http({method: 'GET', url: apiEndPoint + '/items'});
 		}
 
 		return {

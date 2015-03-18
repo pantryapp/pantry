@@ -1,0 +1,31 @@
+.category-menu
+  @extend %clearfix
+  display: block
+  font-size: 18px
+  font-weight: 600
+
+  &.dashboard
+    bottom: 0
+    left: 0
+    position: absolute
+    width: 100%
+
+    .category-menu-item
+      padding: 120px 10px
+
+.category-menu-item
+  background-color: transparent
+  color: $profonda
+  display: block
+  float: left
+  padding: 50px 10px
+  text-align: center
+  transition: background-color 0.3s cubic-bezier(0.73, 0.34, 0.43, 0.8)
+  width: 25%
+
+  &:hover,
+  &:focus,
+  &.active
+    background-color: #f5f5f5
+    color: $acqua
+    text-decoration: none

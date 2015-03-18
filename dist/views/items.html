@@ -1,5 +1,9 @@
-Liste des items de {{ items.category }}
+<header>
+  <category-menu layout="top-menu"></category-menu>
+  <a href="#/dashboard">Dashboard</a>
+  <options-menu></options-menu>
+</header>
 
-<ul>
-  <li ng-repeat="item in items.items">{{ item.name }}</li>
+<div class="list-group">
+  <a class="list-group-item" ng-repeat="item in items.items">{{ item.name }}</a>
 </ul>

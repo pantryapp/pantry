@@ -4,8 +4,11 @@
 
 	angular.module('store').controller('Item', Item);
 
-	function Item() {
-		console.log('Item controller');
+	function Item($routeParams, ItemsFactory) {
+    var that = this;
+
+    that.category = $routeParams.category;
+    		
 	}
 
 })();

@@ -10,7 +10,5 @@
 
     var that = this;
 
-    that.categories = ItemsFactory.getItemsCategories();
-
 	}
 })();

@@ -1,33 +1,15 @@
+.width-wrap,
+%width-wrap
+  padding-left: 20px
+  padding-right: 20px
+
 body
   position: relative
 
-.wrapper
-  min-height: 100%
-  padding-bottom: 20px
-  position: relative
-  z-index: 1
-
-.view-main-content
-  @extend %width-wrap
-  background-color: #ffffff
-  display: block
+.app-wrapper
   height: 100%
-  padding-top: 30px
   position: relative
-  z-index: 1
 
-  &.open:before
-    background-color: rgba(255, 255, 255, 0.7)
-    transform: translate3d(0%, 0px, 0px)
+.view-wrapper
+  @extend %width-wrap
 
-  &:before
-    background-color: rgba(255, 255, 255, 0)
-    content: ' '
-    display: block
-    height: 100%
-    left: 0
-    pointer-events: none
-    position: absolute
-    top: 0
-    transition: background-color 0.2s cubic-bezier(0.275, 0.895, 0.51, 1)
-    width: 100%
