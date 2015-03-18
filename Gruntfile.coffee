@@ -15,19 +15,16 @@ files =
     # JS files you want in the <head>
     '<%= paths.bower %>/modernizr/modernizr.js'
   ]
-  coffees: [
-    # Coffee files
-    #'<%= paths.js %>/classes/*.coffee'
-    #'<%= paths.js %>/App.Common.coffee'
-    #'<%= paths.js %>/App.*.coffee'
+  jsvendor: [
+    # JS plugins you want in body but don't want to be uglified
+    '<%= paths.bower %>/jquery/dist/jquery.min.js'
+    '<%= paths.bower %>/angular/angular.min.js'
+    '<%= paths.bower %>/angular-route/angular-route.min.js'
+    '<%= paths.bower %>/angular-resource/angular-resource.min.js'
+    '<%= paths.bower %>/angular-touch/angular-touch.min.js'
   ]
   jsbody: [
     # JS Components, plugins + your compiled Coffee
-    '<%= paths.bower %>/jquery/dist/jquery.js'
-    '<%= paths.bower %>/angular/angular.js'
-    '<%= paths.bower %>/angular-route/angular-route.js'
-    '<%= paths.bower %>/angular-resource/angular-resource.js'
-    '<%= paths.bower %>/angular-touch/angular-touch.js'
     '<%= paths.js %>/angular/app.js'
     '<%= paths.js %>/angular/**/*.js'
     '<%= paths.tmp %>/App.<%= ext.js %>'
@@ -112,14 +109,6 @@ module.exports = (grunt) ->
           src:    '<%= paths.css %>/global-compiled.<%= ext.css %>'
         ]
 
-
-    # Compiles Coffeescript to a JS file (that will need to be combined by uglify)
-    coffee:
-      compile:
-        files:
-          '<%= paths.tmp %>/App.<%= ext.js %>': files.coffees
-
-
     # Concatenate the Bower CSS with the SASS output
     concat_css:
       dist:
@@ -129,11 +118,9 @@ module.exports = (grunt) ->
         files:
           '<%= paths.css %>/vendors/_vendors.scss': files.cssvendor
 
-
     # Run tasks simultaneously to save some time!
     concurrent:
       compile: ['css', 'js']
-
 
     # The actual grunt server settings
     connect:
@@ -162,6 +149,7 @@ module.exports = (grunt) ->
         files:
           '<%= paths.tmp %>/annotated.<%= ext.js %>': files.jsbody
 
+    # Annoy you with js specification. Still, useful for debuging
     jshint:
       all: ['<%= paths.js %>/angular/**/*.js']
 
@@ -173,20 +161,18 @@ module.exports = (grunt) ->
         files:
           '<%= paths.css %>/global-compiled.<%= ext.css %>': '<%= paths.css %>/global.sass'
 
-
     # Combine and compress files
     uglify:
-      dist:
-        files:
-          # Head Scripts
-          '<%= paths.js %>/globalhead.js': files.jshead
-          '<%= paths.js %>/global.<%= ext.js %>': files.jsbody
       angular:
         files:
           '<%= paths.js %>/globalhead.js': files.jshead
-          '<%= paths.js %>/global.<%= ext.js %>': ['<%= paths.tmp %>/annotated.<%= ext.js %>']
+          '<%= paths.tmp %>/annotated.<%= ext.js %>': ['<%= paths.tmp %>/annotated.<%= ext.js %>']
 
-
+    # Concat js vendors with your app
+    concat:
+      dist:
+        files:
+          '<%= paths.js %>/global.<%= ext.js %>': [files.jsvendor, '<%= paths.tmp %>/annotated.<%= ext.js %>']
 
     # Watches files for changes and runs tasks based on the changed files
     watch:
@@ -204,7 +190,6 @@ module.exports = (grunt) ->
         tasks: ['js']
       livereload:
         files: ['<%= paths.css %>/**/*.<%= ext.css %>']
-
 
   grunt.registerTask 'default', [
     'dev'
@@ -224,9 +209,9 @@ module.exports = (grunt) ->
   # Used by concurrent
   grunt.registerTask 'js', 'Javascript related tasks', ->
     if env == 'angular'
-      grunt.task.run ['coffee', 'ngAnnotate','uglify:angular']
+      grunt.task.run ['jshint','ngAnnotate','uglify:angular','concat']
     else
-      grunt.task.run ['coffee','uglify:dist']
+      grunt.task.run ['uglify:dist']
 
     true
 

@@ -18,7 +18,7 @@
       }).
       error(function() {
         console.log('Error');
-      })
+      });
 	}
 
 })();

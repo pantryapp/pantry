@@ -11,10 +11,10 @@
       })
       .when('/:category', {
         templateUrl   : 'views/items.html',
-        controller    : 'Items', 
-        controllerAs  : 'items' 
+        controller    : 'Items',
+        controllerAs  : 'items'
       })
-      .when('/:category/new', {
+      .when('/:category/item/new', {
         templateUrl   : 'views/item-new.html',
         controller    : 'Item',
         controllerAs  : 'item'
@@ -22,7 +22,7 @@
       .when('/:category/item/:id', {
         templateUrl   : 'view/item.html',
         controller    : 'Item',
-        controllerAs  : 'item'  
+        controllerAs  : 'item'
       })
       .otherwise({
         redirectTo: '/dashboard'
@@ -31,7 +31,7 @@
 
   angular
     .module('store', [
-      'ngRoute', 
+      'ngRoute',
       'ngTouch'
     ])
     .constant('apiEndPoint', 'http://pantryapp-api.herokuapp.com')

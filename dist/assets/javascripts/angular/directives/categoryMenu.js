@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('store').directive('categoryMenu', categoryMenu);
-  
+
   function categoryMenu() {
     return {
       restrict: 'E',
@@ -11,7 +11,7 @@
       controller: CategoryMenuController,
       controllerAs: 'categoryMenu',
       link: linkFunc
-    } 
+    };
   }
 
   function CategoryMenuController(ItemsFactory) {
@@ -23,7 +23,7 @@
   function linkFunc(scope, element, attrs, categoryMenu) {
 
     var layout = (attrs && attrs.layout) ? attrs.layout : "top-menu";
-    
+
     $(element)
       .addClass('category-menu')
       .addClass(layout);

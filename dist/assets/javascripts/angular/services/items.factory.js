@@ -7,6 +7,7 @@
 	function ItemsFactory($http, apiEndPoint) {
 
 		function getItemsCategories() {
+
 			return [
 				{
 					'slug' : 'garde-manger',
