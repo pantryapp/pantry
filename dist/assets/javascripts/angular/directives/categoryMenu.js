@@ -14,15 +14,15 @@
     };
   }
 
-  function CategoryMenuController(ItemsFactory) {
+  function CategoryMenuController($routeParams, ItemsFactory) {
     var that = this;
-    that.categories = ItemsFactory.getItemsCategories();
-
+    that.categories      = ItemsFactory.getItemsCategories();
+    that.activeCategory = $routeParams.storeCategory;
   }
 
   function linkFunc(scope, element, attrs, categoryMenu) {
 
-    var layout = (attrs && attrs.layout) ? attrs.layout : "top-menu";
+    var layout    = (attrs && attrs.layout) ? attrs.layout : "top-menu";
 
     $(element)
       .addClass('category-menu')

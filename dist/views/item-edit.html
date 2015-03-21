@@ -1,0 +1,15 @@
+<header>
+  <category-menu layout="top-menu"></category-menu>
+  <a href="#/dashboard">Dashboard</a>
+</header>
+
+<h1>Modifier un item</h1>
+<h2>{{ item.storeCategory.name }}<h2>
+
+<form ng-submit="item.editItem(item.currentItem)">
+  <input type="text" ng-model="item.currentItem.name" placeholder="Nom">
+  <input type="text" ng-model="item.currentItem.category" placeholder="Catégorie">
+  <button type="submit">K.</button>
+</form>
+
+

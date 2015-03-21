@@ -8,13 +8,12 @@
 
 		var that = this;
 
-		that.category = $routeParams.category;
-    that.items    = [];
+		that.storeCategory = $routeParams.storeCategory;
+    that.items         = [];
 
-    ItemsFactory.getItemsByCategory(that.category).
+    ItemsFactory.getItems({store_category: that.storeCategory}).
       success(function(data) {
         that.items = data;
-        console.log(data);
       }).
       error(function() {
         console.log('Error');

@@ -1,1 +1,1 @@
-<a href="#/{{ category.slug }}" class="category-menu-item" ng-repeat="category in categoryMenu.categories">{{ category.name }}</a>
+<a href="#/{{ category.slug }}" ng-class="{active: categoryMenu.activeCategory == category.slug}"class="category-menu-item category-menu-item-{{ category.slug }}" ng-repeat="category in categoryMenu.categories">{{ category.name }}</a>

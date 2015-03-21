@@ -1,8 +1,10 @@
-<div class="view-wrapper">
+<header>
+  <category-menu layout="top-menu"></category-menu>
+  <a href="#/dashboard">Dashboard</a>
+</header>
 
-  <h1>Ajouter un item</h1>
-  
+<h1>{{ item.currentItem.name }}</h1>
+<h2>{{ item.currentItem.store_category.name }}</h2>
 
-</div>
-
-<category-menu layout="dashboard"></category-menu>
+<a href="#/{{ item.storeCategory.slug }}/item/edit/{{ item.currentItem.id }}">Modifier</a>
+<button ng-click="item.deleteItem()">Supprimer</button>

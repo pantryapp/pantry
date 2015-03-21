@@ -9,18 +9,23 @@
         controller    : 'Dashboard',
         controllerAs  : 'dashboard'
       })
-      .when('/:category', {
+      .when('/:storeCategory', {
         templateUrl   : 'views/items.html',
         controller    : 'Items',
         controllerAs  : 'items'
       })
-      .when('/:category/item/new', {
+      .when('/:storeCategory/item/new', {
         templateUrl   : 'views/item-new.html',
         controller    : 'Item',
         controllerAs  : 'item'
       })
-      .when('/:category/item/:id', {
-        templateUrl   : 'view/item.html',
+      .when('/:storeCategory/item/edit/:itemId', {
+        templateUrl   : 'views/item-edit.html',
+        controller    : 'Item',
+        controllerAs  : 'item'
+      })
+      .when('/:storeCategory/item/:itemId', {
+        templateUrl   : 'views/item.html',
         controller    : 'Item',
         controllerAs  : 'item'
       })
@@ -34,7 +39,8 @@
       'ngRoute',
       'ngTouch'
     ])
-    .constant('apiEndPoint', 'http://pantryapp-api.herokuapp.com')
+    //.constant('apiEndPoint', 'http://pantryapp-api.herokuapp.com')
+    .constant('apiEndPoint', 'http://192.168.0.107:3000')
     .config(config);
 
 })();
