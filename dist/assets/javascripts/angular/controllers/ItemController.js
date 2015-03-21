@@ -8,7 +8,13 @@
     var that = this;
 
     that.category = $routeParams.category;
-    		
+
+    that.createItem = createItem;
+
+    function createItem() {
+      console.log(that);
+    }
+
 	}
 
 })();

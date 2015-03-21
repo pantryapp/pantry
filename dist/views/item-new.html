@@ -6,7 +6,8 @@
 
 <category-menu layout="dashboard"></category-menu>
 
-<form>
-  <input type="text" placeholder="Nom">
-  <input type="text" value="{{ item.category }}">
+<form ng-submit="item.createItem()">
+  <input type="text" ng-bind="item.new.name" placeholder="Nom">
+  <input type="text" ng-bind="item.new.category" value="{{ item.category }}">
+  <button type="submit">K.</button>
 </form>
