@@ -3,7 +3,7 @@
   <a href="#/dashboard">Dashboard</a>
 </header>
 
-<h1>Modifier un item</h1>
+<h1>Modifier {{ item.currentItem.name }}</h1>
 <h2>{{ item.storeCategory.name }}<h2>
 
 <form ng-submit="item.editItem(item.currentItem)">

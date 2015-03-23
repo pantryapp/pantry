@@ -39,8 +39,8 @@
       'ngRoute',
       'ngTouch'
     ])
-    //.constant('apiEndPoint', 'http://pantryapp-api.herokuapp.com')
-    .constant('apiEndPoint', 'http://192.168.0.107:3000')
+    .constant('apiEndPoint', 'http://pantryapp-api.herokuapp.com')
+    //.constant('apiEndPoint', 'http://192.168.0.107:3000')
     .config(config);
 
 })();
