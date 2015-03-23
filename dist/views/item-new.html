@@ -7,8 +7,10 @@
 <h2>{{ item.storeCategory.name }}<h2>
 
 <form ng-submit="item.createItem()">
-  <input type="text" ng-model="item.newItem.name" placeholder="Nom">
-  <input type="text" ng-model="item.newItem.category" placeholder="Catégorie">
+  <input type="text" ng-model="item.newItem.name" autofocus placeholder="Nom">
+  <select ng-model="item.newItem.category">
+    <option ng-repeat="category in item.foodCategories | orderBy" value="{{ category }}">{{ category }}</option>
+  </select>
   <button type="submit">K.</button>
 </form>
 

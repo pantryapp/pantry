@@ -14,9 +14,9 @@
     };
   }
 
-  function CategoryMenuController($routeParams, ItemsFactory) {
+  function CategoryMenuController($routeParams, CategoriesFactory) {
     var that = this;
-    that.categories      = ItemsFactory.getItemsCategories();
+    that.categories     = CategoriesFactory.getStoreCategoriesToDisplay();
     that.activeCategory = $routeParams.storeCategory;
   }
 

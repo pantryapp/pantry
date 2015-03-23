@@ -4,16 +4,19 @@
 
 	angular.module('store').controller('Item', Item);
 
-	function Item($routeParams, $location, ItemsFactory) {
+	function Item($routeParams, $location, ItemsFactory, CategoriesFactory) {
     var that = this;
 
-    that.storeCategory  = ItemsFactory.getItemCategoryBySlug($routeParams.storeCategory);
+    that.storeCategory  = CategoriesFactory.getStoreCategory($routeParams.storeCategory);
+    that.categories     = CategoriesFactory.selectCategoriesFromStore(that.storeCategory.slug);
     that.currentItem    = {};
     that.newItem        = {
-      store_category: that.storeCategory.slug,
-      outofstock: false
+     store_category : that.storeCategory.slug,
+     outofstock     : false,
+     category       : ""
     };
 
+    // Methods
     that.createItem = createItem;
     that.editItem   = editItem;
     this.deleteItem = deleteItem;
@@ -24,14 +27,11 @@
 
     function getItem() {
       ItemsFactory.getItemById($routeParams.itemId).
-        success(function(data) {
-          data.store_category = ItemsFactory.getItemCategoryBySlug(data.store_category);
-          that.currentItem    = data;
+        success(function(data) {          
+          that.currentItem                = data;
+          that.currentItem.store_category = CategoriesFactory.getStoreCategory(data.store_category);
         }).
-        error(function() {
-          console.error('error while fetching item');
-          console.info($routeParams.itemId);
-      });
+        error(function() {});
     }
 
     function createItem() {
@@ -39,10 +39,7 @@
         success(function(data) {
           $location.path('/' + that.storeCategory.slug);
         }).
-        error(function() {
-          console.error('error while create new item');
-          console.info(that.newItem);
-        });
+        error(function() {});
     }
 
     function editItem() {
@@ -50,10 +47,7 @@
         success(function(data) {
           $location.path('/' + that.storeCategory.slug);
         }).
-        error(function() {
-          console.error('error while editing item');
-          console.info(that.currentItem);
-        });
+        error(function() {});
     }
 
     function deleteItem() {
@@ -61,9 +55,7 @@
         success(function() {
           $location.path('/' + that.storeCategory.slug);
         }).
-        error(function() {
-
-        });
+        error(function() {});
     }
 
 	}
