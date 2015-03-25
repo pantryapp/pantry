@@ -1,9 +1,16 @@
-<header>
-  <category-menu layout="top-menu"></category-menu>
-  <a href="#/dashboard">Dashboard</a>
-  <a href="#/{{ items.storeCategory }}/item/new">New</a>
-</header>
+<category-menu layout="top-menu"></category-menu>
 
-<div class="list-group">
-  <a href="#/{{ items.storeCategory }}/item/{{ item.id }}" class="list-group-item" ng-repeat="item in items.items">{{ item.name }}</a>
-</ul>
+<div class="view__content">
+
+  <h2>{{ items.storeCategory.name }}</h2>
+
+  <div class="list">
+    <div class="list__item" ng-repeat="item in items.items">
+      <span class="list__item__name" href="#/{{ items.storeCategory.slug }}/item/{{ item.id }}">{{ item.name }}</span>
+    </div>
+
+    <list-item></list-item>
+
+  </ul>
+
+</div>

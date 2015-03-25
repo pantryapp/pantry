@@ -1,31 +1,59 @@
 .category-menu
-  @extend %clearfix
-  display: block
-  font-size: 18px
-  font-weight: 600
+  display: flex
+  justify-content: space-around
+  
+.category-menu__item
+  color: $gray
+  font-size: 14px
+  overflow: hidden
+  padding: 20px
+  position: relative
+  text-align: center
+  width: 200px
 
-  &.dashboard
-    bottom: 0
+  & > span
+    display: block
+    transition: transform 0.3s, opacity 0.3s
+    transition-delay: 0.3s
+
+  &::before
+    border: 1px solid $gray
+    -webkit-clip-path: polygon(0% 0%, 0% 100%, 35% 100%, 35% 60%, 65% 60%, 65% 100%, 100% 100%, 100% 0%)
+    content: ''
+    height: 100%
     left: 0
     position: absolute
+    top: 0
+    transform-origin: 50% 100%
+    transform: translate3d(0, 100%, 0) translate3d(0, -1px ,0)
+    transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1)
+    transition: transform 0.3s
     width: 100%
-
-    .category-menu-item
-      padding: 120px 10px
-
-.category-menu-item
-  background-color: transparent
-  color: $profonda
-  display: block
-  float: left
-  padding: 50px 10px
-  text-align: center
-  transition: background-color 0.3s cubic-bezier(0.73, 0.34, 0.43, 0.8)
-  width: 25%
 
   &:hover,
   &:focus,
   &.active
-    background-color: #f5f5f5
-    color: $acqua
+    color: $gray
     text-decoration: none
+
+    & > span
+      opacity: 0
+      transform: translate3d(0, -50%, 0)
+      transition-delay: 0s
+
+    &::before
+      transform: translate3d(0,0,0)
+
+    .category-item__icon
+      transform: translate3d(-50%, -100%, 0)
+      transition-delay: 0.1s
+
+.category-item__icon
+  font-size: 21px
+  left: 50%
+  padding: 20px
+  position: absolute
+  top: 100%
+  transform: translate3d(-50%, 0, 0)
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1)
+  transition: transform 0.3s 
