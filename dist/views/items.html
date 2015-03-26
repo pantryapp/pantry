@@ -1,16 +1,10 @@
-<category-menu layout="top-menu"></category-menu>
+<h2>{{ items.storeCategory.name }}</h2>
 
-<div class="view__content">
+<div class="list">
+  <div class="list__item" ng-repeat="item in items.items">
+    <span class="list__item__name" href="#/{{ items.storeCategory.slug }}/item/{{ item.id }}">{{ item.name }}</span>
+  </div>
 
-  <h2>{{ items.storeCategory.name }}</h2>
+  <list-item></list-item>
 
-  <div class="list">
-    <div class="list__item" ng-repeat="item in items.items">
-      <span class="list__item__name" href="#/{{ items.storeCategory.slug }}/item/{{ item.id }}">{{ item.name }}</span>
-    </div>
-
-    <list-item></list-item>
-
-  </ul>
-
-</div>
+</ul>

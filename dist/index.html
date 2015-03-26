@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <title>Store</title>
 
@@ -22,13 +23,18 @@
 </head>
 <body>
   <div class="app-wrapper">
+
     <header class="main-header">
       <nav class="main-header__nav"></nav>
       <h1 class="main-header__title">Magasin général</h1>
       <a href="#/" class="main-header__dashboard-link"><span class="glyphicon glyphicon-th-large"></span></a>
     </header>
+
+    <category-menu></category-menu>
     
-    <ng-view></ng-view>
+    <div class="view__wrapper">
+      <ng-view class="view transition"></ng-view>
+    </div>
   </div>    
 
   <!-- JS -->

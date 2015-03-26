@@ -22,6 +22,7 @@ files =
     '<%= paths.bower %>/angular-route/angular-route.min.js'
     '<%= paths.bower %>/angular-resource/angular-resource.min.js'
     '<%= paths.bower %>/angular-touch/angular-touch.min.js'
+    '<%= paths.bower %>/angular-animate/angular-animate.min.js'
   ]
   jsbody: [
     # JS Components, plugins + your compiled Coffee
