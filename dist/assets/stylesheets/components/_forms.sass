@@ -1,0 +1,81 @@
+.new-item-form--inline
+  bottom: 0
+  left: 0
+  position: fixed
+  width: 100%
+
+.form--inline
+  background-color: $whitish
+  margin-top: 1px
+  padding: 20px
+
+.input
+  display: inline-block
+  margin: 1em
+  max-width: 350px
+  position: relative
+  vertical-align: top
+  width: 200px
+  z-index: 1
+
+.input--slide
+  overflow: hidden
+
+.input__field
+  -webkit-appearance: none
+  background: $whitish
+  border: none
+  display: block
+  float: right
+  position: relative
+
+  &:focus
+    outline: none
+
+.input__field--slide
+  background: transparent
+  color: $gray-dark
+  margin-top: 20px
+  padding: 15px 3px
+  width: 100%
+
+.input__label
+  color: $gray-light
+  display: inline-block
+  float: right
+  user-select: none
+
+.input__label--slide
+  bottom: 0
+  height: 100%
+  left: 0
+  padding: 0 5px
+  pointer-events: none
+  position: absolute
+  text-align: left
+  width: 100%
+
+  &::before,
+  &::after
+    border-bottom: 1px solid $gray-light
+    content: ''
+    height: calc(100% - 20px)
+    left: 0
+    position: absolute
+    top: 0
+    width: 100%
+
+  &::after
+    border-bottom: 4px solid $blue
+    margin-top: 2px
+    transform: translate3d(-100%, 0, 0)
+    transition: transform 0.3s
+
+.input__label-content
+  display: block
+  padding: 20px 0
+  position: relative
+  width: 100%
+
+.input__label-content--slide
+  position: absolute

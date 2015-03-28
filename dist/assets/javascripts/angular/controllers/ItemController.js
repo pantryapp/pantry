@@ -19,7 +19,7 @@
     // Methods
     that.createItem = createItem;
     that.editItem   = editItem;
-    this.deleteItem = deleteItem;
+    that.deleteItem = deleteItem;
 
     if($routeParams.itemId) {
       getItem();
