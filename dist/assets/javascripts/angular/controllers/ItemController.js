@@ -4,18 +4,17 @@
 
 	angular.module('store').controller('Item', Item);
 
-	function Item($routeParams, $location, ItemsFactory, CategoriesFactory) {
+	function Item($routeParams, $location, ItemsFactory, ItemFactory, CategoriesFactory) {
     var that = this;
 
     that.storeCategory  = CategoriesFactory.getStoreCategory($routeParams.storeCategory);
     that.categories     = CategoriesFactory.selectCategoriesFromStore(that.storeCategory.slug);
     that.currentItem    = {};
-    that.newItem        = {
-     store_category : that.storeCategory.slug,
-     outofstock     : false,
-     category       : ""
-    };
+    that.newItem        = ItemFactory.newItemModel({
+      store_category : that.storeCategory.slug
+    });
 
+    console.log(that.newItem);
     // Methods
     that.createItem = createItem;
     that.editItem   = editItem;
@@ -27,7 +26,7 @@
 
     function getItem() {
       ItemsFactory.getItemById($routeParams.itemId).
-        success(function(data) {          
+        success(function(data) {
           that.currentItem                = data;
           that.currentItem.store_category = CategoriesFactory.getStoreCategory(data.store_category);
         }).
