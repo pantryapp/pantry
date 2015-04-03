@@ -253,21 +253,52 @@ body {
   display: none; }
 
 .btn {
-  border: none; }
-  .btn.btn-default, .btn.btn-info, .btn.btn-warning, .btn.btn-danger, .btn.btn-success {
-    background-color: #fff;
-    border-color: transparent; }
-  .btn.btn-info {
-    color: #5bc0de; }
-  .btn.btn-warning {
-    color: #f0ad4e; }
-  .btn.btn-danger {
-    color: #d9534f; }
-  .btn.btn-success {
-    color: #5cb85c; }
-  .btn:hover {
-    background-color: #f5f5f5;
-    border-color: transparent; }
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  color: #00AAFF;
+  font-size: 14px;
+  outline: 0;
+  padding: 6px 12px; }
+  .btn:hover, .btn:focus {
+    color: #00AAFF; }
+  .btn:active {
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+  .btn:focus, .btn:active, .btn:focus:active {
+    outline: 0; }
+
+.btn--default {
+  background: transparent;
+  border: 1px solid #00AAFF;
+  -webkit-transition: background 0.1s ease-in-out;
+  transition: background 0.1s ease-in-out; }
+  .btn--default:hover, .btn--default:focus {
+    background: #E7E7EC; }
+  .btn--default:active {
+    background: #CBCBD2; }
+
+.btn--primary {
+  background: #00AAFF;
+  border: none;
+  color: #fff;
+  -webkit-transition: background 0.05s ease-in-out;
+  transition: background 0.05s ease-in-out; }
+  .btn--primary:hover, .btn--primary:focus {
+    background: #0088cc;
+    color: #fff; }
+  .btn--primary:active {
+    background: #006699; }
+
+.new-item-form__form {
+  position: relative; }
+
+.new-item-form--inline {
+  padding: 15px 10px;
+  width: 100%; }
+  .new-item-form--inline .new-item-form__submit {
+    margin: auto;
+    position: absolute;
+    right: 15px; }
 
 .transition {
   -webkit-transition: opacity 0.4s, -webkit-transform 0.4s;

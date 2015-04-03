@@ -12,9 +12,8 @@
     that.currentItem    = {};
     that.newItem        = ItemFactory.newItemModel({
       store_category : that.storeCategory.slug
-    });
+    });   
 
-    console.log(that.newItem);
     // Methods
     that.createItem = createItem;
     that.editItem   = editItem;
@@ -34,11 +33,13 @@
     }
 
     function createItem() {
+      /*
       ItemsFactory.createNewItem(that.newItem).
         success(function(data) {
           $location.path('/' + that.storeCategory.slug);
         }).
         error(function() {});
+      */
     }
 
     function editItem() {
