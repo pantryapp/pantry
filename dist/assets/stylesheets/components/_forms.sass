@@ -1,9 +1,16 @@
+.input
+  display: inline-block
+  position: relative
+  vertical-align: top
+  z-index: 1
+
+.input--slide
+  overflow: hidden
+
 .new-item-form__form
   position: relative
 
 .new-item-form--inline
-  //background-color: $gray-lighter
-  //background-color: $whitish
   padding: 15px 10px
   width: 100%
 
@@ -11,3 +18,7 @@
     margin: auto
     position: absolute
     right: 15px
+
+  .input
+    max-width: 350px
+    width: 100%

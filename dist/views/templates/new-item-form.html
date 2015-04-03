@@ -1,4 +1,9 @@
 <form class="new-item-form__form new-item-form--inline" ng-submit="item.createItem()">
-  <input class="new-item-form__input new-item-form__input--text" type="text" ng-model="item.newItem.name" placeholder="Nom">
+  <span class="input input--slide">
+    <input type="text" class="input__field input__field--slide" ng-model="item.newItem.name">
+    <label class="input__label input__label--slide">
+      <span class="input__label-content input__label-content--slide">Nom</span>
+    </label>
+  </span>
   <button class="new-item-form__submit btn btn--primary" type="submit">Ajouter l'item</button>
 </form>

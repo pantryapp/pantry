@@ -289,6 +289,15 @@ body {
   .btn--primary:active {
     background: #006699; }
 
+.input {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  z-index: 1; }
+
+.input--slide {
+  overflow: hidden; }
+
 .new-item-form__form {
   position: relative; }
 
@@ -299,6 +308,9 @@ body {
     margin: auto;
     position: absolute;
     right: 15px; }
+  .new-item-form--inline .input {
+    max-width: 350px;
+    width: 100%; }
 
 .transition {
   -webkit-transition: opacity 0.4s, -webkit-transform 0.4s;
