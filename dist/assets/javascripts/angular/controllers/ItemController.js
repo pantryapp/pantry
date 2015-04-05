@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
 	'use strict';
 
@@ -32,14 +32,22 @@
         error(function() {});
     }
 
-    function createItem() {
-      /*
+    function createItem(inline) {
       ItemsFactory.createNewItem(that.newItem).
         success(function(data) {
-          $location.path('/' + that.storeCategory.slug);
+
+          that.newItem = ItemFactory.newItemModel({
+            store_category : that.storeCategory.slug
+          });
+
+          
+
+          if(!inline) {
+            $location.path('/' + that.storeCategory.slug);
+          }
+
         }).
         error(function() {});
-      */
     }
 
     function editItem() {

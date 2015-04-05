@@ -312,11 +312,12 @@ body {
 
 .input__field--slide {
   margin-top: 1em;
-  padding: 0.85em 0.15em; }
-  .input__field--slide:focus + .input__label--slide > .input__label-content--slide {
+  padding: 0.85em 0.15em;
+  width: 100%; }
+  .input__field--slide:focus + .input__label--slide > .input__label-content--slide, .input__field--slide.filled + .input__label--slide > .input__label-content--slide {
     -webkit-animation: label-slide 0.3s forwards;
     animation: label-slide 0.3s forwards; }
-  .input__field--slide:focus + .input__label--slide::after {
+  .input__field--slide:focus + .input__label--slide::after, .input__field--slide.filled + .input__label--slide::after {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0); }
 
@@ -353,7 +354,11 @@ body {
   position: relative; }
 
 .new-item-form--inline {
-  padding: 15px 10px;
+  background: white;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  position: fixed;
   width: 100%; }
   .new-item-form--inline .new-item-form__submit {
     margin: auto;

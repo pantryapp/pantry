@@ -6,13 +6,15 @@
 
   function ItemFactory(Model) {
 
-    var item = {
-      store_category: null,
-      outofstock: false,
-      category: null
-    };
 
     function newItemModel(params) {
+      
+      var item = {
+        store_category: null,
+        outofstock: false,
+        category: null
+      };      
+
       return Model.merge(item, params);
     }
 

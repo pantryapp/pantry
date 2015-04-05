@@ -22,8 +22,10 @@
 .input__field--slide
   margin-top: 1em
   padding: 0.85em 0.15em
+  width: 100%
 
-  &:focus + .input__label--slide 
+  &:focus + .input__label--slide,
+  &.filled + .input__label--slide
     & > .input__label-content--slide
       animation: label-slide 0.3s forwards
 
@@ -64,7 +66,11 @@
   position: relative
 
 .new-item-form--inline
-  padding: 15px 10px
+  background: white
+  bottom: 0
+  left: 0
+  padding: 20px
+  position: fixed
   width: 100%
 
   .new-item-form__submit
