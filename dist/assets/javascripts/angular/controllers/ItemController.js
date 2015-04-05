@@ -40,12 +40,9 @@
             store_category : that.storeCategory.slug
           });
 
-          
-
           if(!inline) {
             $location.path('/' + that.storeCategory.slug);
           }
-
         }).
         error(function() {});
     }

@@ -18,7 +18,6 @@
         $input   = $element.find('.input__field');
 
     $input.on('blur', function() {
-      console.log($input);
       if($input.val() !== "") {
         $input.addClass('filled');
       } else {
