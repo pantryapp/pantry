@@ -1,8 +1,9 @@
-<h2>{{ items.storeCategory.name }}</h2>
+<h2>{{ itemsCtrl.storeCategory.name }}</h2>
 
 <div class="list">
-  <div class="list__item" ng-repeat="item in items.items">
-    <span class="list__item__name" href="#/{{ items.storeCategory.slug }}/item/{{ item.id }}">{{ item.name }}</span>
+  <div class="list__item" ng-controller="ItemController as itemCtrl" ng-repeat="item in itemsCtrl.items">
+    <span class="list__item__name" href="#/{{ itemsCtrl.storeCategory.slug }}/item/{{ item.id }}">{{ item.name }}</span>
+    <button class="btn btn--default" ng-click="itemCtrl.deleteItem(item)">X</button>
   </div>
 
   <list-item></list-item>

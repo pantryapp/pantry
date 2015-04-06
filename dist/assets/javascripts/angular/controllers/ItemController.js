@@ -2,66 +2,34 @@
 
 	'use strict';
 
-	angular.module('store').controller('Item', Item);
+	angular.module('store').controller('ItemController', ItemController);
 
-	function Item($routeParams, $location, ItemsFactory, ItemFactory, CategoriesFactory) {
+	function ItemController($routeParams, $location, Item, ItemsFactory, CategoriesFactory) {
     var that = this;
 
     that.storeCategory  = CategoriesFactory.getStoreCategory($routeParams.storeCategory);
     that.categories     = CategoriesFactory.selectCategoriesFromStore(that.storeCategory.slug);
-    that.currentItem    = {};
-    that.newItem        = ItemFactory.newItemModel({
-      store_category : that.storeCategory.slug
-    });   
+    that.item           = new Item({store_category : that.storeCategory.slug});   
 
     // Methods
-    that.createItem = createItem;
-    that.editItem   = editItem;
-    this.deleteItem = deleteItem;
+    that.createItem = function() {
+      that.item.save().then(function(item) {
+        that.item = new Item({store_category: that.storeCategory.slug});
+        ItemsFactory.addItem(item);
+      });
+    };
+
+    that.deleteItem = function(item) {
+      that.item.delete(item.id).then(function(result) {
+        ItemsFactory.removeItem(item);
+      });
+    };
+
 
     if($routeParams.itemId) {
-      getItem();
+      //Get a single item
     }
 
-    function getItem() {
-      ItemsFactory.getItemById($routeParams.itemId).
-        success(function(data) {
-          that.currentItem                = data;
-          that.currentItem.store_category = CategoriesFactory.getStoreCategory(data.store_category);
-        }).
-        error(function() {});
-    }
-
-    function createItem(inline) {
-      ItemsFactory.createNewItem(that.newItem).
-        success(function(data) {
-
-          that.newItem = ItemFactory.newItemModel({
-            store_category : that.storeCategory.slug
-          });
-
-          if(!inline) {
-            $location.path('/' + that.storeCategory.slug);
-          }
-        }).
-        error(function() {});
-    }
-
-    function editItem() {
-      ItemsFactory.editItem(that.currentItem).
-        success(function(data) {
-          $location.path('/' + that.storeCategory.slug);
-        }).
-        error(function() {});
-    }
-
-    function deleteItem() {
-      ItemsFactory.deleteItem(that.currentItem).
-        success(function() {
-          $location.path('/' + that.storeCategory.slug);
-        }).
-        error(function() {});
-    }
 
 	}
 

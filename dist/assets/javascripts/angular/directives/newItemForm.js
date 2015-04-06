@@ -8,8 +8,8 @@
     return {
       restrict: 'E',
       templateUrl: '/views/templates/new-item-form.html',
-      controller: 'Item',
-      controllerAs: 'item'
+      controller: 'ItemController',
+      controllerAs: 'itemCtrl'
     };
   }
 

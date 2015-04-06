@@ -4,35 +4,37 @@
 
 	angular.module('store').factory('ItemsFactory', ItemsFactory);
 
-	function ItemsFactory($http, apiEndPoint) {
+	function ItemsFactory(Item) {
 
-		function getItems(params) {
-			params = params || {};
-			return $http({method: 'GET', url: apiEndPoint + '/items', params : params});
+		var item  = new Item(),
+				items = [];
+
+		function findItems(params) {
+			return item.find(params).then(function(result) {
+				items = result.data;
+				return result.data;
+			});
 		}
 
-		function getItemById(id) {
-			return $http.get(apiEndPoint + '/items/' + id);
+		function getItems() {
+			return items;
 		}
 
-		function createNewItem(item) {
-			return $http.post(apiEndPoint + '/items', item);
+		function addItem(item) {
+			items.push(item);
 		}
 
-		function editItem(item) {
-			return $http.put(apiEndPoint + '/items/' + item.id, item);
+		function removeItem(item) {
+			if(items.indexOf(item) > -1) {
+				items = items.splice(items.indexOf(item), 1);
+			}
 		}
-
-		function deleteItem(item) {
-			return $http.delete(apiEndPoint + '/items/' + item.id);
-		}
-
+		
 		return {
-			createNewItem 				: createNewItem,
-			deleteItem 						: deleteItem,
-			editItem							: editItem,
-			getItemById 					: getItemById,
-			getItems 							: getItems
+			findItems 	: findItems,
+			getItems 		: getItems,
+			addItem 		: addItem,
+			removeItem 	: removeItem
 		};
 	}
 })();

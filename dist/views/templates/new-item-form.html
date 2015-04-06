@@ -1,13 +1,13 @@
-<form class="new-item-form__form new-item-form--inline" ng-submit="item.createItem('inline')">
+<form class="new-item-form__form new-item-form--inline" ng-submit="itemCtrl.createItem()">
   <input-text-slide>
-    <input type="text" class="input__field input__field--slide" ng-model="item.newItem.name">
+    <input type="text" class="input__field input__field--slide" ng-model="itemCtrl.item.name">
     <label class="input__label input__label--slide">
       <span class="input__label-content input__label-content--slide">Nouvel item</span>
     </label>
   </input-text-slide>
 
   <input-text-slide>
-    <input type="text" class="input__field input__field--slide" ng-model="item.newItem.category">
+    <input type="text" class="input__field input__field--slide" ng-model="itemCtrl.item.category">
     <label class="input__label input__label--slide">
       <span class="input__label-content input__label-content--slide">Catégorie</span>
     </label>

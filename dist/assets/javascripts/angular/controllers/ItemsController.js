@@ -2,21 +2,17 @@
 
 	'use strict';
 
-	angular.module('store').controller('Items', Items);
+	angular.module('store').controller('ItemsController', ItemsController);
 
-	function Items($routeParams, ItemsFactory, CategoriesFactory) {
+	function ItemsController($routeParams,CategoriesFactory, ItemsFactory) {
 
 		var that = this;
     that.storeCategory = CategoriesFactory.getStoreCategory($routeParams.storeCategory);
-    that.items         = [];
+    that.items         = ItemsFactory.getItems();
 
-    ItemsFactory.getItems({store_category: that.storeCategory.slug}).
-      success(function(data) {
-        that.items = data;
-      }).
-      error(function() {
-        console.log('Error');
-      });
+    ItemsFactory.findItems({store_category: that.storeCategory.slug}).then(function(items) {
+      that.items = items;
+    });
 	}
 
 })();

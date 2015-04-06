@@ -11,23 +11,23 @@
       })
       .when('/:storeCategory', {
         templateUrl   : 'views/items.html',
-        controller    : 'Items',
-        controllerAs  : 'items'
+        controller    : 'ItemsController',
+        controllerAs  : 'itemsCtrl'
       })
       .when('/:storeCategory/item/new', {
         templateUrl   : 'views/item-new.html',
-        controller    : 'Item',
-        controllerAs  : 'item'
+        controller    : 'ItemController',
+        controllerAs  : 'itemCtrl'
       })
       .when('/:storeCategory/item/edit/:itemId', {
         templateUrl   : 'views/item-edit.html',
-        controller    : 'Item',
-        controllerAs  : 'item'
+        controller    : 'ItemController',
+        controllerAs  : 'itemCtrl'
       })
       .when('/:storeCategory/item/:itemId', {
         templateUrl   : 'views/item.html',
-        controller    : 'Item',
-        controllerAs  : 'item'
+        controller    : 'ItemController',
+        controllerAs  : 'itemCtrl'
       })
       .otherwise({
         redirectTo: '/dashboard'
