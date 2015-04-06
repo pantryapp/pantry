@@ -12,7 +12,6 @@
 		function findItems(params) {
 			return item.find(params).then(function(result) {
 				items = result.data;
-				console.log('find', items);
 				return result.data;
 			});
 		}

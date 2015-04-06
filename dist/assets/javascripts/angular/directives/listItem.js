@@ -7,15 +7,17 @@
     return {
       restrict: 'E',
       templateUrl: '/views/templates/list-item.html',
+      controller: 'ItemController',
+      controllerAs: 'itemCtrl',
       link: linkFunc
     };
   }
 
-  function linkFunc(scope, element, attrs) {
-    var $element = $(element).find('.list__item');
-    $element.on('click', function() {
-      $element.toggleClass('list__item--editing');
-    });
+  function linkFunc(scope, element, attrs, itemCtrl) {
+
+    //$element.on('click', function() {
+    //  $element.toggleClass('list__item--editing');
+    //});
   }
 
 })();

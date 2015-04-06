@@ -18,7 +18,7 @@
     outline: 0
 
 .btn--default
-  background: transparent
+  background: #fff
   border: 1px solid $blue
   transition: background 0.1s ease-in-out
 
@@ -42,3 +42,13 @@
 
   &:active
     background: darken($blue, 20%)
+
+.btn--link
+  background: transparent
+  color: $blue
+  text-decoration: none
+  transition: color 0.3s
+
+  &:hover,
+  &:focus
+    color: $gray

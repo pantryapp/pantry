@@ -178,7 +178,7 @@ body {
     transition: transform 0.3s;
     width: 100%; }
   .category-menu__item:hover, .category-menu__item:focus, .category-menu__item.active {
-    color: #7D7D8E;
+    color: #00AAFF;
     text-decoration: none; }
     .category-menu__item:hover > span, .category-menu__item:focus > span, .category-menu__item.active > span {
       opacity: 0;
@@ -213,7 +213,6 @@ body {
 
 .list__item {
   display: block;
-  padding: 20px 0px 5px;
   overflow: hidden;
   position: relative; }
   .list__item::before {
@@ -233,25 +232,84 @@ body {
     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
     -webkit-transition: -webkit-transform 0.1s;
     transition: transform 0.1s; }
+  .list__item .list__item--editing .list__item__form {
+    display: block; }
+  .list__item .list__item--editing .list__item__display {
+    display: none; }
+  .list__item .list__item--editing::before {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0); }
+  .list__item .list__item__name {
+    color: #3F3F44;
+    font-weight: 400; }
+  .list__item .list__item__display {
+    display: block;
+    padding: 15px 8px; }
+    .list__item .list__item__display:hover .list__item__delete-confirmation {
+      -webkit-animation: delete-confirmation 0.2s forwards;
+      animation: delete-confirmation 0.2s forwards; }
+  .list__item .list__item__form {
+    display: none; }
+  .list__item .list__item__delete-confirmation {
+    font-size: 12px;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 11px;
+    -webkit-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    z-index: 1; }
+    .list__item .list__item__delete-confirmation:hover {
+      opacity: 1; }
+  .list__item .list__item__delete--group {
+    display: inline-block;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 8px;
+    -webkit-transform: translate3d(100%, 0, 0) scale(0.9);
+    transform: translate3d(100%, 0, 0) scale(0.9);
+    -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.75, 0, 0.125, 1), opacity 0.2s ease-in-out;
+    transition: transform 0.2s cubic-bezier(0.75, 0, 0.125, 1), opacity 0.2s ease-in-out;
+    z-index: 2; }
+    .list__item .list__item__delete--group.show {
+      opacity: 1;
+      -webkit-transform: translate3d(0, 0, 0) scale(1);
+      transform: translate3d(0, 0, 0) scale(1); }
 
-.list__item--editing .list__item__form {
-  display: block; }
-.list__item--editing .list__item__display {
-  display: none; }
-.list__item--editing::before {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0); }
+@-webkit-keyframes delete-confirmation {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0); }
+  50% {
+    opacity: 1;
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2); }
+  75% {
+    opacity: 1;
+    -webkit-transform: scale(1.4);
+    transform: scale(1.4); }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1); } }
 
-.list__item__name {
-  color: #3F3F44;
-  font-weight: 400; }
-
-.list__item__display {
-  display: block; }
-
-.list__item__form {
-  display: none; }
-
+@keyframes delete-confirmation {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0); }
+  50% {
+    opacity: 1;
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2); }
+  75% {
+    opacity: 1;
+    -webkit-transform: scale(1.4);
+    transform: scale(1.4); }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1); } }
 .btn {
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -268,7 +326,7 @@ body {
     outline: 0; }
 
 .btn--default {
-  background: transparent;
+  background: #fff;
   border: 1px solid #00AAFF;
   -webkit-transition: background 0.1s ease-in-out;
   transition: background 0.1s ease-in-out; }
@@ -288,6 +346,15 @@ body {
     color: #fff; }
   .btn--primary:active {
     background: #006699; }
+
+.btn--link {
+  background: transparent;
+  color: #00AAFF;
+  text-decoration: none;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s; }
+  .btn--link:hover, .btn--link:focus {
+    color: #7D7D8E; }
 
 .input {
   display: inline-block;
