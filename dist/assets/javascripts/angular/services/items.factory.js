@@ -12,6 +12,7 @@
 		function findItems(params) {
 			return item.find(params).then(function(result) {
 				items = result.data;
+				console.log('find', items);
 				return result.data;
 			});
 		}
@@ -26,7 +27,7 @@
 
 		function removeItem(item) {
 			if(items.indexOf(item) > -1) {
-				items = items.splice(items.indexOf(item), 1);
+				items.splice(items.indexOf(item), 1);
 			}
 		}
 		
