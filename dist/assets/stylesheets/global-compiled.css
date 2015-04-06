@@ -211,6 +211,9 @@ body {
     .category-item__icon {
       font-size: 21px; } }
 
+.list {
+  padding-bottom: 80px; }
+
 .list__item {
   display: block;
   overflow: hidden;
